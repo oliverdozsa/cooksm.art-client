@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {RouteNames} from "./route-names";
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'cooksm.art-client';
-
   isMenuCollapsed = true;
+  routes = [
+    {name: "Home", link: RouteNames.HOME},
+    {name: "About", link: RouteNames.ABOUT},
+  ]
 }
