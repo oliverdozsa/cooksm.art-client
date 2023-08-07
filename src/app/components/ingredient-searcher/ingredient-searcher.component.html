@@ -1,0 +1,23 @@
+<div>
+  <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
+    <div class="d-flex flex-row flex-wrap justify-content-start">
+      <div class="badge rounded-pill text-bg-light">potato</div>
+      <div class="badge rounded-pill text-bg-light">carrot</div>
+      <div class="badge rounded-pill text-bg-light">apricot jam</div>
+      <div class="badge rounded-pill text-bg-light">some ingredient with long name and even longer name</div>
+      <div class="flex-grow-1">
+        <input class="form-control form-control-sm border border-0 shadow-none" style="min-width: 160px;" type="text"
+               placeholder="keress hozzávalókra"
+               (focus)="inputElementFocused()" (focusout)="inputElementLostFocus()">
+      </div>
+    </div>
+
+
+    <!--    <span class="badge rounded-pill text-bg-light">potato</span>-->
+    <!--    <span class="badge rounded-pill text-bg-light">carrot</span>-->
+    <!--    <span class="badge rounded-pill text-bg-light">apricot jam</span>-->
+    <!--    <span class="badge rounded-pill text-bg-light">some ingredient with long name and even longer name</span>-->
+  </div>
+
+</div>
+

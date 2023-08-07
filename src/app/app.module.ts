@@ -8,13 +8,17 @@ import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.com
 import { AboutComponent } from './pages/about/about.component';
 import { HomeComponent } from './pages/home/home.component';
 import {NgOptimizedImage} from "@angular/common";
+import { SearchParamsComponent } from './components/search-params/search-params.component';
+import { IngredientSearcherComponent } from './components/ingredient-searcher/ingredient-searcher.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     AboutComponent,
-    HomeComponent
+    HomeComponent,
+    SearchParamsComponent,
+    IngredientSearcherComponent
   ],
     imports: [
         BrowserModule,
