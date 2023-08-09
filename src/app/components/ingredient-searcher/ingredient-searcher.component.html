@@ -1,10 +1,10 @@
 <div>
   <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
     <div class="d-flex flex-row flex-wrap justify-content-start">
-      <div class="badge rounded-pill text-bg-success my-auto">potato</div>
-      <div class="badge rounded-pill text-bg-danger my-auto">carrot</div>
-      <div class="badge rounded-pill text-bg-info my-auto">apricot jam</div>
-      <div class="badge rounded-pill text-bg-light my-auto">some ingredient with long name and even longer name</div>
+      <app-chip name="potato"></app-chip>
+      <app-chip name="carrot" color="success"></app-chip>
+      <app-chip name="apricot jam" color="info"></app-chip>
+      <app-chip name="some ingredient with long name and even longer name" color="danger"></app-chip>
       <div class="flex-grow-1">
         <input class="form-control form-control-sm border border-0 shadow-none" style="min-width: 160px;" type="text"
                placeholder="keress hozzávalókra"

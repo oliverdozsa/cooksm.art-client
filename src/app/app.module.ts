@@ -10,6 +10,7 @@ import { HomeComponent } from './pages/home/home.component';
 import {NgOptimizedImage} from "@angular/common";
 import { SearchParamsComponent } from './components/search-params/search-params.component';
 import { IngredientSearcherComponent } from './components/ingredient-searcher/ingredient-searcher.component';
+import { ChipComponent } from './components/chip/chip.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { IngredientSearcherComponent } from './components/ingredient-searcher/in
     AboutComponent,
     HomeComponent,
     SearchParamsComponent,
-    IngredientSearcherComponent
+    IngredientSearcherComponent,
+    ChipComponent
   ],
     imports: [
         BrowserModule,
