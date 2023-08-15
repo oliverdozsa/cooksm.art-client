@@ -7,22 +7,13 @@ import {
   catchError,
   debounceTime,
   delay,
-  distinctUntilChanged, finalize, map, merge,
+  distinctUntilChanged, map, merge,
   Observable,
   of,
   OperatorFunction,
-  switchMap,
-  tap
+  switchMap, tap
 } from "rxjs";
-import {NgbTypeahead} from "@ng-bootstrap/ng-bootstrap";
-
-class IsSearchingOrDisplayedIngredient {
-  constructor(public readonly wrapped: DisplayedIngredient | undefined = undefined, public readonly isSearching = true) {
-    if(this.wrapped != undefined) {
-      this.isSearching = false;
-    }
-  }
-}
+import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-ingredient-searcher',
@@ -37,12 +28,17 @@ export class IngredientSearcherComponent {
   isInputFocused = false;
   selected: DisplayedIngredient[] = [];
   searchIngredients: SearchIngredients;
+  isSearching = false;
 
   constructor(ingredientSearchService: IngredientSearchService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
   }
 
-  search: OperatorFunction<string, readonly IsSearchingOrDisplayedIngredient[]> = (text$: Observable<string>) => {
+  inputFormatter(item: any): string {
+    return '';
+  }
+
+  search: OperatorFunction<string, readonly DisplayedIngredient[]> = (text$: Observable<string>) => {
     return text$.pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -70,24 +66,17 @@ export class IngredientSearcherComponent {
     this.isInputFocused = false;
   }
 
-  private performSearch(term: string): Observable<IsSearchingOrDisplayedIngredient[]> {
+  private performSearch(term: string): Observable<DisplayedIngredient[]> {
     if (!term || term.length < 2) {
       return of([]);
     }
 
-    const loader = of([new IsSearchingOrDisplayedIngredient()]);
-
-    const searcher = this.searchIngredients.searchForIngredients(term)
+    this.isSearching = true;
+    return this.searchIngredients.searchForIngredients(term)
       .pipe(
         delay(700),
-        map(d => this.wrapInIsSearchingOrDisplayedIngredients(d)),
-        catchError(() =>of([]))
+        catchError(() =>of([])),
+        tap(() => this.isSearching = false)
       );
-
-    return merge(loader, searcher);
-  }
-
-  private wrapInIsSearchingOrDisplayedIngredients(values: DisplayedIngredient[]) {
-    return values.map(v => new IsSearchingOrDisplayedIngredient(v))
   }
 }

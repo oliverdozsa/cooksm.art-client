@@ -12,6 +12,7 @@ import {SearchParamsComponent} from './components/search-params/search-params.co
 import {IngredientSearcherComponent} from './components/ingredient-searcher/ingredient-searcher.component';
 import {ChipComponent} from './components/chip/chip.component';
 import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
