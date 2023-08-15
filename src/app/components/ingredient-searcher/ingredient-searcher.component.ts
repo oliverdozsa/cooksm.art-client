@@ -1,4 +1,4 @@
-import {Component, Input, ViewChild} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
 import {IngredientSearchService} from "../../services/ingredient-search.service";
@@ -7,13 +7,12 @@ import {
   catchError,
   debounceTime,
   delay,
-  distinctUntilChanged, map, merge,
+  distinctUntilChanged, map,
   Observable,
   of,
   OperatorFunction,
   switchMap, tap
 } from "rxjs";
-import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-ingredient-searcher',
@@ -23,19 +22,14 @@ import {NgbTypeahead, NgbTypeaheadSelectItemEvent} from "@ng-bootstrap/ng-bootst
 export class IngredientSearcherComponent {
   @Input() target: TargetIngredients = TargetIngredients.Included;
 
-  @ViewChild('typeahead', {static: true}) typeahead!: NgbTypeahead;
-
   isInputFocused = false;
-  selected: DisplayedIngredient[] = [];
+  added: DisplayedIngredient[] = [];
   searchIngredients: SearchIngredients;
   isSearching = false;
+  inputFormatter = () => '';
 
   constructor(ingredientSearchService: IngredientSearchService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
-  }
-
-  inputFormatter(item: any): string {
-    return '';
   }
 
   search: OperatorFunction<string, readonly DisplayedIngredient[]> = (text$: Observable<string>) => {
@@ -75,8 +69,17 @@ export class IngredientSearcherComponent {
     return this.searchIngredients.searchForIngredients(term)
       .pipe(
         delay(700),
-        catchError(() =>of([])),
+        map(r => this.filterNotAlreadyAdded(r)),
+        catchError(() => of([])),
         tap(() => this.isSearching = false)
       );
+  }
+
+  private filterNotAlreadyAdded(ingredients: DisplayedIngredient[]) {
+    return ingredients.filter(i => this.isNotAlreadyAdded(i))
+  }
+
+  private isNotAlreadyAdded(ingredient: DisplayedIngredient) {
+    return this.added.find(e => e.equals(ingredient)) == undefined;
   }
 }
