@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
 import {IngredientSearchService} from "../../services/ingredient-search.service";
@@ -10,17 +10,18 @@ import {
   distinctUntilChanged, map,
   Observable,
   of,
-  OperatorFunction,
-  switchMap, tap
+  OperatorFunction, Subject,
+  switchMap, takeUntil, tap
 } from "rxjs";
 import {SearchParamsService} from "../../services/search-params.service";
+import {IngredientsSearcherSearchParamsOperationHandler} from "./ingredients-searcher-search-params-operation-handler";
 
 @Component({
   selector: 'app-ingredient-searcher',
   templateUrl: './ingredient-searcher.component.html',
   styleUrls: ['./ingredient-searcher.component.scss']
 })
-export class IngredientSearcherComponent {
+export class IngredientSearcherComponent implements OnDestroy {
   @Input() target = TargetIngredients.Included;
 
   isInputFocused = false;
@@ -28,9 +29,32 @@ export class IngredientSearcherComponent {
   searchIngredients: SearchIngredients;
   isSearching = false;
   inputFormatter = () => '';
+  destroy$ = new Subject<void>();
+
+  get chipColor(): string {
+    if (this.target == TargetIngredients.Excluded) {
+      return "danger"
+    } else if (this.target == TargetIngredients.Extra) {
+      return "info"
+    }
+
+    return "success";
+  }
 
   constructor(ingredientSearchService: IngredientSearchService, private searchParamsService: SearchParamsService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
+
+    const searchParamsOperationHandler = new IngredientsSearcherSearchParamsOperationHandler(this);
+    this.searchParamsService.operation$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: o => searchParamsOperationHandler.process(o)
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   search: OperatorFunction<string, readonly DisplayedIngredient[]> = (text$: Observable<string>) => {
@@ -39,18 +63,6 @@ export class IngredientSearcherComponent {
       distinctUntilChanged(),
       switchMap((term) => this.performSearch(term))
     );
-  }
-
-  get chipColor(): string {
-    if (this.target == TargetIngredients.Excluded) {
-      return "danger"
-    }
-
-    if (this.target == TargetIngredients.Extra) {
-      return "info"
-    }
-
-    return "success";
   }
 
   inputElementFocused() {
