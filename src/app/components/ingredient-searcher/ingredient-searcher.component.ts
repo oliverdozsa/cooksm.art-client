@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
 import {IngredientSearchService} from "../../services/ingredient-search.service";
@@ -60,8 +60,12 @@ export class IngredientSearcherComponent {
     this.isInputFocused = false;
   }
 
-  ingredientRemoved(ingredient: DisplayedIngredient) {
+  removeIngredients(ingredient: DisplayedIngredient) {
     this.added = this.added.filter(a => !a.equals(ingredient));
+  }
+
+  addIngredient(ingredient: DisplayedIngredient) {
+    this.added.push(ingredient);
   }
 
   private performSearch(term: string): Observable<DisplayedIngredient[]> {
