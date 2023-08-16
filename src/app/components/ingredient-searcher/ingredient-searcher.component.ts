@@ -60,6 +60,10 @@ export class IngredientSearcherComponent {
     this.isInputFocused = false;
   }
 
+  ingredientRemoved(ingredient: DisplayedIngredient) {
+    this.added = this.added.filter(a => !a.equals(ingredient));
+  }
+
   private performSearch(term: string): Observable<DisplayedIngredient[]> {
     if (!term || term.length < 2) {
       return of([]);
