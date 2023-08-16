@@ -9,10 +9,6 @@ export class DisplayedIngredient {
     return this.ingredientCategory !== undefined;
   }
 
-  get isEmpty() {
-    return this.ingredientName == undefined && this.ingredientCategory == undefined;
-  }
-
   equals(other: DisplayedIngredient): boolean {
     if(!other) {
       return false;

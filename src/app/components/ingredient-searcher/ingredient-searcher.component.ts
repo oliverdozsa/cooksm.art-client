@@ -13,6 +13,7 @@ import {
   OperatorFunction,
   switchMap, tap
 } from "rxjs";
+import {SearchParamsService} from "../../services/search-params.service";
 
 @Component({
   selector: 'app-ingredient-searcher',
@@ -20,7 +21,7 @@ import {
   styleUrls: ['./ingredient-searcher.component.scss']
 })
 export class IngredientSearcherComponent {
-  @Input() target: TargetIngredients = TargetIngredients.Included;
+  @Input() target = TargetIngredients.Included;
 
   isInputFocused = false;
   added: DisplayedIngredient[] = [];
@@ -28,7 +29,7 @@ export class IngredientSearcherComponent {
   isSearching = false;
   inputFormatter = () => '';
 
-  constructor(ingredientSearchService: IngredientSearchService) {
+  constructor(ingredientSearchService: IngredientSearchService, private searchParamsService: SearchParamsService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
   }
 
@@ -62,10 +63,12 @@ export class IngredientSearcherComponent {
 
   removeIngredients(ingredient: DisplayedIngredient) {
     this.added = this.added.filter(a => !a.equals(ingredient));
+    this.searchParamsService.ingredientsChangedIn(this.target, this.added);
   }
 
   addIngredient(ingredient: DisplayedIngredient) {
     this.added.push(ingredient);
+    this.searchParamsService.ingredientsChangedIn(this.target, this.added);
   }
 
   private performSearch(term: string): Observable<DisplayedIngredient[]> {
