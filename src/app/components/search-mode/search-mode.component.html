@@ -1,0 +1,7 @@
+<select [(ngModel)]="searchMode" class="form-select" aria-label="select search mode">
+  <option [value]="AppSearchMode.None">just show something</option>
+  <option [value]="AppSearchMode.Contains">should contain all from included</option>
+  <option [value]="AppSearchMode.ComposedOf">composed of included</option>
+  <option [value]="AppSearchMode.AnyOf">any of included</option>
+  <option [value]="AppSearchMode.StrictlyComposedOf">exactly from included</option>
+</select>

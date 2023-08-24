@@ -13,7 +13,7 @@ import {
   OperatorFunction, Subject,
   switchMap, takeUntil, tap
 } from "rxjs";
-import {SearchParamsService} from "../../services/search-params.service";
+import {RecipesService} from "../../services/recipes.service";
 import {IngredientsSearcherSearchParamsOperationHandler} from "./ingredients-searcher-search-params-operation-handler";
 
 @Component({
@@ -41,7 +41,7 @@ export class IngredientSearcherComponent implements OnDestroy {
     return "success";
   }
 
-  constructor(ingredientSearchService: IngredientSearchService, private searchParamsService: SearchParamsService) {
+  constructor(ingredientSearchService: IngredientSearchService, private searchParamsService: RecipesService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
 
     const searchParamsOperationHandler = new IngredientsSearcherSearchParamsOperationHandler(this);

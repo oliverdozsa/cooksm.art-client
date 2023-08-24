@@ -13,6 +13,7 @@ import {IngredientSearcherComponent} from './components/ingredient-searcher/ingr
 import {ChipComponent} from './components/chip/chip.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import { SearchModeComponent } from './components/search-mode/search-mode.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import {FormsModule} from "@angular/forms";
     HomeComponent,
     SearchParamsComponent,
     IngredientSearcherComponent,
-    ChipComponent
+    ChipComponent,
+    SearchModeComponent
   ],
   imports: [
     BrowserModule,
