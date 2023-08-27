@@ -1,0 +1,6 @@
+<h3>recipes</h3>
+<ul *ngIf="currentPage" class="list-group mx-auto">
+  <li *ngFor="let recipe of currentPage.items" class="list-group-item">
+    {{recipe.name}}
+  </li>
+</ul>

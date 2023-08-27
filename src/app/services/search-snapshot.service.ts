@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import {TargetIngredients} from "../data/target-ingredients";
-import {DisplayedIngredient} from "../data/displayed-ingredient";
 import {SearchSnapshot} from "../data/search-snapshot";
+import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +15,6 @@ export class SearchSnapshotService {
   }
 
   cloneSnapshot() {
-    return SearchSnapshot.clone(this.snapshot);
+    return SearchSnapshotTransform.clone(this.snapshot);
   }
 }

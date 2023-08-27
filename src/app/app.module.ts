@@ -14,6 +14,7 @@ import {ChipComponent} from './components/chip/chip.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { SearchModeComponent } from './components/search-mode/search-mode.component';
+import { RecipePagingComponent } from './components/recipe-paging/recipe-paging.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { SearchModeComponent } from './components/search-mode/search-mode.compon
     SearchParamsComponent,
     IngredientSearcherComponent,
     ChipComponent,
-    SearchModeComponent
+    SearchModeComponent,
+    RecipePagingComponent
   ],
   imports: [
     BrowserModule,

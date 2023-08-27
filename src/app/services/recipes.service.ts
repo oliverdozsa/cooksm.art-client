@@ -8,14 +8,16 @@ import {SearchSnapshot} from "../data/search-snapshot";
 import {RecipeSearchService} from "./recipe-search.service";
 import {Page} from "../data/page";
 import {Recipe} from "../data/recipe";
-import {AppSearchMode} from "../data/app-search-mode";
+import {SearchSnapshotUpdate} from "../data/search-snapshot-ops/search-snapshot-update";
+import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
+import {WhenIngredientsChangedOps} from "./recipe-service-operations/when-Ingredients-changed-ops";
 
 @Injectable({
   providedIn: 'root'
 })
 export class RecipesService {
-  operation$ = new Subject<SearchParamsOperation>();
-  results$ = new Subject<Page<Recipe>>();
+  operation$: Subject<SearchParamsOperation> = new Subject<SearchParamsOperation>();
+  results$: Subject<Page<Recipe>> = new Subject<Page<Recipe>>();
 
   private recipeQuerySub: Subscription | undefined = undefined;
   private snapshotForCurrentQuery: SearchSnapshot;
@@ -26,10 +28,11 @@ export class RecipesService {
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
     this.anySearchParamChanged(() => {
-      SearchSnapshot.updateWithIngredients(target, items, this.snapshotForCurrentQuery);
-      if(this.snapshotForCurrentQuery.search.query == undefined) {
-        SearchSnapshot.updateWithSearchMode(AppSearchMode.Contains, this.snapshotForCurrentQuery);
-      }
+      SearchSnapshotUpdate.withIngredients(target, items, this.snapshotForCurrentQuery);
+
+      const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery);
+      whenIngredientsChanged.checkIfSearchModeShouldBeUpdated();
+      whenIngredientsChanged.refreshNumOfGoodIngredientsIfNeeded();
     });
   }
 
@@ -39,14 +42,14 @@ export class RecipesService {
   }
 
   private anySearchParamChanged(updateSnapshotForQuery: () => void) {
-    if(this.recipeQuerySub) {
+    if (this.recipeQuerySub) {
       this.recipeQuerySub.unsubscribe();
     }
 
     this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
     updateSnapshotForQuery();
 
-    const queryParams = SearchSnapshot.toQueryParams(this.snapshotForCurrentQuery);
+    const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
     this.recipeQuerySub = this.recipeQueryService.query(queryParams).subscribe({
       next: r => this.onQuerySuccessful(r)
     });
