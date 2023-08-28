@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {AppSearchMode} from "../../data/app-search-mode";
+import {RecipesService} from "../../services/recipes.service";
 
 @Component({
   selector: 'app-search-mode',
@@ -11,12 +12,15 @@ export class SearchModeComponent {
 
   private _searchMode = AppSearchMode.None;
 
+  constructor(private recipeService: RecipesService) {
+  }
+
   get searchMode(): AppSearchMode {
     return this._searchMode;
   }
 
   set searchMode(value: AppSearchMode) {
     this._searchMode = value;
-    // TODO: trigger search
+    this.recipeService.searchModeChanged(this.searchMode);
   }
 }

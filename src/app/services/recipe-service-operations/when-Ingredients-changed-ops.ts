@@ -2,9 +2,12 @@ import {SearchSnapshot} from "../../data/search-snapshot";
 import {SearchSnapshotUpdate} from "../../data/search-snapshot-ops/search-snapshot-update";
 import {AppSearchMode} from "../../data/app-search-mode";
 import {determineAppSearchMode} from "../../data/saved-recipe-search";
+import {Subject} from "rxjs";
+import {RecipeServiceOperation} from "../recipe-service-operation";
 
 export class WhenIngredientsChangedOps {
-  constructor(private snapshotForCurrentQuery: SearchSnapshot) {
+  constructor(private snapshotForCurrentQuery: SearchSnapshot,
+              private operation$: Subject<RecipeServiceOperation>) {
   }
 
   checkIfSearchModeShouldBeUpdated() {
