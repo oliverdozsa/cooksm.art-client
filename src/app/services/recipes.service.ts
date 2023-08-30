@@ -36,6 +36,7 @@ export class RecipesService {
         new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
       whenIngredientsChanged.checkIfSearchModeShouldBeUpdated();
       whenIngredientsChanged.refreshNumOfGoodIngredientsIfNeeded();
+      whenIngredientsChanged.setDisabledSearchModes();
     });
   }
 

@@ -5,6 +5,4 @@ import {RecipeServiceOperation} from "../recipe-service-operation";
 export class WhenSearchModeChangedOps {
   constructor(snapshotForCurrentQuery: SearchSnapshot, operation$: Subject<RecipeServiceOperation>) {
   }
-
-
 }
