@@ -14,7 +14,7 @@ import {
   switchMap, takeUntil, tap
 } from "rxjs";
 import {RecipesService} from "../../services/recipes.service";
-import {IngredientsSearcherSearchParamsOperationHandler} from "./ingredients-searcher-search-params-operation-handler";
+import {IngredientsSearcherRecipeServiceOpsHandler} from "./ingredients-searcher-recipe-service-ops-handler";
 
 @Component({
   selector: 'app-ingredient-searcher',
@@ -41,11 +41,11 @@ export class IngredientSearcherComponent implements OnDestroy {
     return "success";
   }
 
-  constructor(ingredientSearchService: IngredientSearchService, private searchParamsService: RecipesService) {
+  constructor(ingredientSearchService: IngredientSearchService, private recipesService: RecipesService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
 
-    const searchParamsOperationHandler = new IngredientsSearcherSearchParamsOperationHandler(this);
-    this.searchParamsService.operation$
+    const searchParamsOperationHandler = new IngredientsSearcherRecipeServiceOpsHandler(this);
+    this.recipesService.operation$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: o => searchParamsOperationHandler.process(o)
@@ -75,12 +75,12 @@ export class IngredientSearcherComponent implements OnDestroy {
 
   removeIngredients(ingredient: DisplayedIngredient) {
     this.added = this.added.filter(a => !a.equals(ingredient));
-    this.searchParamsService.ingredientsChangedIn(this.target, this.added);
+    this.recipesService.ingredientsChangedIn(this.target, this.added);
   }
 
   addIngredient(ingredient: DisplayedIngredient) {
     this.added.push(ingredient);
-    this.searchParamsService.ingredientsChangedIn(this.target, this.added);
+    this.recipesService.ingredientsChangedIn(this.target, this.added);
   }
 
   private performSearch(term: string): Observable<DisplayedIngredient[]> {

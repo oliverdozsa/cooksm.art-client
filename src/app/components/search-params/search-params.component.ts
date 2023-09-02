@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {TargetIngredients} from "../../data/target-ingredients";
 
 @Component({
   selector: 'app-search-params',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./search-params.component.scss']
 })
 export class SearchParamsComponent {
-
+  TargetIngredients = TargetIngredients;
 }

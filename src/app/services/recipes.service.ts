@@ -10,9 +10,10 @@ import {Page} from "../data/page";
 import {Recipe} from "../data/recipe";
 import {SearchSnapshotUpdate} from "../data/search-snapshot-ops/search-snapshot-update";
 import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
-import {WhenIngredientsChangedOps} from "./recipe-service-operations/when-Ingredients-changed-ops";
+import {WhenIngredientsChangedOps} from "./recipe-service-operations/when-ingredients-changed-ops";
 import {AppSearchMode} from "../data/app-search-mode";
 import {WhenSearchModeChangedOps} from "./recipe-service-operations/when-search-mode-changed-ops";
+import {WhenSnapshotLoadedOps} from "./recipe-service-operations/when-snapshot-loaded-ops";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,7 @@ export class RecipesService {
 
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
+    setTimeout(() => this.queryInitialSnapshot());
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
@@ -66,5 +68,16 @@ export class RecipesService {
   private onQuerySuccessful(page: Page<Recipe>) {
     this.searchSnapshotService.set(this.snapshotForCurrentQuery);
     this.results$.next(page);
+  }
+
+  private queryInitialSnapshot() {
+    const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
+
+    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
+    whenSnapshotIsLoaded.setIngredients();
+
+    this.recipeQueryService.query(queryParams).subscribe({
+      next: p => this.results$.next(p)
+    });
   }
 }

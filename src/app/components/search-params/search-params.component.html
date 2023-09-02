@@ -18,7 +18,7 @@
 
     <div ngbAccordionCollapse>
       <div ngbAccordionBody class="py-2">
-        <app-ingredient-searcher></app-ingredient-searcher>
+        <app-ingredient-searcher [target]="TargetIngredients.Included"></app-ingredient-searcher>
       </div>
     </div>
   </div>
@@ -30,7 +30,7 @@
 
     <div ngbAccordionCollapse>
       <div ngbAccordionBody class="py-2">
-        <app-ingredient-searcher></app-ingredient-searcher>
+        <app-ingredient-searcher [target]="TargetIngredients.Excluded"></app-ingredient-searcher>
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@
 
     <div ngbAccordionCollapse>
       <div ngbAccordionBody class="py-2">
-        <app-ingredient-searcher></app-ingredient-searcher>
+        <app-ingredient-searcher [target]="TargetIngredients.Extra"></app-ingredient-searcher>
       </div>
     </div>
   </div>

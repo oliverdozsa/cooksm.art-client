@@ -1,7 +1,7 @@
 import {AppSearchMode} from "../data/app-search-mode";
 
 export enum RecipeServiceOperationType {
-  Ingredients,
+  SetIngredients,
   DisableSearchModes,
   SetSearchMode
 }
