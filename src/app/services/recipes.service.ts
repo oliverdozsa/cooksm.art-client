@@ -75,6 +75,7 @@ export class RecipesService {
 
     const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
     whenSnapshotIsLoaded.setIngredients();
+    whenSnapshotIsLoaded.setDisabledSearchModes();
 
     this.recipeQueryService.query(queryParams).subscribe({
       next: p => this.results$.next(p)

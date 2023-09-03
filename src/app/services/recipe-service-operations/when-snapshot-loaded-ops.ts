@@ -2,9 +2,13 @@ import {SearchSnapshot} from "../../data/search-snapshot";
 import {Subject} from "rxjs";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
 import {TargetIngredients} from "../../data/target-ingredients";
+import {DisabledSearchModes} from "./disabled-search-modes";
 
 export class WhenSnapshotLoadedOps {
+  private disabledSearchModes: DisabledSearchModes;
+
   constructor(private snapshot: SearchSnapshot, private operation$: Subject<RecipeServiceOperation>) {
+    this.disabledSearchModes = new DisabledSearchModes(snapshot, operation$);
   }
 
   setIngredients() {
@@ -36,5 +40,9 @@ export class WhenSnapshotLoadedOps {
         categories: query.addIngTags
       }
     });
+  }
+
+  setDisabledSearchModes() {
+    this.disabledSearchModes.set();
   }
 }

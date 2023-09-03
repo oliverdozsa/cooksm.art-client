@@ -4,10 +4,14 @@ import {AppSearchMode} from "../../data/app-search-mode";
 import {determineAppSearchMode} from "../../data/saved-recipe-search";
 import {Subject} from "rxjs";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
+import {DisabledSearchModes} from "./disabled-search-modes";
 
 export class WhenIngredientsChangedOps {
+  private disabledSearchModes: DisabledSearchModes;
+
   constructor(private snapshotForCurrentQuery: SearchSnapshot,
               private operation$: Subject<RecipeServiceOperation>) {
+    this.disabledSearchModes = new DisabledSearchModes(snapshotForCurrentQuery, operation$);
   }
 
   checkIfSearchModeShouldBeUpdated() {
@@ -41,26 +45,6 @@ export class WhenIngredientsChangedOps {
   }
 
   setDisabledSearchModes() {
-    const disabledSearchModes = [];
-    const query = this.snapshotForCurrentQuery.search.query;
-
-    const hasNoIngredients = query.inIngs == undefined || query.inIngs.length == 0;
-    const hasNoIngredientTags = query.inIngTags == undefined || query.inIngTags.length == 0;
-
-    if(hasNoIngredients && hasNoIngredientTags) {
-      disabledSearchModes.push(
-        AppSearchMode.AnyOf,
-        AppSearchMode.StrictlyComposedOf,
-        AppSearchMode.ComposedOf,
-        AppSearchMode.Contains
-      );
-    } else if(hasNoIngredients && !hasNoIngredientTags) {
-      disabledSearchModes.push(AppSearchMode.Contains);
-    }
-
-    this.operation$.next({
-      type: RecipeServiceOperationType.DisableSearchModes,
-      payload: disabledSearchModes
-    })
+    this.disabledSearchModes.set();
   }
 }
