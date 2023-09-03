@@ -1,9 +1,10 @@
 <h3>results</h3>
-<ul *ngIf="currentPage" class="list-group mx-auto">
-  <li *ngFor="let recipe of currentPage.items" class="list-group-item">
-    {{recipe.name}}
-  </li>
-</ul>
+
+<div *ngIf="currentPage" class="d-flex flex-wrap justify-content-center">
+  <div *ngFor="let recipe of currentPage.items" class="p-2">
+    <app-recipe-card [recipe]="recipe"></app-recipe-card>
+  </div>
+</div>
 
 <div *ngIf="currentPage" class="d-flex justify-content-center mt-3">
   <div class="mx-auto d-block d-sm-block d-md-none">

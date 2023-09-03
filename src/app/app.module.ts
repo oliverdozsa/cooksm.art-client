@@ -15,6 +15,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import { SearchModeComponent } from './components/search-mode/search-mode.component';
 import { RecipePagingComponent } from './components/recipe-paging/recipe-paging.component';
+import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { RecipePagingComponent } from './components/recipe-paging/recipe-paging.
     IngredientSearcherComponent,
     ChipComponent,
     SearchModeComponent,
-    RecipePagingComponent
+    RecipePagingComponent,
+    RecipeCardComponent
   ],
   imports: [
     BrowserModule,
