@@ -51,6 +51,12 @@ export class RecipesService {
     })
   }
 
+  recipePageChanged(newPage: number) {
+    this.anySearchParamChanged(() => {
+      SearchSnapshotUpdate.withPage(newPage, this.snapshotForCurrentQuery);
+    })
+  }
+
   private anySearchParamChanged(updateSnapshotForQuery: () => void) {
     if (this.recipeQuerySub) {
       this.recipeQuerySub.unsubscribe();

@@ -54,4 +54,8 @@ export class SearchSnapshotUpdate {
       query.searchMode = ApiSearchMode.None;
     }
   }
+
+  static withPage(page: number, snapshot: SearchSnapshot) {
+    snapshot.currentPageNumber = page;
+  }
 }

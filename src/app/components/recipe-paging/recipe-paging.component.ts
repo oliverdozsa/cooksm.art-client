@@ -11,6 +11,17 @@ import {Page} from "../../data/page";
 export class RecipePagingComponent {
   currentPage: Page<Recipe> | undefined;
 
+  private _page: number = 0;
+
+  get page(): number {
+    return this._page;
+  }
+
+  set page(value: number) {
+    this._page = value;
+    this.recipesService.recipePageChanged(this._page);
+  }
+
   constructor(private recipesService: RecipesService) {
     recipesService.results$.subscribe({
       next: p => this.currentPage = p
