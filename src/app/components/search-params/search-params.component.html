@@ -1,60 +1,36 @@
 <div ngbAccordion>
-  <div ngbAccordionItem>
+  <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader>
-      <button ngbAccordionButton class="py-2">what kind of recipes?</button>
+      <button ngbAccordionButton class="py-2">
+        search filters
+      </button>
     </h2>
 
     <div ngbAccordionCollapse>
       <div ngbAccordionBody class="py-2">
-        <input class="form-control form-control-sm" type="text">
-      </div>
-    </div>
-  </div>
+        <div class="row">
+          <div class="col">
+            <app-ingredient-searcher [target]="TargetIngredients.Included"
+                                     label="ingredients to include?"></app-ingredient-searcher>
+          </div>
+        </div>
 
-  <div ngbAccordionItem>
-    <h2 ngbAccordionHeader>
-      <button ngbAccordionButton class="py-2">ingredients to use?</button>
-    </h2>
+        <div class="row mt-1">
+          <div class="col-sm-7">
+            <app-ingredient-searcher [target]="TargetIngredients.Excluded"
+                                     label="ingredients to exclude?"></app-ingredient-searcher>
+          </div>
+          <div class="col-sm-5">
+            <app-ingredient-searcher [target]="TargetIngredients.Extra"
+                                     label="additional ingredients?"></app-ingredient-searcher>
+          </div>
+        </div>
 
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody class="py-2">
-        <app-ingredient-searcher [target]="TargetIngredients.Included"></app-ingredient-searcher>
-      </div>
-    </div>
-  </div>
-
-  <div ngbAccordionItem>
-    <h2 ngbAccordionHeader>
-      <button ngbAccordionButton class="py-2">ingredients to exclude?</button>
-    </h2>
-
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody class="py-2">
-        <app-ingredient-searcher [target]="TargetIngredients.Excluded"></app-ingredient-searcher>
-      </div>
-    </div>
-  </div>
-
-  <div ngbAccordionItem>
-    <h2 ngbAccordionHeader>
-      <button ngbAccordionButton class="py-2">extra ingredients?</button>
-    </h2>
-
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody class="py-2">
-        <app-ingredient-searcher [target]="TargetIngredients.Extra"></app-ingredient-searcher>
-      </div>
-    </div>
-  </div>
-
-  <div ngbAccordionItem>
-    <h2 ngbAccordionHeader>
-      <button ngbAccordionButton class="py-2">search mode?</button>
-    </h2>
-
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody class="py-2">
-        <app-search-mode></app-search-mode>
+        <div class="row mt-1">
+          <div class="col">
+            <app-search-mode></app-search-mode>
+          </div>
+        </div>
       </div>
     </div>
   </div>

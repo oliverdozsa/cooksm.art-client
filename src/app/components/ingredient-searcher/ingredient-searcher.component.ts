@@ -23,6 +23,7 @@ import {IngredientsSearcherRecipeServiceOpsHandler} from "./ingredients-searcher
 })
 export class IngredientSearcherComponent implements OnDestroy {
   @Input() target = TargetIngredients.Included;
+  @Input() label: string = "";
 
   isInputFocused = false;
   added: DisplayedIngredient[] = [];

@@ -7,6 +7,7 @@
     </div>
   </div>
 
+  <label>{{label}}</label>
   <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
     <div class="d-flex flex-row flex-wrap justify-content-start">
       <app-chip *ngFor="let ingredient of added" [name]="ingredient.displayedName" [color]="chipColor" (closeClicked)="removeIngredients(ingredient)"></app-chip>
