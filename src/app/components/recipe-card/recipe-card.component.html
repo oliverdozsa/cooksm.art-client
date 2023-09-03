@@ -1,15 +1,18 @@
-<div *ngIf="recipe" class="card" style="width: 18rem;">
+<div *ngIf="recipe" class="card" style="width: 18rem; height: 14rem;">
   <div class="card-body">
     <h5 class="card-title">{{recipe.name}}</h5>
-    <div *ngIf="recipe.time != CookingTime.Unknown">
-      <i class="bi bi-clock"></i>
-      <span *ngIf="recipe.time == CookingTime.Quick">quick</span>
-      <span *ngIf="recipe.time == CookingTime.Average">average</span>
-      <span *ngIf="recipe.time == CookingTime.Lengthy">lengthy</span>
+    <div *ngIf="recipe.time != CookingTime.Unknown" class="d-flex align-items-center">
+      <div><i class="bi bi-clock"></i></div>
+      <div class="ms-1">
+        <span *ngIf="recipe.time == CookingTime.Quick">quick</span>
+        <span *ngIf="recipe.time == CookingTime.Average">average</span>
+        <span *ngIf="recipe.time == CookingTime.Lengthy">lengthy</span>
+      </div>
     </div>
 
-    <div>
-      <i class="bi bi-list-ul"></i> {{recipe.numofings}} ingredients
+    <div class="d-flex align-items-center">
+      <div><i class="bi bi-list-ul"></i></div>
+      <div class="ms-1">{{recipe.numofings}} ingredients</div>
     </div>
   </div>
 </div>
