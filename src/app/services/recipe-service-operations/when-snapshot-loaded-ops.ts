@@ -18,8 +18,8 @@ export class WhenSnapshotLoadedOps {
       type: RecipeServiceOperationType.SetIngredients,
       payload: {
         target: TargetIngredients.Included,
-        ingredients: query.inIngs,
-        categories: query.inIngTags
+        ingredients: query.inIngs ? query.inIngs : [],
+        categories: query.inIngTags ? query.inIngTags : []
       }
     });
 
@@ -27,8 +27,8 @@ export class WhenSnapshotLoadedOps {
       type: RecipeServiceOperationType.SetIngredients,
       payload: {
         target: TargetIngredients.Excluded,
-        ingredients: query.exIngs,
-        categories: query.exIngTags
+        ingredients: query.exIngs ? query.exIngTags : [],
+        categories: query.exIngTags ? query.exIngTags : []
       }
     });
 
@@ -36,8 +36,8 @@ export class WhenSnapshotLoadedOps {
       type: RecipeServiceOperationType.SetIngredients,
       payload: {
         target: TargetIngredients.Extra,
-        ingredients: query.addIngs,
-        categories: query.addIngTags
+        ingredients: query.addIngs ? query.addIngs : [],
+        categories: query.addIngTags ? query.addIngTags : []
       }
     });
   }
