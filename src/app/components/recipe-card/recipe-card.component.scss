@@ -1,0 +1,30 @@
+.card-container {
+  perspective: 1000px;
+}
+
+.recipe-parent-card {
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.recipe-card-front, .recipe-card-back {
+  backface-visibility: hidden;
+}
+
+.recipe-card-back {
+  transform: rotateY(180deg);
+}
+
+.flipped {
+  transform: rotateY(180deg);
+}
+
+.flip-control {
+  position: absolute;
+  right: 5px;
+  bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

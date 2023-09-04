@@ -1,18 +1,42 @@
-<div *ngIf="recipe" class="card" style="width: 18rem; height: 14rem;">
-  <div class="card-body">
-    <h5 class="card-title">{{recipe.name}}</h5>
-    <div *ngIf="recipe.time != CookingTime.Unknown" class="d-flex align-items-center">
-      <div><i class="bi bi-clock"></i></div>
-      <div class="ms-1">
-        <span *ngIf="recipe.time == CookingTime.Quick">quick</span>
-        <span *ngIf="recipe.time == CookingTime.Average">average</span>
-        <span *ngIf="recipe.time == CookingTime.Lengthy">lengthy</span>
+<div class="position-relative recipe-card-container" style="width: 18rem; height: 14rem;">
+  <div class="recipe-parent-card position-absolute w-100 h-100" [ngClass]="isFlipped ? 'flipped' : ''">
+
+    <div *ngIf="recipe" class="card recipe-card-front position-absolute w-100 h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{recipe.name}}</h5>
+        <div *ngIf="recipe.time != CookingTime.Unknown" class="d-flex align-items-center">
+          <div><i class="bi bi-clock"></i></div>
+          <div class="ms-1">
+            <span *ngIf="recipe.time == CookingTime.Quick">quick</span>
+            <span *ngIf="recipe.time == CookingTime.Average">average</span>
+            <span *ngIf="recipe.time == CookingTime.Lengthy">lengthy</span>
+          </div>
+        </div>
+
+        <div class="d-flex align-items-center">
+          <div><i class="bi bi-list-ul"></i></div>
+          <div class="ms-1">{{recipe.numofings}} ingredients</div>
+        </div>
+
+        <a class="icon-link flip-control" (click)="isFlipped = !isFlipped">
+          <i class="bi bi-chevron-left"></i>
+        </a>
       </div>
     </div>
 
-    <div class="d-flex align-items-center">
-      <div><i class="bi bi-list-ul"></i></div>
-      <div class="ms-1">{{recipe.numofings}} ingredients</div>
+
+    <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{recipe.name}}</h5>
+        <div>here goes the ingredients</div>
+      </div>
+
+
+      <a class="icon-link flip-control" (click)="isFlipped = !isFlipped">
+        <i class="bi bi-chevron-left"></i>
+      </a>
     </div>
   </div>
 </div>
+
+

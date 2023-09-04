@@ -11,5 +11,7 @@ export class RecipeCardComponent {
 
   @Input() recipe: Recipe | undefined;
 
+  isFlipped: boolean = false;
+
   protected readonly Recipe = Recipe;
 }
