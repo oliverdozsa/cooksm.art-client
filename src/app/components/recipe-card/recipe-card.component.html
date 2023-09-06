@@ -26,9 +26,13 @@
 
 
     <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100">
-      <div class="card-body">
-        <h5 class="card-title">{{recipe.name}}</h5>
-        <div>here goes the ingredients</div>
+      <div class="card-body px-0">
+        <h5 class="card-title px-3">{{recipe.name}}</h5>
+        <div class="overflow-y-scroll overflow-x-hidden w-100" style="height: 9rem;">
+          <ul class="list-group list-group-flush w-100 ms-3">
+            <li *ngFor="let ingredient of recipe.ingredients" class="list-group-item p-1">{{ingredient.name}}</li>
+          </ul>
+        </div>
       </div>
 
 
