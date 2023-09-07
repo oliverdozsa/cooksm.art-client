@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import {RecipeQueryParams} from "./recipe-query-params";
-import {Observable, of} from "rxjs";
+import {delay, Observable, of, tap} from "rxjs";
 import {Page} from "../data/page";
 import {Recipe} from "../data/recipe";
 import {HttpClient, HttpParams} from "@angular/common/http";
 import {ApiPaths} from "../api-paths";
 import {environment} from "../../environments/environment";
+import {NgxSpinnerService} from "ngx-spinner";
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +14,18 @@ import {environment} from "../../environments/environment";
 export class RecipeSearchService {
   private readonly recipesUrl = environment.apiUrl + '/' + ApiPaths.RECIPES;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private spinnerService: NgxSpinnerService) {
   }
 
   query(queryParams: RecipeQueryParams): Observable<Page<Recipe>> {
+    this.spinnerService.show("recipePaging")
     let httpParams = new HttpParams();
     httpParams = this.setQueryParams(queryParams, httpParams);
-    return this.httpClient.get<Page<Recipe>>(this.recipesUrl, {params: httpParams});
+    return this.httpClient.get<Page<Recipe>>(this.recipesUrl, {params: httpParams})
+      .pipe(
+        delay(200),
+        tap(() => this.spinnerService.hide("recipePaging"))
+      );
   }
 
   private setQueryParams(queryParams: RecipeQueryParams, params: HttpParams) {

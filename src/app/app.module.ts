@@ -16,6 +16,8 @@ import {FormsModule} from "@angular/forms";
 import { SearchModeComponent } from './components/search-mode/search-mode.component';
 import { RecipePagingComponent } from './components/recipe-paging/recipe-paging.component';
 import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
+import {NgxSpinnerModule} from "ngx-spinner";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 @NgModule({
   declarations: [
@@ -32,11 +34,13 @@ import { RecipeCardComponent } from './components/recipe-card/recipe-card.compon
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     NgbModule,
     NgOptimizedImage,
-    FormsModule
+    FormsModule,
+    NgxSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
