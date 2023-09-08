@@ -11,7 +11,7 @@ import {Page} from "../../data/page";
 export class RecipePagingComponent {
   currentPage: Page<Recipe> | undefined;
 
-  private _page: number = 0;
+  private _page: number = 1;
 
   get page(): number {
     return this._page;
