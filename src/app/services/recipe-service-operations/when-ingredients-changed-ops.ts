@@ -47,4 +47,12 @@ export class WhenIngredientsChangedOps {
   setDisabledSearchModes() {
     this.disabledSearchModes.set();
   }
+
+  resetPaging() {
+    this.snapshotForCurrentQuery.currentPageNumber = 1;
+    this.operation$.next({
+      type: RecipeServiceOperationType.SetPageNumber,
+      payload: 1
+    })
+  }
 }

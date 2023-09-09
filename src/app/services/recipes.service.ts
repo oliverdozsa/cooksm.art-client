@@ -39,15 +39,17 @@ export class RecipesService {
       whenIngredientsChanged.checkIfSearchModeShouldBeUpdated();
       whenIngredientsChanged.refreshNumOfGoodIngredientsIfNeeded();
       whenIngredientsChanged.setDisabledSearchModes();
+      whenIngredientsChanged.resetPaging();
     });
   }
 
   searchModeChanged(searchMode: AppSearchMode) {
     this.anySearchParamChanged(() => {
+      SearchSnapshotUpdate.withSearchMode(searchMode, this.snapshotForCurrentQuery);
+
       const whenSearchModeChanged =
         new WhenSearchModeChangedOps(this.snapshotForCurrentQuery, this.operation$);
-
-      SearchSnapshotUpdate.withSearchMode(searchMode, this.snapshotForCurrentQuery);
+      whenSearchModeChanged.resetPaging();
     })
   }
 
