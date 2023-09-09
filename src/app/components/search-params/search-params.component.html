@@ -2,7 +2,7 @@
   <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader>
       <button ngbAccordionButton class="py-2">
-        search filters
+        filter by ingredients
       </button>
     </h2>
 
@@ -31,6 +31,20 @@
             <app-search-mode></app-search-mode>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div ngbAccordionItem [collapsed]="false">
+    <h2 ngbAccordionHeader>
+      <button ngbAccordionButton class="py-2">
+        search filters / ordering
+      </button>
+    </h2>
+
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody class="py-2">
+        <app-ordering-and-filters></app-ordering-and-filters>
       </div>
     </div>
   </div>

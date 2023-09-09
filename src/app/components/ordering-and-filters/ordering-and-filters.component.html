@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col">
+    <div style="min-width: 10rem;">
+      <label class="form-label">filter by name</label>
+      <input type="text" class="form-control" placeholder="enter name">
+    </div>
+  </div>
+  <div class="col">
+    <div style="min-width: 8rem;">
+      <label class="form-label">ordering</label>
+      <select class="form-select" aria-label="select ordering">
+        <option>ascending by number of ingredients</option>
+        <option>descending by number of ingredients</option>
+        <option>ascending by time</option>
+        <option>descending by time</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="col">
+    <div class="row" style="min-width: 12rem;">
+      <div class="col-6">
+        <label class="form-label">min. ingredients</label>
+        <select [(ngModel)]="minNumberOfIngredients" class="form-select" aria-label="minimum number of ingredients">
+          <option *ngFor="let option of minNumberOfIngredientsOptions" [ngValue]="option">
+            {{option === 0 ? "not set" : option}}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-6">
+        <label class="form-label">max. ingredients</label>
+        <select [(ngModel)]="maxNumberOfIngredients" class="form-select" aria-label="maximum number of ingredients">
+          <option *ngFor="let option of maxNumberOfIngredientsOptions"  [ngValue]="option">
+            {{option === 0 ? "not set" : option}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="col">
+    <div style="min-width: 6rem;">
+      <label class="form-label">cooking time</label>
+      <select class="form-select" aria-label="select times">
+        <option>quick</option>
+        <option>average</option>
+        <option>lengthy</option>
+      </select>
+    </div>
+  </div>
+</div>

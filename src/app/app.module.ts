@@ -18,6 +18,7 @@ import { RecipePagingComponent } from './components/recipe-paging/recipe-paging.
 import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import { OrderingAndFiltersComponent } from './components/ordering-and-filters/ordering-and-filters.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     ChipComponent,
     SearchModeComponent,
     RecipePagingComponent,
-    RecipeCardComponent
+    RecipeCardComponent,
+    OrderingAndFiltersComponent
   ],
   imports: [
     BrowserModule,
