@@ -3,6 +3,7 @@ import {DisplayedIngredient} from "../displayed-ingredient";
 import {AppSearchMode} from "../app-search-mode";
 import {ApiSearchMode} from "../../services/recipe-query-params";
 import {SearchSnapshot} from "../search-snapshot";
+import {OrderingAndFiltersParams} from "../ordering-and-filters-params";
 
 export class SearchSnapshotUpdate {
   static withIngredients(target: TargetIngredients, items: DisplayedIngredient[], snapshot: SearchSnapshot) {
@@ -57,5 +58,13 @@ export class SearchSnapshotUpdate {
 
   static withPage(page: number, snapshot: SearchSnapshot) {
     snapshot.currentPageNumber = page;
+  }
+
+  static withOrderingAndFiltersParams(params: OrderingAndFiltersParams, snapshot: SearchSnapshot) {
+    const query = snapshot.search.query;
+    query.nameLike = params.filterByName;
+    query.orderBy = params.orderBy;
+    query.orderBySort = params.orderBySort;
+    // TODO: times
   }
 }

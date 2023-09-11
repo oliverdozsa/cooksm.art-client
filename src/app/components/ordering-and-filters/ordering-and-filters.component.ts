@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+import {OrderingAndFiltersParams} from "../../data/ordering-and-filters-params";
+import {RecipesService} from "../../services/recipes.service";
 
 @Component({
   selector: 'app-ordering-and-filters',
@@ -6,6 +8,8 @@ import {Component} from '@angular/core';
   styleUrls: ['./ordering-and-filters.component.scss']
 })
 export class OrderingAndFiltersComponent {
+  params: OrderingAndFiltersParams = new OrderingAndFiltersParams();
+
   private _minNumberOfIngredients: number = 0;
   private _maxNumberOfIngredients: number = 0;
 
@@ -31,13 +35,20 @@ export class OrderingAndFiltersComponent {
     }
 
     const lowerBound = this._minNumberOfIngredients === 0 ? 0 : this._minNumberOfIngredients + 1;
-    return [-1].concat([...Array(30 - lowerBound).keys()])
+    return [...Array(30 - lowerBound).keys()]
       .map(o => o + lowerBound + 1);
   }
 
   get minNumberOfIngredientsOptions(): number[] {
     const upperBound = this._maxNumberOfIngredients === 0 ? 30 : this._maxNumberOfIngredients - 1;
-    return [-1].concat([...Array(upperBound).keys()])
+    return [...Array(upperBound).keys()]
       .map(o => o + 1);
+  }
+
+  constructor(private recipesService: RecipesService) {
+  }
+
+  filterByNameClicked() {
+    this.recipesService.orderingAndFiltersChanged(this.params);
   }
 }

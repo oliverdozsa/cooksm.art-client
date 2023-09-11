@@ -14,6 +14,8 @@ import {WhenIngredientsChangedOps} from "./recipe-service-operations/when-ingred
 import {AppSearchMode} from "../data/app-search-mode";
 import {WhenSearchModeChangedOps} from "./recipe-service-operations/when-search-mode-changed-ops";
 import {WhenSnapshotLoadedOps} from "./recipe-service-operations/when-snapshot-loaded-ops";
+import {OrderingAndFiltersParams} from "../data/ordering-and-filters-params";
+import {WhenOrderingAndFiltersChanged} from "./recipe-service-operations/when-ordering-and-filters-changed";
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +58,16 @@ export class RecipesService {
   recipePageChanged(newPage: number) {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withPage(newPage, this.snapshotForCurrentQuery);
+    })
+  }
+
+  orderingAndFiltersChanged(params: OrderingAndFiltersParams) {
+    this.anySearchParamChanged(() => {
+      SearchSnapshotUpdate.withOrderingAndFiltersParams(params, this.snapshotForCurrentQuery);
+
+      const whenOrderingAndFilterChanged =
+        new WhenOrderingAndFiltersChanged(this.snapshotForCurrentQuery, this.operation$);
+      whenOrderingAndFilterChanged.resetPaging();
     })
   }
 

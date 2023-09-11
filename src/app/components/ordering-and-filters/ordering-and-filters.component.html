@@ -2,7 +2,13 @@
   <div class="col">
     <div style="min-width: 10rem;">
       <label class="form-label">filter by name</label>
-      <input type="text" class="form-control" placeholder="enter name">
+      <div class="input-group">
+        <input [(ngModel)]="params.filterByName" type="text" class="form-control" placeholder="enter name">
+        <button class="btn btn-outline-secondary" type="button" (click)="filterByNameClicked()">
+          <i class="bi bi-search"></i>
+        </button>
+      </div>
+
     </div>
   </div>
   <div class="col">
@@ -22,8 +28,9 @@
       <div class="col-6">
         <label class="form-label">min. ingredients</label>
         <select [(ngModel)]="minNumberOfIngredients" class="form-select" aria-label="minimum number of ingredients">
+          <option [ngValue]="0">not set</option>
           <option *ngFor="let option of minNumberOfIngredientsOptions" [ngValue]="option">
-            {{option === 0 ? "not set" : option}}
+            {{option}}
           </option>
         </select>
       </div>
@@ -31,8 +38,9 @@
       <div class="col-6">
         <label class="form-label">max. ingredients</label>
         <select [(ngModel)]="maxNumberOfIngredients" class="form-select" aria-label="maximum number of ingredients">
+          <option [ngValue]="0">not set</option>
           <option *ngFor="let option of maxNumberOfIngredientsOptions"  [ngValue]="option">
-            {{option === 0 ? "not set" : option}}
+            {{option}}
           </option>
         </select>
       </div>

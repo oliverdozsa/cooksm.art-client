@@ -5,6 +5,7 @@ import {determineAppSearchMode} from "../../data/saved-recipe-search";
 import {Subject} from "rxjs";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
 import {DisabledSearchModes} from "./disabled-search-modes";
+import {RecipeServiceCommonOps} from "./recipe-service-common-ops";
 
 export class WhenIngredientsChangedOps {
   private disabledSearchModes: DisabledSearchModes;
@@ -49,10 +50,7 @@ export class WhenIngredientsChangedOps {
   }
 
   resetPaging() {
-    this.snapshotForCurrentQuery.currentPageNumber = 1;
-    this.operation$.next({
-      type: RecipeServiceOperationType.SetPageNumber,
-      payload: 1
-    })
+    const commonOps = new RecipeServiceCommonOps(this.snapshotForCurrentQuery, this.operation$);
+    commonOps.resetPaging();
   }
 }

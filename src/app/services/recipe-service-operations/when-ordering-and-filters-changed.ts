@@ -3,7 +3,7 @@ import {Subject} from "rxjs";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
 import {RecipeServiceCommonOps} from "./recipe-service-common-ops";
 
-export class WhenSearchModeChangedOps {
+export class WhenOrderingAndFiltersChanged {
   constructor(private snapshotForCurrentQuery: SearchSnapshot, private operation$: Subject<RecipeServiceOperation>) {
   }
 
