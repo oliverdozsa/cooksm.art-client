@@ -4,6 +4,9 @@
       <label class="form-label">filter by name</label>
       <div class="input-group">
         <input [(ngModel)]="params.filterByName" type="text" class="form-control" placeholder="enter name">
+        <button *ngIf="params.filterByName" class="btn btn-outline-secondary" type="button" (click)="clearFilterByName()">
+          <i class="bi bi-trash"></i>
+        </button>
         <button class="btn btn-outline-secondary" type="button" (click)="filterByNameClicked()">
           <i class="bi bi-search"></i>
         </button>

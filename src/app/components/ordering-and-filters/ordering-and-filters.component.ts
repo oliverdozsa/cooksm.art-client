@@ -13,6 +13,9 @@ export class OrderingAndFiltersComponent {
   private _minNumberOfIngredients: number = 0;
   private _maxNumberOfIngredients: number = 0;
 
+  private oldParams: OrderingAndFiltersParams = new OrderingAndFiltersParams();
+  private isAnyParamChanged: boolean = false;
+
   get minNumberOfIngredients(): number {
     return this._minNumberOfIngredients;
   }
@@ -49,6 +52,21 @@ export class OrderingAndFiltersComponent {
   }
 
   filterByNameClicked() {
-    this.recipesService.orderingAndFiltersChanged(this.params);
+    this.paramsEvent();
+    if(this.isAnyParamChanged) {
+      this.recipesService.orderingAndFiltersChanged(this.params);
+    }
+  }
+
+  clearFilterByName() {
+    this.params.filterByName = "";
+    this.filterByNameClicked();
+  }
+
+  private paramsEvent() {
+    this.isAnyParamChanged = !this.params.equals(this.oldParams);
+    if(this.isAnyParamChanged) {
+      this.oldParams = this.params.copy();
+    }
   }
 }
