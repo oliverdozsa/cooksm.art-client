@@ -2,7 +2,8 @@ export enum RecipeServiceOperationType {
   SetIngredients,
   DisableSearchModes,
   SetSearchMode,
-  SetPageNumber
+  SetPageNumber,
+  SetOrderingAndFilters
 }
 
 export interface RecipeServiceOperation {

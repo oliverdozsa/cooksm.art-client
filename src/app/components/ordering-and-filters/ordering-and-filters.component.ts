@@ -1,20 +1,22 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {OrderingAndFiltersParams} from "../../data/ordering-and-filters-params";
 import {RecipesService} from "../../services/recipes.service";
+import {OrderingAndFiltersRecipeServiceOpsHandler} from "./ordering-and-filters-recipe-service-ops-handler";
+import {Subject, takeUntil} from "rxjs";
 
 @Component({
   selector: 'app-ordering-and-filters',
   templateUrl: './ordering-and-filters.component.html',
   styleUrls: ['./ordering-and-filters.component.scss']
 })
-export class OrderingAndFiltersComponent {
+export class OrderingAndFiltersComponent implements OnDestroy {
   params: OrderingAndFiltersParams = new OrderingAndFiltersParams();
 
   private _minNumberOfIngredients: number = 0;
   private _maxNumberOfIngredients: number = 0;
 
   private oldParams: OrderingAndFiltersParams = new OrderingAndFiltersParams();
-  private isAnyParamChanged: boolean = false;
+  private destroy$ = new Subject<void>();
 
   get minNumberOfIngredients(): number {
     return this._minNumberOfIngredients;
@@ -48,14 +50,24 @@ export class OrderingAndFiltersComponent {
       .map(o => o + 1);
   }
 
+  get orderByAndSort(): string | undefined {
+    return this.params.orderBySortAsStr();
+  }
+
+  set orderByAndSort(value: string | undefined) {
+    this.params.setOrderBySortFromStr(value);
+    this.paramsEvent();
+  }
+
   constructor(private recipesService: RecipesService) {
+    const opsHandler = new OrderingAndFiltersRecipeServiceOpsHandler(this);
+    recipesService.operation$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(ops => opsHandler.process(ops));
   }
 
   filterByNameClicked() {
     this.paramsEvent();
-    if(this.isAnyParamChanged) {
-      this.recipesService.orderingAndFiltersChanged(this.params);
-    }
   }
 
   clearFilterByName() {
@@ -63,10 +75,19 @@ export class OrderingAndFiltersComponent {
     this.filterByNameClicked();
   }
 
-  private paramsEvent() {
-    this.isAnyParamChanged = !this.params.equals(this.oldParams);
-    if(this.isAnyParamChanged) {
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  paramsEvent() {
+    const isAnyParamChanged = !this.params.equals(this.oldParams);
+    if (isAnyParamChanged) {
       this.oldParams = this.params.copy();
+    }
+
+    if (isAnyParamChanged) {
+      this.recipesService.orderingAndFiltersChanged(this.params);
     }
   }
 }

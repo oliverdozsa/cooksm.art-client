@@ -45,4 +45,19 @@ export class WhenSnapshotLoadedOps {
   setDisabledSearchModes() {
     this.disabledSearchModes.set();
   }
+
+  setOrderingAndFilters() {
+    const query = this.snapshot.search.query;
+    this.operation$.next({
+      type: RecipeServiceOperationType.SetOrderingAndFilters,
+      payload: {
+        filterByName: query.nameLike,
+        orderBy: query.orderBy,
+        orderBySort: query.orderBySort,
+        minIngs: query.minIngs,
+        maxIngs: query.maxIngs,
+        times: query.times
+      }
+    })
+  }
 }

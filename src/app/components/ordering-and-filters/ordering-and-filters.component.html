@@ -17,11 +17,12 @@
   <div class="col">
     <div style="min-width: 8rem;">
       <label class="form-label">ordering</label>
-      <select class="form-select" aria-label="select ordering">
-        <option>ascending by number of ingredients</option>
-        <option>descending by number of ingredients</option>
-        <option>ascending by time</option>
-        <option>descending by time</option>
+      <select [(ngModel)]="orderByAndSort" class="form-select" aria-label="select ordering">
+        <option [ngValue]="undefined">not set</option>
+        <option [ngValue]="'numofings asc'">ascending by number of ingredients</option>
+        <option [ngValue]="'numofings desc'">descending by number of ingredients</option>
+        <option [ngValue]="'time asc'">ascending by time</option>
+        <option [ngValue]="'time desc'">descending by time</option>
       </select>
     </div>
   </div>

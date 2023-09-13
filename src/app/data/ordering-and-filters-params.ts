@@ -39,4 +39,23 @@ export class OrderingAndFiltersParams {
 
     return copy;
   }
+
+  setOrderBySortFromStr(value: string | undefined) {
+    if(value) {
+      const parts = value.split(' ');
+      this.orderBy = parts[0];
+      this.orderBySort = parts[1];
+    } else {
+      this.orderBy = undefined;
+      this.orderBySort = undefined;
+    }
+  }
+
+  orderBySortAsStr(): string | undefined {
+    if (this.orderBy && this.orderBySort) {
+      return `${this.orderBy} ${this.orderBySort}`;
+    }
+
+    return undefined;
+  }
 }
