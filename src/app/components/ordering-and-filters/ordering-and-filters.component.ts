@@ -12,40 +12,39 @@ import {Subject, takeUntil} from "rxjs";
 export class OrderingAndFiltersComponent implements OnDestroy {
   params: OrderingAndFiltersParams = new OrderingAndFiltersParams();
 
-  private _minNumberOfIngredients: number = 0;
-  private _maxNumberOfIngredients: number = 0;
-
   private oldParams: OrderingAndFiltersParams = new OrderingAndFiltersParams();
   private destroy$ = new Subject<void>();
 
   get minNumberOfIngredients(): number {
-    return this._minNumberOfIngredients;
+    return this.params.minIngs === undefined ? 0: this.params.minIngs;
   }
 
   set minNumberOfIngredients(value: number) {
-    this._minNumberOfIngredients = value;
+    this.params.minIngs = value === 0 ? undefined : value;
+    this.paramsEvent();
   }
 
   get maxNumberOfIngredients(): number {
-    return this._maxNumberOfIngredients;
+    return this.params.maxIngs === undefined ? 0: this.params.maxIngs;
   }
 
   set maxNumberOfIngredients(value: number) {
-    this._maxNumberOfIngredients = value;
+    this.params.maxIngs = value === 0 ? undefined : value;
+    this.paramsEvent();
   }
 
   get maxNumberOfIngredientsOptions(): number[] {
-    if (this._minNumberOfIngredients === 30) {
+    if (this.params.minIngs === 30) {
       return [];
     }
 
-    const lowerBound = this._minNumberOfIngredients === 0 ? 0 : this._minNumberOfIngredients + 1;
-    return [...Array(30 - lowerBound).keys()]
-      .map(o => o + lowerBound + 1);
+    const lowerBound = this.params.minIngs === undefined ? 1 : this.params.minIngs + 1;
+    return [...Array(30 - lowerBound + 1).keys()]
+      .map(o => o + lowerBound);
   }
 
   get minNumberOfIngredientsOptions(): number[] {
-    const upperBound = this._maxNumberOfIngredients === 0 ? 30 : this._maxNumberOfIngredients - 1;
+    const upperBound = this.params.maxIngs === undefined ? 30 : this.params.maxIngs - 1;
     return [...Array(upperBound).keys()]
       .map(o => o + 1);
   }
@@ -84,9 +83,6 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     const isAnyParamChanged = !this.params.equals(this.oldParams);
     if (isAnyParamChanged) {
       this.oldParams = this.params.copy();
-    }
-
-    if (isAnyParamChanged) {
       this.recipesService.orderingAndFiltersChanged(this.params);
     }
   }

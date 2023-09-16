@@ -8,7 +8,10 @@ export class OrderingAndFiltersRecipeServiceOpsHandler {
   process(operation: RecipeServiceOperation) {
     if(operation.type === RecipeServiceOperationType.SetOrderingAndFilters) {
       this.component.params.filterByName = operation.payload.filterByName;
-      // TODO
+      this.component.params.orderBy = operation.payload.orderBy;
+      this.component.params.orderBySort = operation.payload.orderBySort;
+      this.component.params.minIngs = operation.payload.minIngs;
+      this.component.params.maxIngs = operation.payload.maxIngs;
 
       this.component.paramsEvent();
     }
