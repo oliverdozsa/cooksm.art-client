@@ -67,6 +67,6 @@ export class SearchSnapshotUpdate {
     query.orderBySort = params.orderBySort;
     query.minIngs = params.minIngs;
     query.maxIngs = params.maxIngs;
-    // TODO: times
+    query.times = params.times;
   }
 }

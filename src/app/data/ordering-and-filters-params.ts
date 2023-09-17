@@ -1,3 +1,5 @@
+import {CookingTime} from "./recipe";
+
 export class OrderingAndFiltersParams {
   orderBy: string | undefined;
   orderBySort: string | undefined;
@@ -41,7 +43,7 @@ export class OrderingAndFiltersParams {
   }
 
   setOrderBySortFromStr(value: string | undefined) {
-    if(value) {
+    if (value) {
       const parts = value.split(' ');
       this.orderBy = parts[0];
       this.orderBySort = parts[1];
@@ -57,5 +59,25 @@ export class OrderingAndFiltersParams {
     }
 
     return undefined;
+  }
+
+  addCookingTimeFilter(value: CookingTime) {
+    if (this.times === undefined) {
+      this.times = [];
+    }
+
+    if (this.times.find(t => t === value) != undefined) {
+      return;
+    }
+
+    this.times = this.times.concat(value);
+  }
+
+  removeCookingTimeFilter(value: CookingTime) {
+    if (this.times === undefined) {
+      return;
+    }
+
+    this.times = this.times.filter(t => t != value);
   }
 }

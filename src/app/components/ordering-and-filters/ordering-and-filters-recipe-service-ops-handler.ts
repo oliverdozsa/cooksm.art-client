@@ -12,6 +12,7 @@ export class OrderingAndFiltersRecipeServiceOpsHandler {
       this.component.params.orderBySort = operation.payload.orderBySort;
       this.component.params.minIngs = operation.payload.minIngs;
       this.component.params.maxIngs = operation.payload.maxIngs;
+      this.component.params.times = operation.payload.times;
 
       this.component.paramsEvent();
     }

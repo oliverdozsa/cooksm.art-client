@@ -3,6 +3,7 @@ import {OrderingAndFiltersParams} from "../../data/ordering-and-filters-params";
 import {RecipesService} from "../../services/recipes.service";
 import {OrderingAndFiltersRecipeServiceOpsHandler} from "./ordering-and-filters-recipe-service-ops-handler";
 import {Subject, takeUntil} from "rxjs";
+import {CookingTime} from 'src/app/data/recipe';
 
 @Component({
   selector: 'app-ordering-and-filters',
@@ -58,6 +59,37 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     this.paramsEvent();
   }
 
+  get isQuickSelected(): boolean {
+    return this.isUsed(CookingTime.Quick)
+  }
+
+  set isQuickSelected(value: boolean) {
+    this.shouldUse(CookingTime.Quick, value);
+    this.paramsEvent();
+  }
+
+  get isAverageSelected(): boolean {
+    return this.isUsed(CookingTime.Average)
+  }
+
+  set isAverageSelected(value: boolean) {
+    this.shouldUse(CookingTime.Average, value);
+    this.paramsEvent();
+  }
+
+  get isLengthySelected(): boolean {
+    return this.isUsed(CookingTime.Lengthy)
+  }
+
+  set isLengthySelected(value: boolean) {
+    this.shouldUse(CookingTime.Lengthy, value);
+    this.paramsEvent();
+  }
+
+  get isAnyCookingTimeUsed(): boolean {
+    return this.params.times != undefined && this.params.times.length > 0;
+  }
+
   constructor(private recipesService: RecipesService) {
     const opsHandler = new OrderingAndFiltersRecipeServiceOpsHandler(this);
     recipesService.operation$
@@ -74,6 +106,11 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     this.filterByNameClicked();
   }
 
+  clearCookingTimes() {
+    this.params.times = undefined;
+    this.paramsEvent();
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
@@ -84,6 +121,18 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     if (isAnyParamChanged) {
       this.oldParams = this.params.copy();
       this.recipesService.orderingAndFiltersChanged(this.params);
+    }
+  }
+
+  private isUsed(value: CookingTime): boolean {
+    return this.params.times?.find(t => t === value) != undefined;
+  }
+
+  private shouldUse(value: CookingTime, shouldBeUsed: boolean) {
+    if(shouldBeUsed) {
+      this.params.addCookingTimeFilter(value);
+    } else {
+      this.params.removeCookingTimeFilter(value);
     }
   }
 }

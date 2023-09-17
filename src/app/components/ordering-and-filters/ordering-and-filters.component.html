@@ -4,7 +4,8 @@
       <label class="form-label">filter by name</label>
       <div class="input-group">
         <input [(ngModel)]="params.filterByName" type="text" class="form-control" placeholder="enter name">
-        <button *ngIf="params.filterByName" class="btn btn-outline-secondary" type="button" (click)="clearFilterByName()">
+        <button *ngIf="params.filterByName" class="btn btn-outline-secondary" type="button"
+                (click)="clearFilterByName()">
           <i class="bi bi-trash"></i>
         </button>
         <button class="btn btn-outline-secondary" type="button" (click)="filterByNameClicked()">
@@ -43,7 +44,7 @@
         <label class="form-label">max. ingredients</label>
         <select [(ngModel)]="maxNumberOfIngredients" class="form-select" aria-label="maximum number of ingredients">
           <option [ngValue]="0">not set</option>
-          <option *ngFor="let option of maxNumberOfIngredientsOptions"  [ngValue]="option">
+          <option *ngFor="let option of maxNumberOfIngredientsOptions" [ngValue]="option">
             {{option}}
           </option>
         </select>
@@ -52,13 +53,30 @@
   </div>
 
   <div class="col">
-    <div style="min-width: 6rem;">
-      <label class="form-label">cooking time</label>
-      <select class="form-select" aria-label="select times">
-        <option>quick</option>
-        <option>average</option>
-        <option>lengthy</option>
-      </select>
+    <div class="d-flex flex-row align-items-end">
+      <div style="min-width: 6rem;">
+        <label class="form-label">cooking time</label>
+        <div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="isQuickSelected" class="form-check-input" type="checkbox">
+            <label class="form-check-label">quick</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="isAverageSelected" class="form-check-input" type="checkbox">
+            <label class="form-check-label">average</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input [(ngModel)]="isLengthySelected" class="form-check-input" type="checkbox">
+            <label class="form-check-label">lengthy</label>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button *ngIf="isAnyCookingTimeUsed" (click)="clearCookingTimes()" type="button" class="btn btn-outline-secondary btn-sm">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
     </div>
+
   </div>
 </div>
