@@ -27,6 +27,10 @@ export class RecipesService {
   private recipeQuerySub: Subscription | undefined = undefined;
   private snapshotForCurrentQuery: SearchSnapshot;
 
+  get currentSearchSnapshot(): SearchSnapshot {
+    return this.snapshotForCurrentQuery;
+  }
+
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
     setTimeout(() => this.queryInitialSnapshot());
