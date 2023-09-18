@@ -19,7 +19,7 @@ export class RecipeCardComponent {
   constructor(private recipesService: RecipesService) {
   }
 
-  getIngredientTextColorClass(ingredient: IngredientName) {
+  getIngredientTextColorClass(ingredient: IngredientName): string {
     if(this.isIngredientIn(ingredient, TargetIngredients.Included)) {
       return "text-success fw-bold";
     }

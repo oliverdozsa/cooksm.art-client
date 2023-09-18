@@ -19,6 +19,7 @@ import { RecipeCardComponent } from './components/recipe-card/recipe-card.compon
 import {NgxSpinnerModule} from "ngx-spinner";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { OrderingAndFiltersComponent } from './components/ordering-and-filters/ordering-and-filters.component';
+import { ExtraIngredientsSearcherComponent } from './components/extra-ingredients-searcher/extra-ingredients-searcher.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { OrderingAndFiltersComponent } from './components/ordering-and-filters/o
     SearchModeComponent,
     RecipePagingComponent,
     RecipeCardComponent,
-    OrderingAndFiltersComponent
+    OrderingAndFiltersComponent,
+    ExtraIngredientsSearcherComponent
   ],
   imports: [
     BrowserModule,

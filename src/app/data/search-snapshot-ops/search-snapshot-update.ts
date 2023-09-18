@@ -4,6 +4,7 @@ import {AppSearchMode} from "../app-search-mode";
 import {ApiSearchMode} from "../../services/recipe-query-params";
 import {SearchSnapshot} from "../search-snapshot";
 import {OrderingAndFiltersParams} from "../ordering-and-filters-params";
+import {ExtraRelation} from "../extra-ingredients";
 
 export class SearchSnapshotUpdate {
   static withIngredients(target: TargetIngredients, items: DisplayedIngredient[], snapshot: SearchSnapshot) {
@@ -68,5 +69,13 @@ export class SearchSnapshotUpdate {
     query.minIngs = params.minIngs;
     query.maxIngs = params.maxIngs;
     query.times = params.times;
+  }
+
+  static withExtraRelation(relation: ExtraRelation, value: number) {
+    // TODO
+  }
+
+  static clearExtraRelation() {
+    // TODO
   }
 }

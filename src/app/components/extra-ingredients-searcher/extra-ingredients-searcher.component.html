@@ -1,0 +1,13 @@
+<app-ingredient-searcher [target]="TargetIngredients.Extra"
+                         label="additional ingredients?"></app-ingredient-searcher>
+<div class="mt-1 input-group d-flex">
+  <select [(ngModel)]="relation" class="form-select form-select-sm d-block flex-grow-1" aria-label="Extra relations">
+    <option [ngValue]="ExtraRelation.CanBeMoreThan">can be more than</option>
+    <option [ngValue]="ExtraRelation.Exactly">exactly</option>
+  </select>
+  <select [(ngModel)]="relationValue" class="form-select form-select-sm d-block" style="max-width: 4.2rem;" aria-label="Extra relations">
+    <option *ngFor="let _ of extraValueOptions; let i = index" [ngValue]="i+1">
+      {{i + 1}}
+    </option>
+  </select>
+</div>

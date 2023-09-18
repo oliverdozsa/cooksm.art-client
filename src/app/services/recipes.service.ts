@@ -16,6 +16,7 @@ import {WhenSearchModeChangedOps} from "./recipe-service-operations/when-search-
 import {WhenSnapshotLoadedOps} from "./recipe-service-operations/when-snapshot-loaded-ops";
 import {OrderingAndFiltersParams} from "../data/ordering-and-filters-params";
 import {WhenOrderingAndFiltersChanged} from "./recipe-service-operations/when-ordering-and-filters-changed";
+import {ExtraRelation} from "../data/extra-ingredients";
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,8 @@ export class RecipesService {
 
   private recipeQuerySub: Subscription | undefined = undefined;
   private snapshotForCurrentQuery: SearchSnapshot;
+  private currentExtraRelation: ExtraRelation = ExtraRelation.CanBeMoreThan;
+  private currentExtraRelationValue: number = 1;
 
   get currentSearchSnapshot(): SearchSnapshot {
     return this.snapshotForCurrentQuery;
@@ -73,6 +76,23 @@ export class RecipesService {
         new WhenOrderingAndFiltersChanged(this.snapshotForCurrentQuery, this.operation$);
       whenOrderingAndFilterChanged.resetPaging();
     })
+  }
+
+  extraIngredientsRelationChanged(relation: ExtraRelation, value: number) {
+    this.currentExtraRelation = relation;
+    this.currentExtraRelationValue = value;
+
+    const query = this.snapshotForCurrentQuery.search.query;
+    const isExtraIngredientsPresent = query.addIngs != undefined && query.addIngs.length > 0;
+    const isExtraIngredientCategoriesPresent = query.addIngTags != undefined && query.addIngTags.length > 0;
+
+    this.anySearchParamChanged(() => {
+      if(isExtraIngredientsPresent || isExtraIngredientCategoriesPresent) {
+        SearchSnapshotUpdate.withExtraRelation(this.currentExtraRelation, this.currentExtraRelationValue);
+      } else {
+        SearchSnapshotUpdate.clearExtraRelation();
+      }
+    });
   }
 
   private anySearchParamChanged(updateSnapshotForQuery: () => void) {
