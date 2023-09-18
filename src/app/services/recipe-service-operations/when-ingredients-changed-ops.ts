@@ -53,4 +53,26 @@ export class WhenIngredientsChangedOps {
     const commonOps = new RecipeServiceCommonOps(this.snapshotForCurrentQuery, this.operation$);
     commonOps.resetPaging();
   }
+
+  handleExtraRelationAdjustments() {
+    const query = this.snapshotForCurrentQuery.search.query;
+
+    const isAdditionalIngredientsPresent = query.addIngs != undefined && query.addIngs.length > 0;
+    const isAdditionalIngredientTagsPresent = query.addIngTags != undefined && query.addIngTags.length > 0;
+    const isMoreExtraIngredientsAddedThanAllowed = query.goodAdditionalIngs != undefined &&
+      query.goodAdditionalIngs > this.countTotalExtraIngredients()
+
+    if ((isAdditionalIngredientsPresent || isAdditionalIngredientTagsPresent) && isMoreExtraIngredientsAddedThanAllowed) {
+      // TODO: reset extra value to count of total extra ingredients.
+    }
+    // TODO
+  }
+
+  private countTotalExtraIngredients() {
+    const query = this.snapshotForCurrentQuery.search.query;
+    let sumOfIngredients = query.addIngs == undefined ? 0 : query.addIngs.length;
+    let sumOfIngredientsOfCategories = query.addIngTags == undefined ? 0 :
+      query.addIngTags.reduce((a, c) => a + c.ingredients.length, 0);
+    return sumOfIngredientsOfCategories + sumOfIngredients;
+  }
 }

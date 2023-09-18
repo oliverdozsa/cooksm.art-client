@@ -27,8 +27,6 @@ export class RecipesService {
 
   private recipeQuerySub: Subscription | undefined = undefined;
   private snapshotForCurrentQuery: SearchSnapshot;
-  private currentExtraRelation: ExtraRelation = ExtraRelation.CanBeMoreThan;
-  private currentExtraRelationValue: number = 1;
 
   get currentSearchSnapshot(): SearchSnapshot {
     return this.snapshotForCurrentQuery;
@@ -49,6 +47,7 @@ export class RecipesService {
       whenIngredientsChanged.refreshNumOfGoodIngredientsIfNeeded();
       whenIngredientsChanged.setDisabledSearchModes();
       whenIngredientsChanged.resetPaging();
+      whenIngredientsChanged.handleExtraRelationAdjustments();
     });
   }
 
@@ -79,19 +78,8 @@ export class RecipesService {
   }
 
   extraIngredientsRelationChanged(relation: ExtraRelation, value: number) {
-    this.currentExtraRelation = relation;
-    this.currentExtraRelationValue = value;
-
-    const query = this.snapshotForCurrentQuery.search.query;
-    const isExtraIngredientsPresent = query.addIngs != undefined && query.addIngs.length > 0;
-    const isExtraIngredientCategoriesPresent = query.addIngTags != undefined && query.addIngTags.length > 0;
-
     this.anySearchParamChanged(() => {
-      if(isExtraIngredientsPresent || isExtraIngredientCategoriesPresent) {
-        SearchSnapshotUpdate.withExtraRelation(this.currentExtraRelation, this.currentExtraRelationValue);
-      } else {
-        SearchSnapshotUpdate.clearExtraRelation();
-      }
+        SearchSnapshotUpdate.withExtraRelation(relation, value);
     });
   }
 
