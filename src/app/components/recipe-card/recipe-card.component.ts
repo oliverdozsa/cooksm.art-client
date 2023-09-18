@@ -19,7 +19,19 @@ export class RecipeCardComponent {
   constructor(private recipesService: RecipesService) {
   }
 
-  isIngredientIn(ingredient: IngredientName, target: TargetIngredients): boolean {
+  getIngredientTextColorClass(ingredient: IngredientName) {
+    if(this.isIngredientIn(ingredient, TargetIngredients.Included)) {
+      return "text-success fw-bold";
+    }
+
+    if(this.isIngredientIn(ingredient, TargetIngredients.Extra)) {
+      return "text-info fw-bold";
+    }
+
+    return "";
+  }
+
+  private isIngredientIn(ingredient: IngredientName, target: TargetIngredients): boolean {
     let ingredientsIdsToCheck = this.getIngredientIdsOf(target);
     return ingredientsIdsToCheck.find(id => id === ingredient.id) != undefined;
   }
