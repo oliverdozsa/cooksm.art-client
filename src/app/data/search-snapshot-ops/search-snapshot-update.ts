@@ -71,11 +71,21 @@ export class SearchSnapshotUpdate {
     query.times = params.times;
   }
 
-  static withExtraRelation(relation: ExtraRelation, value: number) {
-    // TODO
+  static withExtraRelation(relation: ExtraRelation, value: number, snapshot: SearchSnapshot) {
+    const query = snapshot.search.query;
+
+    if (relation === ExtraRelation.Exactly) {
+      query.goodAdditionalIngsRel = "eq";
+    } else if (relation === ExtraRelation.CanBeMoreThan) {
+      query.goodAdditionalIngsRel = "ge";
+    }
+
+    query.goodAdditionalIngs = value;
   }
 
-  static clearExtraRelation() {
-    // TODO
+  static clearExtraRelation(snapshot: SearchSnapshot) {
+    const query = snapshot.search.query;
+    query.goodAdditionalIngsRel = undefined;
+    query.goodAdditionalIngs = undefined;
   }
 }

@@ -17,6 +17,7 @@ import {WhenSnapshotLoadedOps} from "./recipe-service-operations/when-snapshot-l
 import {OrderingAndFiltersParams} from "../data/ordering-and-filters-params";
 import {WhenOrderingAndFiltersChanged} from "./recipe-service-operations/when-ordering-and-filters-changed";
 import {ExtraRelation} from "../data/extra-ingredients";
+import {WhenExtraRelationChangedOps} from "./recipe-service-operations/when-extra-relation-changed-ops";
 
 @Injectable({
   providedIn: 'root'
@@ -79,7 +80,11 @@ export class RecipesService {
 
   extraIngredientsRelationChanged(relation: ExtraRelation, value: number) {
     this.anySearchParamChanged(() => {
-        SearchSnapshotUpdate.withExtraRelation(relation, value);
+        SearchSnapshotUpdate.withExtraRelation(relation, value, this.snapshotForCurrentQuery);
+
+        const whenExtraRelationsChanged =
+          new WhenExtraRelationChangedOps(this.snapshotForCurrentQuery, this.operation$);
+        whenExtraRelationsChanged.resetPaging();
     });
   }
 

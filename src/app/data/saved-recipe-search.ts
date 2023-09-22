@@ -3,6 +3,7 @@ import {SourcePage} from "./source-page";
 import {RecipeBook} from "./recipe-book";
 import {AppSearchMode} from "./app-search-mode";
 import {ApiSearchMode} from "../services/recipe-query-params";
+import {ExtraRelation} from "./extra-ingredients";
 
 export class SavedRecipeSearch {
   query: SavedRecipeSearchQuery = new SavedRecipeSearchQuery();
@@ -55,4 +56,16 @@ export function determineAppSearchMode(query: SavedRecipeSearchQuery): AppSearch
   }
 
   return AppSearchMode.None;
+}
+
+export function determineExtraRelation(query: SavedRecipeSearchQuery): ExtraRelation | undefined {
+  if (query.goodAdditionalIngsRel === "eq") {
+    return ExtraRelation.Exactly;
+  }
+
+  if (query.goodAdditionalIngsRel === "ge") {
+    return ExtraRelation.CanBeMoreThan;
+  }
+
+  return undefined;
 }
