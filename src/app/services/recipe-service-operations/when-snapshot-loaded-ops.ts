@@ -4,6 +4,8 @@ import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-serv
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisabledSearchModes} from "./disabled-search-modes";
 import {WhenIngredientsChangedHandleExtraRelationsOps} from "./when-ingredients-changed-handle-extra-relations-ops";
+import {determineAppSearchMode} from "../../data/saved-recipe-search";
+import {AppSearchMode} from "../../data/app-search-mode";
 
 export class WhenSnapshotLoadedOps {
   private disabledSearchModes: DisabledSearchModes;
@@ -66,5 +68,13 @@ export class WhenSnapshotLoadedOps {
     const handleExtraRelationOps =
       new WhenIngredientsChangedHandleExtraRelationsOps(this.snapshot, this.operation$);
     handleExtraRelationOps.handleExtraRelationAdjustments();
+  }
+
+  setSearchMode(){
+    const appSearchMode = determineAppSearchMode(this.snapshot.search.query);
+    this.operation$.next({
+      type: RecipeServiceOperationType.SetSearchMode,
+      payload: {searchMode: appSearchMode}
+    });
   }
 }

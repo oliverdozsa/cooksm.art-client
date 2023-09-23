@@ -115,6 +115,7 @@ export class RecipesService {
     whenSnapshotIsLoaded.setDisabledSearchModes();
     whenSnapshotIsLoaded.setOrderingAndFilters();
     whenSnapshotIsLoaded.handleExtraRelationAdjustments();
+    whenSnapshotIsLoaded.setSearchMode();
 
     this.recipeQueryService.query(queryParams).subscribe({
       next: p => this.results$.next(p)
