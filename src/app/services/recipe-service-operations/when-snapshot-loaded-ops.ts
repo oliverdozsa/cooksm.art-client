@@ -3,6 +3,7 @@ import {Subject} from "rxjs";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisabledSearchModes} from "./disabled-search-modes";
+import {WhenIngredientsChangedHandleExtraRelationsOps} from "./when-ingredients-changed-handle-extra-relations-ops";
 
 export class WhenSnapshotLoadedOps {
   private disabledSearchModes: DisabledSearchModes;
@@ -59,5 +60,11 @@ export class WhenSnapshotLoadedOps {
         times: query.times
       }
     })
+  }
+
+  handleExtraRelationAdjustments() {
+    const handleExtraRelationOps =
+      new WhenIngredientsChangedHandleExtraRelationsOps(this.snapshot, this.operation$);
+    handleExtraRelationOps.handleExtraRelationAdjustments();
   }
 }
