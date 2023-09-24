@@ -1,5 +1,7 @@
 import {RecipeQueryParams} from "../../services/recipe-query-params";
 import {SearchSnapshot} from "../search-snapshot";
+import {determineAppSearchMode, SavedRecipeSearchQuery} from "../saved-recipe-search";
+import {AppSearchMode} from "../app-search-mode";
 
 export class SearchSnapshotTransform {
   static toQueryParams(snapshot: SearchSnapshot): RecipeQueryParams {
@@ -18,12 +20,12 @@ export class SearchSnapshotTransform {
     queryParams.unknownIngs = searchQuery.unknownIngs;
     queryParams.unknownIngsRel = searchQuery.unknownIngsRel;
 
-    queryParams.inIngs = searchQuery.inIngs ? searchQuery.inIngs?.map(i => i.id) : [];
-    queryParams.inIngTags = searchQuery.inIngTags ? searchQuery.inIngTags.map(i => i.id) : [];
+    queryParams.inIngs = this.toIncludedIngredientsQueryParam(searchQuery);
+    queryParams.inIngTags = this.toIncludedIngredientTagsQueryParam(searchQuery);
     queryParams.exIngs = searchQuery.exIngs ? searchQuery.exIngs.map(i => i.id) : [];
     queryParams.exIngTags = searchQuery.exIngTags ? searchQuery.exIngTags.map(i => i.id) : [];
-    queryParams.addIngs = searchQuery.addIngs ? searchQuery.addIngs.map(i => i.id) : [];
-    queryParams.addIngTags = searchQuery.addIngTags ? searchQuery.addIngTags.map(i => i.id) : [];
+    queryParams.addIngs = this.toAdditionalIngredientsQueryParam(searchQuery);
+    queryParams.addIngTags = this.toAdditionalIngredientTagsQueryParam(searchQuery);
 
     queryParams.nameLike = searchQuery.nameLike;
     queryParams.orderBy = searchQuery.orderBy;
@@ -41,5 +43,44 @@ export class SearchSnapshotTransform {
   static clone(snapshot: SearchSnapshot): SearchSnapshot {
     const jsonStr = JSON.stringify(snapshot);
     return JSON.parse(jsonStr);
+  }
+
+  private static toIncludedIngredientsQueryParam(query: SavedRecipeSearchQuery): number[] {
+    const appSearchMode = determineAppSearchMode(query);
+    if (appSearchMode === AppSearchMode.None) {
+      return [];
+    }
+
+    return query.inIngs ? query.inIngs?.map(i => i.id) : [];
+  }
+
+  private static toIncludedIngredientTagsQueryParam(query: SavedRecipeSearchQuery): number[] {
+    const appSearchMode = determineAppSearchMode(query);
+    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
+      appSearchMode === AppSearchMode.Contains) {
+      return [];
+    }
+
+    return query.inIngTags ? query.inIngTags.map(i => i.id) : [];
+  }
+
+  private static toAdditionalIngredientsQueryParam(query: SavedRecipeSearchQuery): number[] {
+    const appSearchMode = determineAppSearchMode(query);
+    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
+      AppSearchMode.AnyOf) {
+      return [];
+    }
+
+    return query.addIngs ? query.addIngs.map(i => i.id) : [];
+  }
+
+  private static toAdditionalIngredientTagsQueryParam(query: SavedRecipeSearchQuery): number[] {
+    const appSearchMode = determineAppSearchMode(query);
+    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
+      AppSearchMode.AnyOf) {
+      return [];
+    }
+
+    return query.addIngTags ? query.addIngTags.map(i => i.id) : [];
   }
 }

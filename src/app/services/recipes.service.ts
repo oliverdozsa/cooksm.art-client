@@ -18,6 +18,7 @@ import {OrderingAndFiltersParams} from "../data/ordering-and-filters-params";
 import {WhenOrderingAndFiltersChanged} from "./recipe-service-operations/when-ordering-and-filters-changed";
 import {ExtraRelation} from "../data/extra-ingredients";
 import {WhenExtraRelationChangedOps} from "./recipe-service-operations/when-extra-relation-changed-ops";
+import {RecipeQueryParams} from "./recipe-query-params";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class RecipesService {
 
   private recipeQuerySub: Subscription | undefined = undefined;
   private snapshotForCurrentQuery: SearchSnapshot;
+  private previousQueryParams: RecipeQueryParams | undefined = undefined;
 
   get currentSearchSnapshot(): SearchSnapshot {
     return this.snapshotForCurrentQuery;
@@ -59,6 +61,7 @@ export class RecipesService {
       const whenSearchModeChanged =
         new WhenSearchModeChangedOps(this.snapshotForCurrentQuery, this.operation$);
       whenSearchModeChanged.resetPaging();
+      whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
     })
   }
 
@@ -97,9 +100,15 @@ export class RecipesService {
     updateSnapshotForQuery();
 
     const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
-    this.recipeQuerySub = this.recipeQueryService.query(queryParams).subscribe({
-      next: r => this.onQuerySuccessful(r)
-    });
+
+    if(!queryParams.equals(this.previousQueryParams)) {
+      this.previousQueryParams = queryParams;
+      this.recipeQuerySub = this.recipeQueryService.query(queryParams).subscribe({
+        next: r => this.onQuerySuccessful(r)
+      });
+    } else {
+      this.searchSnapshotService.set(this.snapshotForCurrentQuery);
+    }
   }
 
   private onQuerySuccessful(page: Page<Recipe>) {
@@ -109,6 +118,7 @@ export class RecipesService {
 
   private queryInitialSnapshot() {
     const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
+    this.previousQueryParams = queryParams;
 
     const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
     whenSnapshotIsLoaded.setIngredients();

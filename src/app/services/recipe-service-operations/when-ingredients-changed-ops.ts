@@ -7,6 +7,7 @@ import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-serv
 import {DisabledSearchModes} from "./disabled-search-modes";
 import {RecipeServiceCommonOps} from "./recipe-service-common-ops";
 import {WhenIngredientsChangedHandleExtraRelationsOps} from "./when-ingredients-changed-handle-extra-relations-ops";
+import {WhenSearchModeChangedOps} from "./when-search-mode-changed-ops";
 
 export class WhenIngredientsChangedOps {
   private disabledSearchModes: DisabledSearchModes;
@@ -21,12 +22,18 @@ export class WhenIngredientsChangedOps {
     const isSearchModeNotSet = query.searchMode == undefined;
     const hasIncludedIngredients = query.inIngs != undefined && query.inIngs?.length > 0;
 
+    const whenSearchModeChanged = new WhenSearchModeChangedOps(
+      this.snapshotForCurrentQuery, this.operation$
+    );
+
     if (isSearchModeNotSet && hasIncludedIngredients) {
       SearchSnapshotUpdate.withSearchMode(AppSearchMode.Contains, this.snapshotForCurrentQuery);
       this.operation$.next({
         type: RecipeServiceOperationType.SetSearchMode,
         payload: {searchMode: AppSearchMode.Contains}
       });
+
+      whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
     }
 
     if (!isSearchModeNotSet && !hasIncludedIngredients) {
@@ -35,6 +42,8 @@ export class WhenIngredientsChangedOps {
         type: RecipeServiceOperationType.SetSearchMode,
         payload: {searchMode: AppSearchMode.None}
       });
+
+      whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
     }
   }
 
