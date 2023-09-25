@@ -17,6 +17,14 @@ export class WhenIngredientsChangedOps {
     this.disabledSearchModes = new DisabledSearchModes(snapshotForCurrentQuery, operation$);
   }
 
+  doWhatNecessary() {
+    this.checkIfSearchModeShouldBeUpdated();
+    this.refreshNumOfGoodIngredientsIfNeeded();
+    this.setDisabledSearchModes();
+    this.resetPaging();
+    this.handleExtraRelationAdjustments();
+  }
+
   checkIfSearchModeShouldBeUpdated() {
     const query = this.snapshotForCurrentQuery.search.query;
     const isSearchModeNotSet = query.searchMode == undefined;

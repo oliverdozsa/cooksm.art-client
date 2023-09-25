@@ -14,6 +14,14 @@ export class WhenSnapshotLoadedOps {
     this.disabledSearchModes = new DisabledSearchModes(snapshot, operation$);
   }
 
+  doWhatNecessary() {
+    this.setIngredients();
+    this.setDisabledSearchModes();
+    this.setOrderingAndFilters();
+    this.handleExtraRelationAdjustments();
+    this.setSearchMode();
+  }
+
   setIngredients() {
     const query = this.snapshot.search.query;
 

@@ -11,6 +11,11 @@ export class WhenSearchModeChangedOps {
   constructor(private snapshotForCurrentQuery: SearchSnapshot, private operation$: Subject<RecipeServiceOperation>) {
   }
 
+  doWhatNecessary() {
+    this.resetPaging();
+    this.disableIngredientsBasedOnSearchMode();
+  }
+
   resetPaging() {
     const commonOps = new RecipeServiceCommonOps(this.snapshotForCurrentQuery, this.operation$);
     commonOps.resetPaging();

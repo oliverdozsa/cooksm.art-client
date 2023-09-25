@@ -56,7 +56,7 @@ export class SearchSnapshotTransform {
 
   private static toIncludedIngredientTagsQueryParam(query: SavedRecipeSearchQuery): number[] {
     const appSearchMode = determineAppSearchMode(query);
-    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
+    if (appSearchMode === AppSearchMode.None || appSearchMode === AppSearchMode.StrictlyComposedOf ||
       appSearchMode === AppSearchMode.Contains) {
       return [];
     }
@@ -66,8 +66,8 @@ export class SearchSnapshotTransform {
 
   private static toAdditionalIngredientsQueryParam(query: SavedRecipeSearchQuery): number[] {
     const appSearchMode = determineAppSearchMode(query);
-    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
-      AppSearchMode.AnyOf) {
+    if (appSearchMode === AppSearchMode.None || appSearchMode === AppSearchMode.StrictlyComposedOf ||
+      appSearchMode === AppSearchMode.AnyOf) {
       return [];
     }
 
@@ -76,8 +76,8 @@ export class SearchSnapshotTransform {
 
   private static toAdditionalIngredientTagsQueryParam(query: SavedRecipeSearchQuery): number[] {
     const appSearchMode = determineAppSearchMode(query);
-    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
-      AppSearchMode.AnyOf) {
+    if (appSearchMode === AppSearchMode.None || appSearchMode === AppSearchMode.StrictlyComposedOf ||
+      appSearchMode === AppSearchMode.AnyOf) {
       return [];
     }
 

@@ -44,13 +44,8 @@ export class RecipesService {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withIngredients(target, items, this.snapshotForCurrentQuery);
 
-      const whenIngredientsChanged =
-        new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
-      whenIngredientsChanged.checkIfSearchModeShouldBeUpdated();
-      whenIngredientsChanged.refreshNumOfGoodIngredientsIfNeeded();
-      whenIngredientsChanged.setDisabledSearchModes();
-      whenIngredientsChanged.resetPaging();
-      whenIngredientsChanged.handleExtraRelationAdjustments();
+      const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
+      whenIngredientsChanged.doWhatNecessary();
     });
   }
 
@@ -58,10 +53,8 @@ export class RecipesService {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withSearchMode(searchMode, this.snapshotForCurrentQuery);
 
-      const whenSearchModeChanged =
-        new WhenSearchModeChangedOps(this.snapshotForCurrentQuery, this.operation$);
-      whenSearchModeChanged.resetPaging();
-      whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
+      const whenSearchModeChanged = new WhenSearchModeChangedOps(this.snapshotForCurrentQuery, this.operation$);
+      whenSearchModeChanged.doWhatNecessary();
     })
   }
 
@@ -75,19 +68,17 @@ export class RecipesService {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withOrderingAndFiltersParams(params, this.snapshotForCurrentQuery);
 
-      const whenOrderingAndFilterChanged =
-        new WhenOrderingAndFiltersChanged(this.snapshotForCurrentQuery, this.operation$);
-      whenOrderingAndFilterChanged.resetPaging();
+      const whenOrderingAndFilterChanged = new WhenOrderingAndFiltersChanged(this.snapshotForCurrentQuery, this.operation$);
+      whenOrderingAndFilterChanged.doWhatNecessary();
     })
   }
 
   extraIngredientsRelationChanged(relation: ExtraRelation, value: number) {
     this.anySearchParamChanged(() => {
-        SearchSnapshotUpdate.withExtraRelation(relation, value, this.snapshotForCurrentQuery);
+      SearchSnapshotUpdate.withExtraRelation(relation, value, this.snapshotForCurrentQuery);
 
-        const whenExtraRelationsChanged =
-          new WhenExtraRelationChangedOps(this.snapshotForCurrentQuery, this.operation$);
-        whenExtraRelationsChanged.resetPaging();
+      const whenExtraRelationsChanged = new WhenExtraRelationChangedOps(this.snapshotForCurrentQuery, this.operation$);
+      whenExtraRelationsChanged.doWhatNecessary();
     });
   }
 
@@ -101,7 +92,7 @@ export class RecipesService {
 
     const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
 
-    if(!queryParams.equals(this.previousQueryParams)) {
+    if (!queryParams.equals(this.previousQueryParams)) {
       this.previousQueryParams = queryParams;
       this.recipeQuerySub = this.recipeQueryService.query(queryParams).subscribe({
         next: r => this.onQuerySuccessful(r)
@@ -121,11 +112,7 @@ export class RecipesService {
     this.previousQueryParams = queryParams;
 
     const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
-    whenSnapshotIsLoaded.setIngredients();
-    whenSnapshotIsLoaded.setDisabledSearchModes();
-    whenSnapshotIsLoaded.setOrderingAndFilters();
-    whenSnapshotIsLoaded.handleExtraRelationAdjustments();
-    whenSnapshotIsLoaded.setSearchMode();
+    whenSnapshotIsLoaded.doWhatNecessary();
 
     this.recipeQueryService.query(queryParams).subscribe({
       next: p => this.results$.next(p)

@@ -7,6 +7,10 @@ export class WhenOrderingAndFiltersChanged {
   constructor(private snapshotForCurrentQuery: SearchSnapshot, private operation$: Subject<RecipeServiceOperation>) {
   }
 
+  doWhatNecessary() {
+    this.resetPaging();
+  }
+
   resetPaging() {
     const commonOps = new RecipeServiceCommonOps(this.snapshotForCurrentQuery, this.operation$);
     commonOps.resetPaging();
