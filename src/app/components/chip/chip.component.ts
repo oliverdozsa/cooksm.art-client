@@ -1,4 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {DisabledIngredients} from "../../data/ingredients-disabled-states";
 
 @Component({
   selector: 'app-chip',
@@ -8,5 +9,6 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class ChipComponent {
   @Input() name: string = "";
   @Input() color = "primary";
-  @Output() closeClicked: EventEmitter<void> = new EventEmitter()
+  @Input() disabled: boolean = false;
+  @Output() closeClicked: EventEmitter<void> = new EventEmitter();
 }

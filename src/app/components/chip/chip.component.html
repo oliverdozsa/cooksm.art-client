@@ -1,4 +1,5 @@
-<div [class]="'app-chip badge rounded-pill my-auto me-1 mt-1 ' + 'text-bg-' + color">
+<div [class]="'app-chip badge rounded-pill my-auto me-1 mt-1 ' + 'text-bg-' + color"
+     [class.opacity-25]="disabled">
   <div class="d-flex flex-row align-items-center">
     <div>
       {{name}}

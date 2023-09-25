@@ -34,7 +34,7 @@ export class WhenSearchModeChangedOps {
       disable = DisabledIngredients.NamesAndCategories;
     }
 
-    if (AppSearchMode.StrictlyComposedOf || appSearchMode === AppSearchMode.Contains) {
+    if (appSearchMode === AppSearchMode.StrictlyComposedOf || appSearchMode === AppSearchMode.Contains) {
       disable = DisabledIngredients.Categories;
     }
 
@@ -51,8 +51,8 @@ export class WhenSearchModeChangedOps {
     const appSearchMode = this.determineAppSearchMode();
 
     let disable: DisabledIngredients = DisabledIngredients.None;
-    if (appSearchMode === AppSearchMode.None || AppSearchMode.StrictlyComposedOf ||
-      AppSearchMode.AnyOf) {
+    if (appSearchMode === AppSearchMode.None || appSearchMode === AppSearchMode.StrictlyComposedOf ||
+      appSearchMode === AppSearchMode.AnyOf) {
       disable = DisabledIngredients.NamesAndCategories;
     }
 

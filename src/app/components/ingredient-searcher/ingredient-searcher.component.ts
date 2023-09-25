@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
+import {Component, Input, OnDestroy} from '@angular/core';
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
 import {IngredientSearchService} from "../../services/ingredient-search.service";
@@ -7,14 +7,19 @@ import {
   catchError,
   debounceTime,
   delay,
-  distinctUntilChanged, map,
+  distinctUntilChanged,
+  map,
   Observable,
   of,
-  OperatorFunction, Subject,
-  switchMap, takeUntil, tap
+  OperatorFunction,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap
 } from "rxjs";
 import {RecipesService} from "../../services/recipes.service";
 import {IngredientsSearcherRecipeServiceOpsHandler} from "./ingredients-searcher-recipe-service-ops-handler";
+import {DisabledIngredients} from "../../data/ingredients-disabled-states";
 
 @Component({
   selector: 'app-ingredient-searcher',
@@ -30,6 +35,7 @@ export class IngredientSearcherComponent implements OnDestroy {
   searchIngredients: SearchIngredients;
   isSearching = false;
   inputFormatter = () => '';
+  disable: DisabledIngredients = DisabledIngredients.None;
   destroy$ = new Subject<void>();
 
   get chipColor(): string {
@@ -82,6 +88,15 @@ export class IngredientSearcherComponent implements OnDestroy {
   addIngredient(ingredient: DisplayedIngredient) {
     this.added.push(ingredient);
     this.recipesService.ingredientsChangedIn(this.target, this.added);
+  }
+
+  isDisabled(displayedIngredient: DisplayedIngredient): boolean {
+    if (displayedIngredient.isCategory &&
+      (this.disable === DisabledIngredients.Categories || this.disable === DisabledIngredients.NamesAndCategories)) {
+      return true;
+    }
+
+    return !displayedIngredient.isCategory && this.disable === DisabledIngredients.NamesAndCategories;
   }
 
   private performSearch(term: string): Observable<DisplayedIngredient[]> {

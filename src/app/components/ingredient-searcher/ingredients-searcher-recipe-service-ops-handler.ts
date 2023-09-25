@@ -2,6 +2,8 @@ import {RecipeServiceOperation, RecipeServiceOperationType} from "../../services
 import {IngredientSearcherComponent} from "./ingredient-searcher.component";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
 import {IngredientCategory, IngredientName} from "src/app/data/ingredients";
+import {TargetIngredients} from "../../data/target-ingredients";
+import {DisabledIngredients} from "../../data/ingredients-disabled-states";
 
 export class IngredientsSearcherRecipeServiceOpsHandler {
   constructor(private component: IngredientSearcherComponent) {
@@ -11,6 +13,10 @@ export class IngredientsSearcherRecipeServiceOpsHandler {
     if (operation.type === RecipeServiceOperationType.SetIngredients &&
       operation.payload.target === this.component.target) {
       this.setIngredients(operation.payload)
+    }
+
+    if(operation.type === RecipeServiceOperationType.DisableIngredients) {
+      this.disable(operation.payload.target, operation.payload.disable);
     }
   }
 
@@ -23,5 +29,11 @@ export class IngredientsSearcherRecipeServiceOpsHandler {
 
     this.component.added = ingredients ? ingredients : [];
     this.component.added = this.component.added.concat(categories ? categories : []);
+  }
+
+  private disable(target: TargetIngredients, disable: DisabledIngredients) {
+    if(this.component.target === target) {
+      this.component.disable = disable;
+    }
   }
 }

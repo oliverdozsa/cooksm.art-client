@@ -6,6 +6,7 @@ import {DisabledSearchModes} from "./disabled-search-modes";
 import {WhenIngredientsChangedHandleExtraRelationsOps} from "./when-ingredients-changed-handle-extra-relations-ops";
 import {determineAppSearchMode} from "../../data/saved-recipe-search";
 import {AppSearchMode} from "../../data/app-search-mode";
+import {WhenSearchModeChangedOps} from "./when-search-mode-changed-ops";
 
 export class WhenSnapshotLoadedOps {
   private disabledSearchModes: DisabledSearchModes;
@@ -20,6 +21,10 @@ export class WhenSnapshotLoadedOps {
     this.setOrderingAndFilters();
     this.handleExtraRelationAdjustments();
     this.setSearchMode();
+
+    const whenSearchModeChanged =
+      new WhenSearchModeChangedOps(this.snapshot, this.operation$);
+    whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
   }
 
   setIngredients() {

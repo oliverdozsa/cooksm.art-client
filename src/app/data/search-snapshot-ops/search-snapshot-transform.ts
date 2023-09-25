@@ -15,8 +15,6 @@ export class SearchSnapshotTransform {
     queryParams.goodIngs = searchQuery.goodIngs;
     queryParams.goodIngsRel = searchQuery.goodIngsRel;
     queryParams.goodIngsRatio = searchQuery.goodIngsRatio;
-    queryParams.goodAdditionalIngs = searchQuery.goodAdditionalIngs;
-    queryParams.goodAdditionalIngsRel = searchQuery.goodAdditionalIngsRel;
     queryParams.unknownIngs = searchQuery.unknownIngs;
     queryParams.unknownIngsRel = searchQuery.unknownIngsRel;
 
@@ -26,6 +24,10 @@ export class SearchSnapshotTransform {
     queryParams.exIngTags = searchQuery.exIngTags ? searchQuery.exIngTags.map(i => i.id) : [];
     queryParams.addIngs = this.toAdditionalIngredientsQueryParam(searchQuery);
     queryParams.addIngTags = this.toAdditionalIngredientTagsQueryParam(searchQuery);
+
+    const isAdditionalIngredientsOrTagsPresent = queryParams.addIngs.length > 0 || queryParams.addIngTags.length > 0
+    queryParams.goodAdditionalIngs = isAdditionalIngredientsOrTagsPresent ? searchQuery.goodAdditionalIngs : undefined;
+    queryParams.goodAdditionalIngsRel = isAdditionalIngredientsOrTagsPresent ? searchQuery.goodAdditionalIngsRel : undefined;
 
     queryParams.nameLike = searchQuery.nameLike;
     queryParams.orderBy = searchQuery.orderBy;
