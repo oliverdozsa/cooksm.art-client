@@ -20,6 +20,7 @@ import {NgxSpinnerModule} from "ngx-spinner";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { OrderingAndFiltersComponent } from './components/ordering-and-filters/ordering-and-filters.component';
 import { ExtraIngredientsSearcherComponent } from './components/extra-ingredients-searcher/extra-ingredients-searcher.component';
+import { IngredientsConflictModalComponent } from './components/ingredients-conflict-modal/ingredients-conflict-modal.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ExtraIngredientsSearcherComponent } from './components/extra-ingredient
     RecipePagingComponent,
     RecipeCardComponent,
     OrderingAndFiltersComponent,
-    ExtraIngredientsSearcherComponent
+    ExtraIngredientsSearcherComponent,
+    IngredientsConflictModalComponent
   ],
   imports: [
     BrowserModule,

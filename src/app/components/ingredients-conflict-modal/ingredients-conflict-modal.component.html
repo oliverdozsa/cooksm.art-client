@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h4 class="modal-title">ouch!</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  The ingredients you've just added to {{targetToText(target)}} ingredients is already
+  present in {{targetToText(conflictsWith)}} ingredients. What to do?
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+</div>

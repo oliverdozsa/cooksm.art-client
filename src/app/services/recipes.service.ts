@@ -19,6 +19,10 @@ import {WhenOrderingAndFiltersChanged} from "./recipe-service-operations/when-or
 import {ExtraRelation} from "../data/extra-ingredients";
 import {WhenExtraRelationChangedOps} from "./recipe-service-operations/when-extra-relation-changed-ops";
 import {RecipeQueryParams} from "./recipe-query-params";
+import {
+  IngredientAlreadyPresentElsewhereChecker
+} from "./recipe-service-operations/ingredient-already-present-elsewhere-checker";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Injectable({
   providedIn: 'root'
@@ -35,18 +39,27 @@ export class RecipesService {
     return this.snapshotForCurrentQuery;
   }
 
-  constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService) {
+  constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
+              private modalService: NgbModal) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
     setTimeout(() => this.queryInitialSnapshot());
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
-    this.anySearchParamChanged(() => {
-      SearchSnapshotUpdate.withIngredients(target, items, this.snapshotForCurrentQuery);
+    const alreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(
+      this.snapshotForCurrentQuery, target, items, this.modalService);
 
-      const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
-      whenIngredientsChanged.doWhatNecessary();
-    });
+    const alreadyPresentIn = alreadyPresentChecker.find();
+    if (alreadyPresentIn) {
+      alreadyPresentChecker.resolve();
+    } else {
+      this.anySearchParamChanged(() => {
+        SearchSnapshotUpdate.withIngredients(target, items, this.snapshotForCurrentQuery);
+
+        const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
+        whenIngredientsChanged.doWhatNecessary();
+      });
+    }
   }
 
   searchModeChanged(searchMode: AppSearchMode) {
