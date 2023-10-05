@@ -51,7 +51,7 @@ export class RecipesService {
 
     const alreadyPresentIn = alreadyPresentChecker.find();
     if (alreadyPresentIn) {
-      alreadyPresentChecker.resolve();
+      alreadyPresentChecker.askUser();
     } else {
       this.anySearchParamChanged(() => {
         SearchSnapshotUpdate.withIngredients(target, items, this.snapshotForCurrentQuery);

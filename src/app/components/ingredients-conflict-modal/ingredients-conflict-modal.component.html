@@ -1,11 +1,24 @@
 <div class="modal-header">
   <h4 class="modal-title">ouch!</h4>
-  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('Cross click')"></button>
 </div>
 <div class="modal-body">
   The ingredients you've just added to {{targetToText(target)}} ingredients is already
   present in {{targetToText(conflictsWith)}} ingredients. What to do?
+  <div class="form-check">
+    <input class="form-check-input" [value]="ConflictResolution.LeaveAsItIs" [(ngModel)]="resolution" type="radio"
+           name="conflictResolution">
+    <label class="form-check-label">
+      leave as it is
+    </label>
+  </div>
+  <div class="form-check">
+    <input class="form-check-input" [value]="ConflictResolution.Move" [(ngModel)]="resolution" type="radio"
+           name="conflictResolution">
+    <label class="form-check-label">
+      move to {{targetToText(conflictsWith)}}
+    </label>
+  </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-dark" (click)="okClicked()">ok</button>
 </div>

@@ -6,10 +6,12 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {
   IngredientsConflictModalComponent
 } from "../../components/ingredients-conflict-modal/ingredients-conflict-modal.component";
+import {RecipesService} from "../recipes.service";
+import {RecipeServiceOperationType} from "../recipe-service-operation";
 
 export class IngredientAlreadyPresentElsewhereChecker {
   constructor(private snapshot: SearchSnapshot, private target: TargetIngredients, private items: DisplayedIngredient[],
-              private modalService: NgbModal) {
+              private modalService: NgbModal, private recipesService: RecipesService) {
   }
 
   private foundInTarget: TargetIngredients | undefined;
@@ -30,12 +32,27 @@ export class IngredientAlreadyPresentElsewhereChecker {
     return false;
   }
 
-  resolve() {
+  askUser() {
     const modalRef = this.modalService.open(IngredientsConflictModalComponent);
     modalRef.componentInstance.target = this.target;
     modalRef.componentInstance.conflictsWith = this.foundInTarget;
+  }
 
-    // TODO
+  resolveByLeavingAsItIs() {
+    this.filterDuplicatesFrom(this.target);
+
+    this.recipesService.operation$.next({
+      type: RecipeServiceOperationType.SetDisplayedIngredients,
+      payload: {
+        target: this.target,
+        displayedIngredients: this.displayedIngredientsOf(this.target)
+      }
+    })
+  }
+
+  resolveByUsingNew() {
+    this.filterDuplicatesFrom(this.foundInTarget!);
+    this.recipesService.ingredientsChangedIn(this.target, this.displayedIngredientsOf(this.target));
   }
 
   private findDuplicates(target: TargetIngredients, sourceItems: DisplayedIngredient[]): void {
@@ -72,5 +89,9 @@ export class IngredientAlreadyPresentElsewhereChecker {
 
   private isPresentIn(target: DisplayedIngredient[], item: DisplayedIngredient): boolean {
     return target.find(t => t.equals(item)) != undefined;
+  }
+
+  private filterDuplicatesFrom(target: TargetIngredients) {
+    // TODO
   }
 }

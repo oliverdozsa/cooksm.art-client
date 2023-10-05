@@ -1,6 +1,13 @@
 import {Component, Input} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {TargetIngredients} from "../../data/target-ingredients";
+import {RecipesService} from "../../services/recipes.service";
+
+
+export enum ConflictResolution {
+  LeaveAsItIs,
+  Move
+}
 
 @Component({
   selector: 'app-ingredients-conflict-modal',
@@ -8,10 +15,14 @@ import {TargetIngredients} from "../../data/target-ingredients";
   styleUrls: ['./ingredients-conflict-modal.component.scss']
 })
 export class IngredientsConflictModalComponent {
+  ConflictResolution = ConflictResolution;
+
   @Input() target: TargetIngredients | undefined;
   @Input() conflictsWith: TargetIngredients | undefined;
 
-  constructor(public activeModal: NgbActiveModal) {
+  resolution: ConflictResolution = ConflictResolution.LeaveAsItIs;
+
+  constructor(public activeModal: NgbActiveModal, private recipesService: RecipesService) {
   }
 
   targetToText(target: TargetIngredients | undefined): string {
@@ -24,5 +35,10 @@ export class IngredientsConflictModalComponent {
     }
 
     return "<something's wrong>";
+  }
+
+  okClicked() {
+    this.activeModal.close('Close click');
+
   }
 }

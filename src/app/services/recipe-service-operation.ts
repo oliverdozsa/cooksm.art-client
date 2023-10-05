@@ -8,7 +8,8 @@ export enum RecipeServiceOperationType {
   SetExtraIngredientsRelationOptions,
   EnableExtraIngredientsRelation,
   DisableExtraIngredientsRelation,
-  DisableIngredients
+  DisableIngredients,
+  SetDisplayedIngredients
 }
 
 export interface RecipeServiceOperation {
