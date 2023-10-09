@@ -47,7 +47,7 @@ export class RecipesService {
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
     const alreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(
-      this.snapshotForCurrentQuery, target, items, this.modalService);
+      this.snapshotForCurrentQuery, target, items, this.modalService, this.operation$);
 
     const alreadyPresentIn = alreadyPresentChecker.find();
     if (alreadyPresentIn) {

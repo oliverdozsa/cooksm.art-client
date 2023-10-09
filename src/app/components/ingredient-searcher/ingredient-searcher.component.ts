@@ -48,7 +48,7 @@ export class IngredientSearcherComponent implements OnDestroy {
     return "success";
   }
 
-  constructor(ingredientSearchService: IngredientSearchService, private recipesService: RecipesService) {
+  constructor(ingredientSearchService: IngredientSearchService, public recipesService: RecipesService) {
     this.searchIngredients = new SearchIngredients(ingredientSearchService);
 
     const searchParamsOperationHandler = new IngredientsSearcherRecipeServiceOpsHandler(this);
@@ -80,7 +80,7 @@ export class IngredientSearcherComponent implements OnDestroy {
     this.isInputFocused = false;
   }
 
-  removeIngredients(ingredient: DisplayedIngredient) {
+  removeIngredient(ingredient: DisplayedIngredient) {
     this.added = this.added.filter(a => !a.equals(ingredient));
     this.recipesService.ingredientsChangedIn(this.target, this.added);
   }

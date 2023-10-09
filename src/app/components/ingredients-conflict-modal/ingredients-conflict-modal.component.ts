@@ -9,6 +9,11 @@ export enum ConflictResolution {
   Move
 }
 
+export class ResolutionAction {
+  public leaveAsItIs: () => void = () => {};
+  public useNew: () => void = () => {};
+}
+
 @Component({
   selector: 'app-ingredients-conflict-modal',
   templateUrl: './ingredients-conflict-modal.component.html',
@@ -19,6 +24,7 @@ export class IngredientsConflictModalComponent {
 
   @Input() target: TargetIngredients | undefined;
   @Input() conflictsWith: TargetIngredients | undefined;
+  @Input() resolutionAction: ResolutionAction = new ResolutionAction();
 
   resolution: ConflictResolution = ConflictResolution.LeaveAsItIs;
 
@@ -39,6 +45,10 @@ export class IngredientsConflictModalComponent {
 
   okClicked() {
     this.activeModal.close('Close click');
-
+    if(this.resolution === ConflictResolution.LeaveAsItIs) {
+      this.resolutionAction.leaveAsItIs();
+    } else {
+      this.resolutionAction.useNew();
+    }
   }
 }

@@ -15,8 +15,12 @@ export class IngredientsSearcherRecipeServiceOpsHandler {
       this.setIngredients(operation.payload)
     }
 
-    if(operation.type === RecipeServiceOperationType.DisableIngredients) {
+    if (operation.type === RecipeServiceOperationType.DisableIngredients) {
       this.disable(operation.payload.target, operation.payload.disable);
+    }
+
+    if (operation.type === RecipeServiceOperationType.RemoveIngredients) {
+      this.remove(operation.payload.target, operation.payload.items, operation.payload.shouldTriggerSearch);
     }
   }
 
@@ -32,8 +36,24 @@ export class IngredientsSearcherRecipeServiceOpsHandler {
   }
 
   private disable(target: TargetIngredients, disable: DisabledIngredients) {
-    if(this.component.target === target) {
+    if (this.component.target === target) {
       this.component.disable = disable;
     }
+  }
+
+  private remove(target: TargetIngredients, itemsToRemove: DisplayedIngredient[], shouldTriggerSearch: boolean) {
+    if(this.component.target != target) {
+      return;
+    }
+
+    this.component.added = this.component.added.filter(i => this.isNotIn(i, itemsToRemove));
+
+    if(shouldTriggerSearch) {
+      this.component.recipesService.ingredientsChangedIn(this.component.target, this.component.added);
+    }
+  }
+
+  private isNotIn(ingredient: DisplayedIngredient, items: DisplayedIngredient[]): boolean {
+    return items.find(i => i.equals(ingredient)) === undefined;
   }
 }

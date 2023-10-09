@@ -10,7 +10,7 @@
   <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
     <div class="d-flex flex-row flex-wrap justify-content-start">
       <app-chip *ngFor="let ingredient of added" [name]="ingredient.displayedName" [color]="chipColor"
-                [disabled]="isDisabled(ingredient)" (closeClicked)="removeIngredients(ingredient)"></app-chip>
+                [disabled]="isDisabled(ingredient)" (closeClicked)="removeIngredient(ingredient)"></app-chip>
       <div class="flex-grow-1">
         <input class="form-control form-control-sm border border-0 shadow-none" style="min-width: 160px;" type="text"
                placeholder="search ingredients"

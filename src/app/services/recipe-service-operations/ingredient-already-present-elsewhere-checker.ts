@@ -4,14 +4,15 @@ import {SearchSnapshot} from "../../data/search-snapshot";
 import {IngredientCategory, IngredientName} from "../../data/ingredients";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {
-  IngredientsConflictModalComponent
+  IngredientsConflictModalComponent, ResolutionAction
 } from "../../components/ingredients-conflict-modal/ingredients-conflict-modal.component";
 import {RecipesService} from "../recipes.service";
-import {RecipeServiceOperationType} from "../recipe-service-operation";
+import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
+import {Subject} from "rxjs";
 
 export class IngredientAlreadyPresentElsewhereChecker {
   constructor(private snapshot: SearchSnapshot, private target: TargetIngredients, private items: DisplayedIngredient[],
-              private modalService: NgbModal, private recipesService: RecipesService) {
+              private modalService: NgbModal, private operation$: Subject<RecipeServiceOperation>) {
   }
 
   private foundInTarget: TargetIngredients | undefined;
@@ -36,23 +37,20 @@ export class IngredientAlreadyPresentElsewhereChecker {
     const modalRef = this.modalService.open(IngredientsConflictModalComponent);
     modalRef.componentInstance.target = this.target;
     modalRef.componentInstance.conflictsWith = this.foundInTarget;
+
+    const resolutionAction = new ResolutionAction();
+    resolutionAction.leaveAsItIs = () => this.resolveByLeavingAsItIs();
+    resolutionAction.useNew = () => this.resolveByUsingNew();
+
+    modalRef.componentInstance.resolutionAction = resolutionAction;
   }
 
   resolveByLeavingAsItIs() {
-    this.filterDuplicatesFrom(this.target);
-
-    this.recipesService.operation$.next({
-      type: RecipeServiceOperationType.SetDisplayedIngredients,
-      payload: {
-        target: this.target,
-        displayedIngredients: this.displayedIngredientsOf(this.target)
-      }
-    })
+    this.removeDuplicateIngredientsFrom(this.target);
   }
 
   resolveByUsingNew() {
-    this.filterDuplicatesFrom(this.foundInTarget!);
-    this.recipesService.ingredientsChangedIn(this.target, this.displayedIngredientsOf(this.target));
+    this.removeDuplicateIngredientsAndTriggerSearch(this.foundInTarget!);
   }
 
   private findDuplicates(target: TargetIngredients, sourceItems: DisplayedIngredient[]): void {
@@ -91,7 +89,25 @@ export class IngredientAlreadyPresentElsewhereChecker {
     return target.find(t => t.equals(item)) != undefined;
   }
 
-  private filterDuplicatesFrom(target: TargetIngredients) {
-    // TODO
+  private removeDuplicateIngredientsFrom(target: TargetIngredients) {
+    this.operation$.next({
+      type: RecipeServiceOperationType.RemoveIngredients,
+      payload: {
+        target: target,
+        items: this.duplicates,
+        shouldTriggerSearch: false
+      }
+    });
+  }
+
+  private removeDuplicateIngredientsAndTriggerSearch(target: TargetIngredients) {
+    this.operation$.next({
+      type: RecipeServiceOperationType.RemoveIngredients,
+      payload: {
+        target: target,
+        items: this.duplicates,
+        shouldTriggerSearch: true
+      }
+    });
   }
 }
