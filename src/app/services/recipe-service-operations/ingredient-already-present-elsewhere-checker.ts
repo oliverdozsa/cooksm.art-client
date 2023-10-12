@@ -1,41 +1,40 @@
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
-import {SearchSnapshot} from "../../data/search-snapshot";
-import {IngredientCategory, IngredientName} from "../../data/ingredients";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {
-  IngredientsConflictModalComponent, ResolutionAction
+  IngredientsConflictModalComponent,
+  ResolutionAction
 } from "../../components/ingredients-conflict-modal/ingredients-conflict-modal.component";
-import {RecipesService} from "../recipes.service";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
 import {Subject} from "rxjs";
+import {RecipesService} from "../recipes.service";
 
 export class IngredientAlreadyPresentElsewhereChecker {
-  constructor(private snapshot: SearchSnapshot, private target: TargetIngredients, private items: DisplayedIngredient[],
-              private modalService: NgbModal, private operation$: Subject<RecipeServiceOperation>) {
-  }
+  private ingredientsByTarget: Map<TargetIngredients, DisplayedIngredient[]> =
+    new Map<TargetIngredients, DisplayedIngredient[]>();
 
+  private lastModifiedTarget: TargetIngredients | undefined;
   private foundInTarget: TargetIngredients | undefined;
   private duplicates: DisplayedIngredient[] = [];
 
-  find(): boolean {
-    const allTargets = [TargetIngredients.Included, TargetIngredients.Excluded, TargetIngredients.Extra];
-    const targetsToCheck = allTargets.filter(t => t != this.target, allTargets);
+  constructor(private modalService: NgbModal, private recipesService: RecipesService) {
+    this.ingredientsByTarget.set(TargetIngredients.Included, []);
+    this.ingredientsByTarget.set(TargetIngredients.Excluded, []);
+    this.ingredientsByTarget.set(TargetIngredients.Extra, []);
+  }
 
-    for (let targetToCheck of targetsToCheck) {
-      this.findDuplicates(targetToCheck, this.items);
-      if (this.duplicates.length > 0) {
-        this.foundInTarget = targetToCheck;
-        return true;
-      }
-    }
+  findWhenIngredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]): boolean {
+    this.duplicates = [];
+    this.foundInTarget = undefined;
 
-    return false;
+    this.ingredientsByTarget.set(target, items);
+    this.lastModifiedTarget = target;
+    return this.find(target);
   }
 
   askUser() {
     const modalRef = this.modalService.open(IngredientsConflictModalComponent);
-    modalRef.componentInstance.target = this.target;
+    modalRef.componentInstance.target = this.lastModifiedTarget;
     modalRef.componentInstance.conflictsWith = this.foundInTarget;
 
     const resolutionAction = new ResolutionAction();
@@ -45,16 +44,55 @@ export class IngredientAlreadyPresentElsewhereChecker {
     modalRef.componentInstance.resolutionAction = resolutionAction;
   }
 
-  resolveByLeavingAsItIs() {
-    this.removeDuplicateIngredientsFrom(this.target);
+  private find(withLastModified: TargetIngredients): boolean {
+    const allTargets = [TargetIngredients.Included, TargetIngredients.Excluded, TargetIngredients.Extra];
+    const targetsToCheck = allTargets.filter(t => t != withLastModified, allTargets);
+
+    for (let targetToCheck of targetsToCheck) {
+      this.findDuplicates(targetToCheck, this.ingredientsByTarget.get(withLastModified)!);
+      if (this.duplicates.length > 0) {
+        this.foundInTarget = targetToCheck;
+        return true;
+      }
+    }
+
+    return false;
   }
 
-  resolveByUsingNew() {
-    this.removeDuplicateIngredientsAndTriggerSearch(this.foundInTarget!);
+  private resolveByLeavingAsItIs() {
+    const lastModifiedWithoutDuplicates = this.ingredientsByTarget
+      .get(this.lastModifiedTarget!)!
+      .filter(i => !this.isPresentIn(this.duplicates, i));
+    this.ingredientsByTarget.set(this.lastModifiedTarget!, lastModifiedWithoutDuplicates);
+
+    this.recipesService.operation$.next({
+      type: RecipeServiceOperationType.SetDisplayedIngredients,
+      payload: {
+        target: this.lastModifiedTarget,
+        ingredients: lastModifiedWithoutDuplicates
+      }
+    });
+  }
+
+  private resolveByUsingNew() {
+    const foundWithoutDuplicates = this.ingredientsByTarget
+      .get(this.foundInTarget!)!
+      .filter(i => !this.isPresentIn(this.duplicates, i));
+    this.ingredientsByTarget.set(this.foundInTarget!, foundWithoutDuplicates);
+
+    this.recipesService.operation$.next({
+      type: RecipeServiceOperationType.SetDisplayedIngredients,
+      payload: {
+        target: this.foundInTarget,
+        ingredients: foundWithoutDuplicates
+      }
+    });
+
+    this.recipesService.updateWithIngredients(this.ingredientsByTarget);
   }
 
   private findDuplicates(target: TargetIngredients, sourceItems: DisplayedIngredient[]): void {
-    const targetDisplayedIngredients = this.displayedIngredientsOf(target);
+    const targetDisplayedIngredients = this.ingredientsByTarget.get(target)!;
     for (let sourceItem of sourceItems) {
       if (this.isPresentIn(targetDisplayedIngredients, sourceItem)) {
         this.duplicates = this.duplicates.concat(sourceItem);
@@ -62,52 +100,7 @@ export class IngredientAlreadyPresentElsewhereChecker {
     }
   }
 
-  private displayedIngredientsOf(target: TargetIngredients): DisplayedIngredient[] {
-    const query = this.snapshot.search.query;
-
-    let ingredientsToUse: IngredientName[] | undefined;
-    let categoriesToUse: IngredientCategory[] | undefined;
-
-    if (target === TargetIngredients.Included) {
-      ingredientsToUse = query.inIngs;
-      categoriesToUse = query.inIngTags;
-    } else if(target === TargetIngredients.Excluded) {
-      ingredientsToUse = query.exIngs;
-      categoriesToUse = query.exIngTags;
-    } else if(target === TargetIngredients.Extra) {
-      ingredientsToUse = query.addIngs;
-      categoriesToUse = query.addIngTags;
-    }
-
-    let ingredientsAsDisplayedIngredients = ingredientsToUse != undefined ? ingredientsToUse.map(i => DisplayedIngredient.fromIngredientName(i)) : [];
-    let categoriesAsDisplayedIngredients = categoriesToUse != undefined ? categoriesToUse.map(t => DisplayedIngredient.fromIngredientCategory(t)) : [];
-
-    return ingredientsAsDisplayedIngredients.concat(categoriesAsDisplayedIngredients);
-  }
-
   private isPresentIn(target: DisplayedIngredient[], item: DisplayedIngredient): boolean {
     return target.find(t => t.equals(item)) != undefined;
-  }
-
-  private removeDuplicateIngredientsFrom(target: TargetIngredients) {
-    this.operation$.next({
-      type: RecipeServiceOperationType.RemoveIngredients,
-      payload: {
-        target: target,
-        items: this.duplicates,
-        shouldTriggerSearch: false
-      }
-    });
-  }
-
-  private removeDuplicateIngredientsAndTriggerSearch(target: TargetIngredients) {
-    this.operation$.next({
-      type: RecipeServiceOperationType.RemoveIngredients,
-      payload: {
-        target: target,
-        items: this.duplicates,
-        shouldTriggerSearch: true
-      }
-    });
   }
 }

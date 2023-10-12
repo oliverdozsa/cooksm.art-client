@@ -19,16 +19,16 @@ export class IngredientsSearcherRecipeServiceOpsHandler {
       this.disable(operation.payload.target, operation.payload.disable);
     }
 
-    if (operation.type === RecipeServiceOperationType.RemoveIngredients) {
-      this.remove(operation.payload.target, operation.payload.items, operation.payload.shouldTriggerSearch);
+    if (operation.type === RecipeServiceOperationType.SetDisplayedIngredients) {
+      this.setDisplayedIngredients(operation.payload);
     }
   }
 
-  private setIngredients(ingredientsData: any) {
-    const ingredientsPayload = ingredientsData.ingredients;
+  private setIngredients(payload: any) {
+    const ingredientsPayload = payload.ingredients;
     const ingredients = ingredientsPayload.map((i: IngredientName) => DisplayedIngredient.fromIngredientName(i));
 
-    const categoriesPayload = ingredientsData.categories;
+    const categoriesPayload = payload.categories;
     const categories = categoriesPayload.map((i: IngredientCategory) => DisplayedIngredient.fromIngredientCategory(i));
 
     this.component.added = ingredients ? ingredients : [];
@@ -41,19 +41,11 @@ export class IngredientsSearcherRecipeServiceOpsHandler {
     }
   }
 
-  private remove(target: TargetIngredients, itemsToRemove: DisplayedIngredient[], shouldTriggerSearch: boolean) {
-    if(this.component.target != target) {
+  private setDisplayedIngredients(payload: any) {
+    if (payload.target != this.component.target) {
       return;
     }
 
-    this.component.added = this.component.added.filter(i => this.isNotIn(i, itemsToRemove));
-
-    if(shouldTriggerSearch) {
-      this.component.recipesService.ingredientsChangedIn(this.component.target, this.component.added);
-    }
-  }
-
-  private isNotIn(ingredient: DisplayedIngredient, items: DisplayedIngredient[]): boolean {
-    return items.find(i => i.equals(ingredient)) === undefined;
+    this.component.added = payload.ingredients;
   }
 }

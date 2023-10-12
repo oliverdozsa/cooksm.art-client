@@ -34,32 +34,39 @@ export class RecipesService {
   private recipeQuerySub: Subscription | undefined = undefined;
   private snapshotForCurrentQuery: SearchSnapshot;
   private previousQueryParams: RecipeQueryParams | undefined = undefined;
+  private ingredientsAlreadyPresentChecker: IngredientAlreadyPresentElsewhereChecker;
 
   get currentSearchSnapshot(): SearchSnapshot {
     return this.snapshotForCurrentQuery;
   }
 
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
-              private modalService: NgbModal) {
+              modalService: NgbModal) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
+    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(modalService, this);
     setTimeout(() => this.queryInitialSnapshot());
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
-    const alreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(
-      this.snapshotForCurrentQuery, target, items, this.modalService, this.operation$);
-
-    const alreadyPresentIn = alreadyPresentChecker.find();
-    if (alreadyPresentIn) {
-      alreadyPresentChecker.askUser();
+    if (this.ingredientsAlreadyPresentChecker.findWhenIngredientsChangedIn(target, items)) {
+      this.ingredientsAlreadyPresentChecker.askUser();
     } else {
-      this.anySearchParamChanged(() => {
-        SearchSnapshotUpdate.withIngredients(target, items, this.snapshotForCurrentQuery);
+      const changedIngredients = new Map<TargetIngredients, DisplayedIngredient[]>;
+      changedIngredients.set(target, items);
 
-        const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
-        whenIngredientsChanged.doWhatNecessary();
-      });
+      this.updateWithIngredients(changedIngredients)
     }
+  }
+
+  updateWithIngredients(ingredients: Map<TargetIngredients, DisplayedIngredient[]>) {
+    this.anySearchParamChanged(() => {
+      for (let target of ingredients.keys()) {
+        SearchSnapshotUpdate.withIngredients(target, ingredients.get(target)!, this.snapshotForCurrentQuery);
+      }
+
+      const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
+      whenIngredientsChanged.doWhatNecessary();
+    });
   }
 
   searchModeChanged(searchMode: AppSearchMode) {
