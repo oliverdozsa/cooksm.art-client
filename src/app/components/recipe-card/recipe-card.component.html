@@ -3,7 +3,14 @@
 
     <div *ngIf="recipe" class="card recipe-card-front position-absolute w-100 h-100">
       <div class="card-body">
-        <h5 class="card-title">{{recipe.name}}</h5>
+        <h5 class="card-title">
+          <a [href]="recipe.url"
+             class="icon-link link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+             target="_blank">
+            <i class="bi bi-box-arrow-up-right"></i>
+            {{recipe.name}}
+          </a>
+        </h5>
         <div *ngIf="recipe.time != CookingTime.Unknown" class="d-flex align-items-center">
           <div><i class="bi bi-clock"></i></div>
           <div class="ms-1">
