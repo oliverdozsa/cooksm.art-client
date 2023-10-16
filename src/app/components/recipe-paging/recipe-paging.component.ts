@@ -12,6 +12,7 @@ import {RecipeServiceOperation, RecipeServiceOperationType} from "../../services
 })
 export class RecipePagingComponent implements OnDestroy {
   currentPage: Page<Recipe> | undefined;
+  isError: boolean = false;
 
   private _page: number = 1;
   private destroy$ = new Subject<void>();
@@ -29,7 +30,8 @@ export class RecipePagingComponent implements OnDestroy {
     recipesService.results$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: p => this.currentPage = p
+        next: p => this.onNextPage(p),
+        error: () => this.isError = true
       });
 
     recipesService.operation$
@@ -42,6 +44,11 @@ export class RecipePagingComponent implements OnDestroy {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  private onNextPage(page: Page<Recipe>) {
+    this.currentPage = page;
+    this.isError = false;
   }
 
   private onRecipesServiceOperation(operation: RecipeServiceOperation) {

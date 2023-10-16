@@ -135,7 +135,8 @@ export class RecipesService {
     whenSnapshotIsLoaded.doWhatNecessary();
 
     this.recipeQueryService.query(queryParams).subscribe({
-      next: p => this.results$.next(p)
+      next: p => this.results$.next(p),
+      error: e => this.results$.error(e)
     });
   }
 }

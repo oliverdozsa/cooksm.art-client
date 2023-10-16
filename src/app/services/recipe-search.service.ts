@@ -24,7 +24,10 @@ export class RecipeSearchService {
     return this.httpClient.get<Page<Recipe>>(this.recipesUrl, {params: httpParams})
       .pipe(
         delay(200),
-        tap(() => this.spinnerService.hide("recipePaging"))
+        tap(
+          () => this.spinnerService.hide("recipePaging"),
+          () => this.spinnerService.hide("recipePaging")
+        )
       );
   }
 
