@@ -44,7 +44,19 @@ export class RecipesService {
               modalService: NgbModal) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
     this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(modalService, this);
-    setTimeout(() => this.queryInitialSnapshot());
+  }
+
+  queryInitialSnapshot() {
+    const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
+    this.previousQueryParams = queryParams;
+
+    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
+    whenSnapshotIsLoaded.doWhatNecessary();
+
+    this.recipeQueryService.query(queryParams).subscribe({
+      next: p => this.results$.next(p),
+      error: e => this.results$.error(e)
+    });
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
@@ -125,18 +137,5 @@ export class RecipesService {
   private onQuerySuccessful(page: Page<Recipe>) {
     this.searchSnapshotService.set(this.snapshotForCurrentQuery);
     this.results$.next(page);
-  }
-
-  private queryInitialSnapshot() {
-    const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
-    this.previousQueryParams = queryParams;
-
-    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
-    whenSnapshotIsLoaded.doWhatNecessary();
-
-    this.recipeQueryService.query(queryParams).subscribe({
-      next: p => this.results$.next(p),
-      error: e => this.results$.error(e)
-    });
   }
 }
