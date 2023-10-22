@@ -1,4 +1,20 @@
 /* You can add global styles to this file, and also import other style files */
+$white: #ffffff;
+
+$theme-colors: (
+  "light":      #f5f9e2,
+  "dark":       #72b91e,
+  "primary":    #723d2f,
+  "secondary":  #976f4a,
+  "info":       #80d4d6,
+  "accent1":    #5d17d7,
+  "accent2":    #da9cc2,
+  "accent3":    #fdd9e4,
+  "success":    #66b913,
+  "warning":    #ffc77e,
+  "danger":     #fb0768,
+);
+
 
 
 /* Importing Bootstrap SCSS file. */

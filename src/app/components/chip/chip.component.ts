@@ -11,4 +11,8 @@ export class ChipComponent {
   @Input() color = "primary";
   @Input() disabled: boolean = false;
   @Output() closeClicked: EventEmitter<void> = new EventEmitter();
+
+  get shouldTextBeLightColored() {
+    return this.color == "danger";
+  }
 }
