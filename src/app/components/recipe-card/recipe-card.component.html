@@ -1,11 +1,11 @@
-<div class="position-relative recipe-card-container" style="width: 18rem; height: 14rem;">
+<div class="position-relative recipe-card-container" style="width: 18rem; height: 19rem">
   <div class="recipe-parent-card position-absolute w-100 h-100" [ngClass]="isFlipped ? 'flipped' : ''">
 
     <div *ngIf="recipe" class="card recipe-card-front position-absolute w-100 h-100">
       <div class="card-body">
         <h5 class="card-title">
           <a [href]="recipe.url"
-             class="icon-link link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+             class="icon-link link-underline link-underline-opacity-0"
              target="_blank">
             <i class="bi bi-box-arrow-up-right"></i>
             {{recipe.name}}
@@ -34,8 +34,20 @@
 
     <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100">
       <div class="card-body px-0">
-        <h5 class="card-title px-3">{{recipe.name}}</h5>
-        <div class="overflow-y-scroll overflow-x-hidden w-100" style="height: 9rem;">
+        <h6 class="card-title px-3" style="height: 2rem">
+          <a [href]="recipe.url"
+             class="icon-link link-underline link-underline-opacity-0"
+             style="overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* start showing ellipsis when 3rd line is reached */
+  white-space: pre-wrap; /* let the text wrap preserving spaces */"
+             target="_blank">
+            <i class="bi bi-box-arrow-up-right"></i>
+            {{recipe.name}}
+          </a>
+        </h6>
+        <div class="overflow-y-auto overflow-x-hidden w-100" style="height:15.1rem;">
           <ul class="list-group list-group-flush w-100 ms-3">
             <li *ngFor="let ingredient of recipe.ingredients" [ngClass]="getIngredientTextColorClass(ingredient)"
                 class="list-group-item p-1">

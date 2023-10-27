@@ -28,3 +28,25 @@ $theme-colors: (
   outline: 0;
   box-shadow: $input-focus-box-shadow;
 }
+
+/* ===== Scrollbar CSS ===== */
+/* Firefox */
+* {
+  scrollbar-width: auto;
+  scrollbar-color: #495057 #ffffff;
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 9px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #495057;
+  border-radius: 10px;
+  border: 3px solid #ffffff;
+}
