@@ -13,7 +13,8 @@ export class WhenIngredientsChangedOps {
   private disabledSearchModes: DisabledSearchModes;
 
   constructor(private snapshotForCurrentQuery: SearchSnapshot,
-              private operation$: Subject<RecipeServiceOperation>) {
+              private operation$: Subject<RecipeServiceOperation>,
+              private previousSnapshot: SearchSnapshot) {
     this.disabledSearchModes = new DisabledSearchModes(snapshotForCurrentQuery, operation$);
   }
 
@@ -30,11 +31,16 @@ export class WhenIngredientsChangedOps {
     const isSearchModeNotSet = query.searchMode == undefined;
     const hasIncludedIngredients = query.inIngs != undefined && query.inIngs?.length > 0;
 
+    const previousQuery = this.previousSnapshot.search.query;
+    const hadNoIngredientsPreviously =
+      (previousQuery.inIngs === undefined || previousQuery.inIngs.length === 0) &&
+      (previousQuery.inIngTags === undefined || previousQuery.inIngTags.length === 0)
+
     const whenSearchModeChanged = new WhenSearchModeChangedOps(
       this.snapshotForCurrentQuery, this.operation$
     );
 
-    if (isSearchModeNotSet && hasIncludedIngredients) {
+    if ((isSearchModeNotSet || hadNoIngredientsPreviously) && hasIncludedIngredients) {
       SearchSnapshotUpdate.withSearchMode(AppSearchMode.Contains, this.snapshotForCurrentQuery);
       this.operation$.next({
         type: RecipeServiceOperationType.SetSearchMode,

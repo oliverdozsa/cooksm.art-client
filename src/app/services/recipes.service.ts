@@ -72,11 +72,14 @@ export class RecipesService {
 
   updateWithIngredients(ingredients: Map<TargetIngredients, DisplayedIngredient[]>) {
     this.anySearchParamChanged(() => {
+      const previousSnapshot = this.searchSnapshotService.cloneSnapshot();
+
       for (let target of ingredients.keys()) {
         SearchSnapshotUpdate.withIngredients(target, ingredients.get(target)!, this.snapshotForCurrentQuery);
       }
 
-      const whenIngredientsChanged = new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$);
+      const whenIngredientsChanged =
+        new WhenIngredientsChangedOps(this.snapshotForCurrentQuery, this.operation$, previousSnapshot);
       whenIngredientsChanged.doWhatNecessary();
     });
   }
