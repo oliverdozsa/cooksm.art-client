@@ -43,7 +43,7 @@ export class WhenSnapshotLoadedOps {
       type: RecipeServiceOperationType.SetIngredients,
       payload: {
         target: TargetIngredients.Excluded,
-        ingredients: query.exIngs ? query.exIngTags : [],
+        ingredients: query.exIngs ? query.exIngs : [],
         categories: query.exIngTags ? query.exIngTags : []
       }
     });
