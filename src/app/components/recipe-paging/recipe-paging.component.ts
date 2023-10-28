@@ -26,12 +26,20 @@ export class RecipePagingComponent implements OnDestroy {
     this.recipesService.recipePageChanged(this._page);
   }
 
+  get isEmpty(): boolean {
+    return this.currentPage != undefined && this.currentPage.items.length === 0;
+  }
+
+  get isGettingInitialPage(): boolean {
+    return this.currentPage === undefined;
+  }
+
   constructor(private recipesService: RecipesService) {
     recipesService.results$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: p => this.onNextPage(p),
-        error: () => this.isError = true
+        error: e => this.onError(e)
       });
 
     recipesService.operation$
@@ -55,5 +63,10 @@ export class RecipePagingComponent implements OnDestroy {
     if (operation.type === RecipeServiceOperationType.SetPageNumber) {
       this._page = operation.payload;
     }
+  }
+
+  private onError(error: any) {
+    console.log(`error: ${error}`);
+    this.isError = true;
   }
 }

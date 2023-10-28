@@ -1,4 +1,4 @@
-<h3 *ngIf="!isError" class="text-dark-emphasis text-center">results</h3>
+<h3 *ngIf="!isError && !isEmpty && !isGettingInitialPage" class="text-dark-emphasis text-center">results</h3>
 <div class="position-relative">
   <ngx-spinner
     [fullScreen]="true"
@@ -7,21 +7,28 @@
     size="medium"
   >
   </ngx-spinner>
-  <div *ngIf="currentPage" class="d-flex flex-wrap justify-content-center">
-    <div *ngFor="let recipe of currentPage.items" class="p-2">
+  <div *ngIf="!isEmpty" class="d-flex flex-wrap justify-content-center">
+    <div *ngFor="let recipe of currentPage!.items" class="p-2">
       <app-recipe-card [recipe]="recipe"></app-recipe-card>
     </div>
   </div>
 
-  <div *ngIf="currentPage" class="d-flex justify-content-center mt-3">
+  <div *ngIf="!isEmpty" class="d-flex justify-content-center mt-3">
     <div class="mx-auto d-block d-sm-block d-md-none">
-      <ngb-pagination [collectionSize]="currentPage.totalCount" [(page)]="page" [maxSize]="2" [boundaryLinks]="true"
+      <ngb-pagination [collectionSize]="currentPage!.totalCount" [(page)]="page" [maxSize]="2" [boundaryLinks]="true"
                       size="sm"></ngb-pagination>
     </div>
     <div class="mx-auto d-none d-sm-none d-md-block">
-      <ngb-pagination [collectionSize]="currentPage.totalCount" [(page)]="page" [maxSize]="2"
+      <ngb-pagination [collectionSize]="currentPage!.totalCount" [(page)]="page" [maxSize]="2"
                       [boundaryLinks]="true"></ngb-pagination>
     </div>
+  </div>
+
+  <div *ngIf="isEmpty">
+    <h4 class="text-center">
+      not found such recipes! ☹️
+    </h4>
+    <p class="text-center">try using different search parameters</p>
   </div>
 
   <div *ngIf="isError">
