@@ -72,7 +72,8 @@ export class WhenSnapshotLoadedOps {
         orderBySort: query.orderBySort,
         minIngs: query.minIngs,
         maxIngs: query.maxIngs,
-        times: query.times
+        times: query.times,
+        sourcePages: query.sourcePages
       }
     })
   }

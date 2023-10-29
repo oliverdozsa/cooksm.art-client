@@ -16,5 +16,5 @@ export class Recipe {
   numofings: number = -1;
   time: CookingTime = CookingTime.Unknown;
   ingredients: IngredientName[] = [];
-  sourcePage: SourcePage  = {id: -1, name: '<NOT SET>'};
+  sourcePage: SourcePage  = {id: -1, name: '<NOT SET>', language: '<NOT SET>'};
 }

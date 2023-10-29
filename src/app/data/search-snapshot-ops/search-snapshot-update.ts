@@ -69,6 +69,7 @@ export class SearchSnapshotUpdate {
     query.minIngs = params.minIngs;
     query.maxIngs = params.maxIngs;
     query.times = params.times;
+    query.sourcePages = params.sourcePages;
   }
 
   static withExtraRelation(relation: ExtraRelation, value: number, snapshot: SearchSnapshot) {

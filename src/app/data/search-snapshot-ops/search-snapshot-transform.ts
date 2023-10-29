@@ -39,6 +39,8 @@ export class SearchSnapshotTransform {
 
     queryParams.recipeBooks = searchQuery.recipeBooks == undefined ? [] : searchQuery.recipeBooks.map(b => b.id);
 
+    queryParams.sourcePages = searchQuery.sourcePages == undefined ? [] : searchQuery.sourcePages.map(s => s.id);
+
     return queryParams;
   }
 

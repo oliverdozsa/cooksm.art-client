@@ -77,6 +77,24 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <div class="col" style="max-width: 10rem; min-width: 8rem;">
+    <div *ngIf="sourcePagesService.isLoading" class="d-flex justify-content-center align-items-center h-100">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div *ngIf="!sourcePagesService.isLoading">
+      <label class="form-label">recipe language</label>
+      <select [(ngModel)]="recipeLanguage" class="form-select" aria-label="maximum number of ingredients">
+        <option [ngValue]="undefined">all</option>
+        <option *ngFor="let language of sourcePagesService.languages" [ngValue]="language">
+          {{sourcePagesService.languageCodesToDisplayedNames[language]}}
+        </option>
+      </select>
+    </div>
 
   </div>
 </div>

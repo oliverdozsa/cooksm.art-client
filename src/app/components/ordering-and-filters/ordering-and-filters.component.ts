@@ -4,6 +4,7 @@ import {RecipesService} from "../../services/recipes.service";
 import {OrderingAndFiltersRecipeServiceOpsHandler} from "./ordering-and-filters-recipe-service-ops-handler";
 import {Subject, takeUntil} from "rxjs";
 import {CookingTime} from 'src/app/data/recipe';
+import {SourcePagesService} from "../../services/source-pages.service";
 
 @Component({
   selector: 'app-ordering-and-filters',
@@ -17,7 +18,7 @@ export class OrderingAndFiltersComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   get minNumberOfIngredients(): number {
-    return this.params.minIngs === undefined ? 0: this.params.minIngs;
+    return this.params.minIngs === undefined ? 0 : this.params.minIngs;
   }
 
   set minNumberOfIngredients(value: number) {
@@ -26,7 +27,7 @@ export class OrderingAndFiltersComponent implements OnDestroy {
   }
 
   get maxNumberOfIngredients(): number {
-    return this.params.maxIngs === undefined ? 0: this.params.maxIngs;
+    return this.params.maxIngs === undefined ? 0 : this.params.maxIngs;
   }
 
   set maxNumberOfIngredients(value: number) {
@@ -90,7 +91,32 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     return this.params.times != undefined && this.params.times.length > 0;
   }
 
-  constructor(private recipesService: RecipesService) {
+  get recipeLanguage(): string | undefined {
+    if(this.params.sourcePages === undefined) {
+      return undefined;
+    }
+
+    const sourcePageLanguages = new Set<string>();
+    this.params.sourcePages.forEach(s => sourcePageLanguages.add(s.language));
+
+    if(sourcePageLanguages.size > 1) {
+      return undefined;
+    } else {
+      return sourcePageLanguages.values().next().value;
+    }
+  }
+
+  set recipeLanguage(value: string | undefined) {
+    if (value === undefined) {
+      this.params.sourcePages = undefined;
+    } else {
+      this.params.sourcePages = this.sourcePagesService.allSourcePages.get(value);
+    }
+
+    this.paramsEvent();
+  }
+
+  constructor(private recipesService: RecipesService, public sourcePagesService: SourcePagesService) {
     const opsHandler = new OrderingAndFiltersRecipeServiceOpsHandler(this);
     recipesService.operation$
       .pipe(takeUntil(this.destroy$))
@@ -129,7 +155,7 @@ export class OrderingAndFiltersComponent implements OnDestroy {
   }
 
   private shouldUse(value: CookingTime, shouldBeUsed: boolean) {
-    if(shouldBeUsed) {
+    if (shouldBeUsed) {
       this.params.addCookingTimeFilter(value);
     } else {
       this.params.removeCookingTimeFilter(value);

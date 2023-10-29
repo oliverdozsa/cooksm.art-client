@@ -1,4 +1,5 @@
 import {CookingTime} from "./recipe";
+import {SourcePage} from "./source-page";
 
 export class OrderingAndFiltersParams {
   orderBy: string | undefined;
@@ -6,6 +7,7 @@ export class OrderingAndFiltersParams {
   minIngs: number | undefined;
   maxIngs: number | undefined;
   times: number[] | undefined;
+  sourcePages: SourcePage[] | undefined;
 
   private _filterByName: string | undefined;
 
@@ -27,7 +29,8 @@ export class OrderingAndFiltersParams {
       this.orderBySort === other.orderBySort &&
       this.minIngs === other.minIngs &&
       this.maxIngs === other.maxIngs &&
-      JSON.stringify(this.times) === JSON.stringify(other.times)
+      JSON.stringify(this.times) === JSON.stringify(other.times) &&
+      JSON.stringify(this.sourcePages) === JSON.stringify(other.sourcePages)
   }
 
   copy(): OrderingAndFiltersParams {
@@ -38,6 +41,7 @@ export class OrderingAndFiltersParams {
     copy.minIngs = this.minIngs;
     copy.maxIngs = this.maxIngs;
     copy.times = this.times?.slice()
+    copy.sourcePages = this.sourcePages?.slice()
 
     return copy;
   }

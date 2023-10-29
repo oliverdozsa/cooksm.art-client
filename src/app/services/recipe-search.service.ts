@@ -53,6 +53,7 @@ export class RecipeSearchService {
       params = this.setQueryParam(queryParams.goodIngsRel, 'goodIngsRel', params);
       params = this.setQueryParam(queryParams.searchMode, 'searchMode', params);
       params = this.setQueryParam(queryParams.useFavoritesOnly, 'useFavoritesOnly', params);
+      params = this.setQueryParam(queryParams.languageId, 'languageId', params);
       params = this.setArrayQueryParam(queryParams.exIngs, 'exIngs', params);
       params = this.setArrayQueryParam(queryParams.exIngTags, 'exIngTags', params);
       params = this.setArrayQueryParam(queryParams.inIngs, 'inIngs', params);
