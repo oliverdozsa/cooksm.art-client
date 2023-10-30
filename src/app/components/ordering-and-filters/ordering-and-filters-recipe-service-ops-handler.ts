@@ -1,5 +1,6 @@
 import {OrderingAndFiltersComponent} from "./ordering-and-filters.component";
 import {RecipeServiceOperation, RecipeServiceOperationType} from "../../services/recipe-service-operation";
+import {SourcePageSelections} from "./source-page-selections";
 
 export class OrderingAndFiltersRecipeServiceOpsHandler {
   constructor(private component: OrderingAndFiltersComponent) {
@@ -14,6 +15,11 @@ export class OrderingAndFiltersRecipeServiceOpsHandler {
       this.component.params.maxIngs = operation.payload.maxIngs;
       this.component.params.times = operation.payload.times;
       this.component.params.sourcePages = operation.payload.sourcePages;
+
+      if(this.component.sourcePagesService.allSourcePages.size > 0) {
+        this.component.sourcePageSelections = new SourcePageSelections(this.component.sourcePagesService);
+        this.component.sourcePageSelections.select(this.component.params.sourcePages);
+      }
 
       this.component.paramsEvent();
     }

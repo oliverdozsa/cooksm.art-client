@@ -5,6 +5,8 @@ import {OrderingAndFiltersRecipeServiceOpsHandler} from "./ordering-and-filters-
 import {Subject, takeUntil} from "rxjs";
 import {CookingTime} from 'src/app/data/recipe';
 import {SourcePagesService} from "../../services/source-pages.service";
+import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from "ngx-bootstrap-multiselect";
+import {SourcePageSelections} from "./source-page-selections";
 
 @Component({
   selector: 'app-ordering-and-filters',
@@ -13,6 +15,7 @@ import {SourcePagesService} from "../../services/source-pages.service";
 })
 export class OrderingAndFiltersComponent implements OnDestroy {
   params: OrderingAndFiltersParams = new OrderingAndFiltersParams();
+  sourcePageSelections: SourcePageSelections | undefined;
 
   private oldParams: OrderingAndFiltersParams = new OrderingAndFiltersParams();
   private destroy$ = new Subject<void>();
@@ -91,36 +94,22 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     return this.params.times != undefined && this.params.times.length > 0;
   }
 
-  get recipeLanguage(): string | undefined {
-    if(this.params.sourcePages === undefined) {
-      return undefined;
-    }
-
-    const sourcePageLanguages = new Set<string>();
-    this.params.sourcePages.forEach(s => sourcePageLanguages.add(s.language));
-
-    if(sourcePageLanguages.size > 1) {
-      return undefined;
-    } else {
-      return sourcePageLanguages.values().next().value;
-    }
-  }
-
-  set recipeLanguage(value: string | undefined) {
-    if (value === undefined) {
-      this.params.sourcePages = undefined;
-    } else {
-      this.params.sourcePages = this.sourcePagesService.allSourcePages.get(value);
-    }
-
-    this.paramsEvent();
-  }
-
   constructor(private recipesService: RecipesService, public sourcePagesService: SourcePagesService) {
     const opsHandler = new OrderingAndFiltersRecipeServiceOpsHandler(this);
     recipesService.operation$
       .pipe(takeUntil(this.destroy$))
       .subscribe(ops => opsHandler.process(ops));
+
+    sourcePagesService.allSourcePageAvailable$.subscribe({
+      next: () => this.onSourcePagesAvailable()
+    })
+  }
+
+  onSourcePagesAvailable() {
+    this.sourcePageSelections = new SourcePageSelections(this.sourcePagesService);
+    if(this.params.sourcePages) {
+      this.sourcePageSelections.select(this.params.sourcePages);
+    }
   }
 
   filterByNameClicked() {

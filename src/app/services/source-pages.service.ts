@@ -5,7 +5,7 @@ import {SourcePage} from "../data/source-page";
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../api-paths";
 import {Page} from "../data/page";
-import {delay} from "rxjs";
+import {delay, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +15,9 @@ export class SourcePagesService {
   isLoading: boolean = true;
   isError: boolean = false;
 
-  public readonly languageCodesToDisplayedNames: any = {
-    "hu": "Hungarian",
-    "en": "English"
-  };
+  allSourcePageAvailable$: Subject<void> = new Subject<void>();
 
   private readonly allSourcePagesUrl = environment.apiUrl + '/' + ApiPaths.SOURCE_PAGES;
-
-  get languages(): string[] {
-    return Array.from(this.allSourcePages.keys());
-  }
 
   constructor(httpClient: HttpClient) {
     this.isLoading = true;
@@ -38,6 +31,7 @@ export class SourcePagesService {
   private onAllSourcePagesGot(allSourcePages: Page<SourcePage>) {
     this.isLoading = false;
     allSourcePages.items.forEach(s => this.addSourcePage(s));
+    this.allSourcePageAvailable$.next();
   }
 
   private onError() {

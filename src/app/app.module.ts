@@ -21,6 +21,7 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import { OrderingAndFiltersComponent } from './components/ordering-and-filters/ordering-and-filters.component';
 import { ExtraIngredientsSearcherComponent } from './components/extra-ingredients-searcher/extra-ingredients-searcher.component';
 import { IngredientsConflictModalComponent } from './components/ingredients-conflict-modal/ingredients-conflict-modal.component';
+import {NgxBootstrapMultiselectModule} from "ngx-bootstrap-multiselect";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { IngredientsConflictModalComponent } from './components/ingredients-conf
     NgbModule,
     NgOptimizedImage,
     FormsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    NgxBootstrapMultiselectModule
   ],
   providers: [],
   bootstrap: [AppComponent]
