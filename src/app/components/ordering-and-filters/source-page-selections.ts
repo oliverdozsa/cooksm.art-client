@@ -1,6 +1,7 @@
 import {SourcePagesService} from "../../services/source-pages.service";
 import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from "ngx-bootstrap-multiselect";
 import {SourcePage} from "../../data/source-page";
+import {OrderingAndFiltersComponent} from "./ordering-and-filters.component";
 
 export class SourcePageSelections {
   selections: number[] = [];
@@ -19,16 +20,27 @@ export class SourcePageSelections {
 
   private readonly supportedLanguages: any = {
     "hu": {name: "Hungarian", code: 10000},
-    "en": {name: "English", code: 10001}
+    // "en": {name: "English", code: 10001}
   };
 
-  constructor(private sourcePagesService: SourcePagesService) {
+  private sourcePagesService: SourcePagesService;
+
+  constructor(private component: OrderingAndFiltersComponent) {
+    this.sourcePagesService = component.sourcePagesService;
     this.buildOptions();
+    this.select(this.component.params.sourcePages);
   }
 
   onChange() {
-    // TODO
-    console.log(`selections = ${JSON.stringify(this.selections)}`);
+    const selectedSourcePages = this.sourcePagesService.findWhereIdsIn(this.selections);
+
+    if (selectedSourcePages) {
+      this.component.params.sourcePages = selectedSourcePages;
+    } else {
+      this.component.params.sourcePages = undefined;
+    }
+
+    this.component.paramsEvent();
   }
 
   select(sourcePages: SourcePage[] | undefined) {
@@ -36,13 +48,18 @@ export class SourcePageSelections {
       return;
     }
 
-    // TODO
+    this.selections = sourcePages.map(s => s.id);
+    Object.keys(this.supportedLanguages).forEach(l => {
+      if(this.isAllSourcePageSelectedForLanguage(l)) {
+        this.selections = this.selections.concat(this.supportedLanguages[l].code);
+      }
+    });
   }
 
   private buildOptions(): void {
     let options: IMultiSelectOption[] = [];
 
-    for (let languageIso of this.sourcePagesService.allSourcePages.keys()) {
+    for (const languageIso of Object.keys(this.supportedLanguages)) {
       const languageCode = this.supportedLanguages[languageIso].code;
       const languageName = this.supportedLanguages[languageIso].name;
 
@@ -51,7 +68,7 @@ export class SourcePageSelections {
         name: languageName
       });
 
-      const sourcePagesOfLanguage = this.sourcePagesService.allSourcePages.get(languageIso)!;
+      const sourcePagesOfLanguage = this.sourcePagesService.findByLanguageIso(languageIso);
       const sourcePageOptions = this.createOptionsForPages(sourcePagesOfLanguage, languageCode);
       options = options.concat(sourcePageOptions);
     }
@@ -67,5 +84,10 @@ export class SourcePageSelections {
         parentId: parent
       }
     })
+  }
+
+  private isAllSourcePageSelectedForLanguage(languageIso: string): boolean {
+    const sourcePagesOfLanguage = this.sourcePagesService.findByLanguageIso(languageIso);
+    return sourcePagesOfLanguage.every(s => this.selections.includes(s.id));
   }
 }

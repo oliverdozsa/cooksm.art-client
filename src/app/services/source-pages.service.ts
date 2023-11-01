@@ -11,7 +11,7 @@ import {delay, Subject} from "rxjs";
   providedIn: 'root'
 })
 export class SourcePagesService {
-  allSourcePages: Map<string, SourcePage[]> = new Map<string, SourcePage[]>();
+  allSourcePages: SourcePage[] = [];
   isLoading: boolean = true;
   isError: boolean = false;
 
@@ -28,25 +28,22 @@ export class SourcePagesService {
       });
   }
 
-  private onAllSourcePagesGot(allSourcePages: Page<SourcePage>) {
+  findByLanguageIso(language: string) {
+    return this.allSourcePages.filter(s => s.language === language);
+  }
+
+  findWhereIdsIn(ids: number[]): SourcePage[] | undefined {
+    return this.allSourcePages.filter(s => ids.includes(s.id));
+  }
+
+  private onAllSourcePagesGot(allSourcePagesPage: Page<SourcePage>) {
     this.isLoading = false;
-    allSourcePages.items.forEach(s => this.addSourcePage(s));
+    this.allSourcePages = allSourcePagesPage.items;
     this.allSourcePageAvailable$.next();
   }
 
   private onError() {
     this.isLoading = false;
     this.isError = true;
-  }
-
-  private addSourcePage(sourcePage: SourcePage) {
-    if (!this.allSourcePages.has(sourcePage.language)) {
-      this.allSourcePages.set(sourcePage.language, []);
-    }
-
-    const newSourcePagesByLanguage = this.allSourcePages
-      .get(sourcePage.language)!
-      .concat(sourcePage);
-    this.allSourcePages.set(sourcePage.language, newSourcePagesByLanguage);
   }
 }

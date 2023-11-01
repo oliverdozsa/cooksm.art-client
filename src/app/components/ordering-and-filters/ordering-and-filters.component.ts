@@ -106,7 +106,7 @@ export class OrderingAndFiltersComponent implements OnDestroy {
   }
 
   onSourcePagesAvailable() {
-    this.sourcePageSelections = new SourcePageSelections(this.sourcePagesService);
+    this.sourcePageSelections = new SourcePageSelections(this);
     if(this.params.sourcePages) {
       this.sourcePageSelections.select(this.params.sourcePages);
     }

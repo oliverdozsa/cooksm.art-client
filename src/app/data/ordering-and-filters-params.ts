@@ -84,4 +84,8 @@ export class OrderingAndFiltersParams {
 
     this.times = this.times.filter(t => t != value);
   }
+
+  useSourcePages(sourcePages: SourcePage[]) {
+    // TODO
+  }
 }

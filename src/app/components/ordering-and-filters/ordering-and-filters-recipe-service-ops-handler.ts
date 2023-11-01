@@ -16,9 +16,8 @@ export class OrderingAndFiltersRecipeServiceOpsHandler {
       this.component.params.times = operation.payload.times;
       this.component.params.sourcePages = operation.payload.sourcePages;
 
-      if(this.component.sourcePagesService.allSourcePages.size > 0) {
-        this.component.sourcePageSelections = new SourcePageSelections(this.component.sourcePagesService);
-        this.component.sourcePageSelections.select(this.component.params.sourcePages);
+      if(this.component.sourcePagesService.allSourcePages.length > 0) {
+        this.component.sourcePageSelections = new SourcePageSelections(this.component);
       }
 
       this.component.paramsEvent();
