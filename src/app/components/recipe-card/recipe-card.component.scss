@@ -28,3 +28,11 @@
   justify-content: center;
   align-items: center;
 }
+
+.clamp-title {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: pre-wrap;
+}

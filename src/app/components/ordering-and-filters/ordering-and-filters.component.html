@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col">
+  <div class="col mt-2">
     <div style="min-width: 10rem;">
       <label class="form-label">filter by name</label>
       <div class="input-group">
@@ -15,7 +15,7 @@
 
     </div>
   </div>
-  <div class="col">
+  <div class="col mt-2">
     <div style="min-width: 8rem;">
       <label class="form-label">ordering</label>
       <select [(ngModel)]="orderByAndSort" class="form-select" aria-label="select ordering">
@@ -28,7 +28,7 @@
     </div>
   </div>
 
-  <div class="col">
+  <div class="col mt-2">
     <div class="row" style="min-width: 12rem;">
       <div class="col-6">
         <label class="form-label">min. ingredients</label>
@@ -52,7 +52,7 @@
     </div>
   </div>
 
-  <div class="col">
+  <div class="col mt-2">
     <div class="d-flex flex-row align-items-end">
       <div style="min-width: 6rem;">
         <label class="form-label">cooking time</label>
@@ -80,14 +80,14 @@
     </div>
   </div>
 
-  <div class="col" style="max-width: 14rem; min-width: 12rem;">
+  <div class="col mt-2" style="max-width: 14rem; min-width: 12rem;">
     <div *ngIf="sourcePagesService.isLoading" class="d-flex justify-content-center align-items-center h-100">
       <div class="spinner-border" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
     </div>
 
-    <div *ngIf="!sourcePagesService.isLoading">
+    <div *ngIf="sourcePageSelections">
       <label class="form-label">recipe source</label>
       <div class="d-grip">
         <ngx-bootstrap-multiselect [(ngModel)]="sourcePageSelections!.selections" (ngModelChange)="sourcePageSelections!.onChange()"
@@ -98,4 +98,3 @@
 
   </div>
 </div>
-
