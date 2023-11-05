@@ -1,5 +1,5 @@
 {
-  "locale": "en-US",
+  "locale": "en",
   "translations": {
     "ngb.alert.close": "Close",
     "ngb.timepicker.HH": "HH",
@@ -34,6 +34,9 @@
     "ngb.timepicker.PM": "{$INTERPOLATION}",
     "ngb.timepicker.AM": "{$INTERPOLATION}",
     "filter-by-ingredients-title": " filter by ingredients ",
+    "ingredients-to-include-label": "ingredients to include?",
+    "ingredients-to-exclude-label": "ingredients to exclude?",
+    "search-filter-ordering-title": " search filters / ordering ",
     "4863371103643861248": "1"
   }
 }

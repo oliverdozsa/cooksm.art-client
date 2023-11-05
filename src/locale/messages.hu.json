@@ -34,6 +34,9 @@
     "ngb.timepicker.PM": "{$INTERPOLATION}",
     "ngb.timepicker.AM": "{$INTERPOLATION}",
     "filter-by-ingredients-title": " hozzávalók ",
+    "ingredients-to-include-label": " mi legyen benne? ",
+    "ingredients-to-exclude-label": " mi ne legyen benne? ",
+    "search-filter-ordering-title": " szűrők / rendezés ",
     "4863371103643861248": "1"
   }
 }

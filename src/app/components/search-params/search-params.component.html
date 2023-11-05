@@ -11,6 +11,7 @@
         <div class="row">
           <div class="col">
             <app-ingredient-searcher [target]="TargetIngredients.Included"
+                                     i18n-label="@@ingredients-to-include-label"
                                      label="ingredients to include?"></app-ingredient-searcher>
           </div>
         </div>
@@ -18,6 +19,7 @@
         <div class="row mt-1">
           <div class="col-sm-7">
             <app-ingredient-searcher [target]="TargetIngredients.Excluded"
+                                     i18n-label="@@ingredients-to-exclude-label"
                                      label="ingredients to exclude?"></app-ingredient-searcher>
           </div>
           <div class="col-sm-5">
@@ -36,7 +38,7 @@
 
   <div ngbAccordionItem [collapsed]="false">
     <h2 ngbAccordionHeader>
-      <button ngbAccordionButton class="py-2">
+      <button i18n="@@search-filter-ordering-title" ngbAccordionButton class="py-2">
         search filters / ordering
       </button>
     </h2>
