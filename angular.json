@@ -5,6 +5,7 @@
   "projects": {
     "cooksm.art-client": {
       "i18n": {
+        "sourceLocale": "en",
         "locales": {
           "hu": {
             "translation": "src/locale/messages.hu.json"
@@ -47,6 +48,9 @@
           "configurations": {
             "hu": {
               "localize": ["hu"]
+            },
+            "en": {
+              "localize": ["en"]
             },
             "production": {
               "budgets": [
@@ -91,6 +95,9 @@
             },
             "hu": {
               "browserTarget": "cooksm.art-client:build:development,hu"
+            },
+            "en": {
+              "browserTarget": "cooksm.art-client:build:development,en"
             }
           },
           "defaultConfiguration": "development"
