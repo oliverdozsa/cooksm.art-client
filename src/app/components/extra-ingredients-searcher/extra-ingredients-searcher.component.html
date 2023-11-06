@@ -3,8 +3,8 @@
                          label="additional ingredients?"></app-ingredient-searcher>
 <div class="mt-1 input-group d-flex">
   <select [disabled]="!isEnabled" [(ngModel)]="relation" class="form-select form-select-sm d-block flex-grow-1" aria-label="Extra relations">
-    <option i18n="@@can-be-more-than" [ngValue]="ExtraRelation.CanBeMoreThan">can be more than</option>
-    <option [ngValue]="ExtraRelation.Exactly">exactly</option>
+    <option i18n="@@can-be-more-than-extra-relation-option" [ngValue]="ExtraRelation.CanBeMoreThan">can be more than</option>
+    <option i18n="@@exactly-extra-relation-option" [ngValue]="ExtraRelation.Exactly">exactly</option>
   </select>
   <select [disabled]="!isEnabled" [(ngModel)]="relationValue" class="form-select form-select-sm d-block" style="max-width: 4.2rem;" aria-label="Extra relations">
     <option *ngFor="let _ of valueOptions; let i = index" [ngValue]="i+1">

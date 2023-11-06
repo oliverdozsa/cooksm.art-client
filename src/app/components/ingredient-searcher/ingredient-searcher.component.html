@@ -4,7 +4,7 @@
        class="border rounded position-absolute w-100 h-100 d-flex justify-content-center align-items-center">
     <div class="bg-body-tertiary w-100 h-100 opacity-75 position-absolute"></div>
     <div class="spinner-border spinner-border-sm mt-2 position-absolute" role="status">
-      <span class="visually-hidden">Loading...</span>
+      <span i18n="@@loading-spinner" class="visually-hidden">Loading...</span>
     </div>
   </div>
   <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
@@ -13,7 +13,7 @@
                 [disabled]="isDisabled(ingredient)" (closeClicked)="removeIngredient(ingredient)"></app-chip>
       <div class="flex-grow-1">
         <input class="form-control form-control-sm border border-0 shadow-none" style="min-width: 160px;" type="text"
-               placeholder="search ingredients"
+               i18n-placeholder="@@search-ingredients-placeholder" placeholder="search ingredients"
                #typeahead="ngbTypeahead"
                [ngbTypeahead]="search"
                [resultTemplate]="searchResultTemplate"
