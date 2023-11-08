@@ -1,9 +1,11 @@
 <div class="row">
   <div class="col mt-2">
     <div style="min-width: 10rem;">
-      <label class="form-label">filter by name</label>
+      <label i18n="@@order-and-filter-filter-by-name-label" class="form-label">filter by name</label>
       <div class="input-group">
-        <input [(ngModel)]="params.filterByName" type="text" class="form-control" placeholder="enter name">
+        <input [(ngModel)]="params.filterByName" type="text" class="form-control"
+               i18n-placeholder="@@order-and-filter-enter-name-placeholder"
+               placeholder="enter name">
         <button *ngIf="params.filterByName" class="btn btn-outline-secondary" type="button"
                 (click)="clearFilterByName()">
           <i class="bi bi-trash"></i>
@@ -17,13 +19,13 @@
   </div>
   <div class="col mt-2">
     <div style="min-width: 8rem;">
-      <label class="form-label">ordering</label>
+      <label i18n="@@order-and-filter-ordering-label" class="form-label">ordering</label>
       <select [(ngModel)]="orderByAndSort" class="form-select" aria-label="select ordering">
-        <option [ngValue]="undefined">not set</option>
-        <option [ngValue]="'numofings asc'">ascending by number of ingredients</option>
-        <option [ngValue]="'numofings desc'">descending by number of ingredients</option>
-        <option [ngValue]="'time asc'">ascending by time</option>
-        <option [ngValue]="'time desc'">descending by time</option>
+        <option i18n="@@order-and-filter-not-set-option" [ngValue]="undefined">not set</option>
+        <option i18n="@@order-and-filter-asc-by-num-of-ingr" [ngValue]="'numofings asc'">ascending by number of ingredients</option>
+        <option i18n="@@order-and-filter-desc-by-num-of-ingr" [ngValue]="'numofings desc'">descending by number of ingredients</option>
+        <option i18n="@@order-and-filter-asc-by-time" [ngValue]="'time asc'">ascending by time</option>
+        <option i18n="@@order-and-filter-desc-by-time" [ngValue]="'time desc'">descending by time</option>
       </select>
     </div>
   </div>
@@ -31,9 +33,9 @@
   <div class="col mt-2">
     <div class="row" style="min-width: 12rem;">
       <div class="col-6">
-        <label class="form-label">min. ingredients</label>
+        <label i18n="@@order-and-filter-min-ingredients-label" class="form-label">min. ingredients</label>
         <select [(ngModel)]="minNumberOfIngredients" class="form-select" aria-label="minimum number of ingredients">
-          <option [ngValue]="0">not set</option>
+          <option i18n="@@order-and-filter-min-ingredients-not-set-option" [ngValue]="0">not set</option>
           <option *ngFor="let option of minNumberOfIngredientsOptions" [ngValue]="option">
             {{option}}
           </option>
@@ -41,9 +43,9 @@
       </div>
 
       <div class="col-6">
-        <label class="form-label">max. ingredients</label>
+        <label i18n="@@order-and-filter-max-ingredients-label" class="form-label">max. ingredients</label>
         <select [(ngModel)]="maxNumberOfIngredients" class="form-select" aria-label="maximum number of ingredients">
-          <option [ngValue]="0">not set</option>
+          <option i18n="@@order-and-filter-max-ingredients-not-set-option" [ngValue]="0">not set</option>
           <option *ngFor="let option of maxNumberOfIngredientsOptions" [ngValue]="option">
             {{option}}
           </option>
@@ -55,19 +57,19 @@
   <div class="col mt-2">
     <div class="d-flex flex-row align-items-end">
       <div style="min-width: 6rem;">
-        <label class="form-label">cooking time</label>
+        <label i18n="@@order-and-filter-cooking-time-label" class="form-label">cooking time</label>
         <div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="isQuickSelected" class="form-check-input" type="checkbox">
-            <label class="form-check-label">quick</label>
+            <label i18n="@@order-and-filter-cooking-time-quick-label" class="form-check-label">quick</label>
           </div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="isAverageSelected" class="form-check-input" type="checkbox">
-            <label class="form-check-label">average</label>
+            <label i18n="@@order-and-filter-cooking-time-average-label" class="form-check-label">average</label>
           </div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="isLengthySelected" class="form-check-input" type="checkbox">
-            <label class="form-check-label">lengthy</label>
+            <label i18n="@@order-and-filter-cooking-time-lengthy-label" class="form-check-label">lengthy</label>
           </div>
         </div>
       </div>
@@ -88,10 +90,11 @@
     </div>
 
     <div *ngIf="sourcePageSelections">
-      <label class="form-label">recipe source</label>
+      <label i18n="@@order-and-filter-recipe-source-label" class="form-label">recipe source</label>
       <div class="d-grip">
-        <ngx-bootstrap-multiselect [(ngModel)]="sourcePageSelections!.selections" (ngModelChange)="sourcePageSelections!.onChange()"
-                                   [options]="sourcePageSelections!.options"  [settings]="sourcePageSelections!.settings"
+        <ngx-bootstrap-multiselect [(ngModel)]="sourcePageSelections!.selections"
+                                   (ngModelChange)="sourcePageSelections!.onChange()"
+                                   [options]="sourcePageSelections!.options" [settings]="sourcePageSelections!.settings"
                                    [texts]="sourcePageSelections!.texts"></ngx-bootstrap-multiselect>
       </div>
     </div>
