@@ -43,7 +43,7 @@ export class RecipesService {
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
               modalService: NgbModal) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
-    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(modalService, this);
+    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(modalService, this, this.snapshotForCurrentQuery);
   }
 
   queryInitialSnapshot() {

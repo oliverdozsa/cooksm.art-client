@@ -5,9 +5,10 @@ import {
   IngredientsConflictModalComponent,
   ResolutionAction
 } from "../../components/ingredients-conflict-modal/ingredients-conflict-modal.component";
-import {RecipeServiceOperation, RecipeServiceOperationType} from "../recipe-service-operation";
-import {Subject} from "rxjs";
+import {RecipeServiceOperationType} from "../recipe-service-operation";
 import {RecipesService} from "../recipes.service";
+import {SearchSnapshot} from "../../data/search-snapshot";
+import {SearchSnapshotTransform} from "../../data/search-snapshot-ops/search-snapshot-transform";
 
 export class IngredientAlreadyPresentElsewhereChecker {
   private ingredientsByTarget: Map<TargetIngredients, DisplayedIngredient[]> =
@@ -17,10 +18,12 @@ export class IngredientAlreadyPresentElsewhereChecker {
   private foundInTarget: TargetIngredients | undefined;
   private duplicates: DisplayedIngredient[] = [];
 
-  constructor(private modalService: NgbModal, private recipesService: RecipesService) {
-    this.ingredientsByTarget.set(TargetIngredients.Included, []);
-    this.ingredientsByTarget.set(TargetIngredients.Excluded, []);
-    this.ingredientsByTarget.set(TargetIngredients.Extra, []);
+  constructor(private modalService: NgbModal, private recipesService: RecipesService, snapshot: SearchSnapshot) {
+    const displayedIngredientsOfSnapshot = SearchSnapshotTransform.toDisplayedIngredients(snapshot);
+
+    this.ingredientsByTarget.set(TargetIngredients.Included, displayedIngredientsOfSnapshot.get(TargetIngredients.Included)!);
+    this.ingredientsByTarget.set(TargetIngredients.Excluded, displayedIngredientsOfSnapshot.get(TargetIngredients.Excluded)!);
+    this.ingredientsByTarget.set(TargetIngredients.Extra, displayedIngredientsOfSnapshot.get(TargetIngredients.Extra)!);
   }
 
   findWhenIngredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]): boolean {

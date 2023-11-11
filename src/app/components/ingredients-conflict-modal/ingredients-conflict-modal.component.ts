@@ -1,8 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {TargetIngredients} from "../../data/target-ingredients";
-import {RecipesService} from "../../services/recipes.service";
-
 
 export enum ConflictResolution {
   LeaveAsItIs,
@@ -28,7 +26,7 @@ export class IngredientsConflictModalComponent {
 
   resolution: ConflictResolution = ConflictResolution.LeaveAsItIs;
 
-  constructor(public activeModal: NgbActiveModal, private recipesService: RecipesService) {
+  constructor(public activeModal: NgbActiveModal) {
   }
 
   targetToText(target: TargetIngredients | undefined): string {

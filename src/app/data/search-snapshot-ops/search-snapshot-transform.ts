@@ -2,6 +2,9 @@ import {RecipeQueryParams} from "../../services/recipe-query-params";
 import {SearchSnapshot} from "../search-snapshot";
 import {determineAppSearchMode, SavedRecipeSearchQuery} from "../saved-recipe-search";
 import {AppSearchMode} from "../app-search-mode";
+import {TargetIngredients} from "../target-ingredients";
+import {DisplayedIngredient} from "../displayed-ingredient";
+import {IngredientCategory, IngredientName} from "../ingredients";
 
 export class SearchSnapshotTransform {
   static toQueryParams(snapshot: SearchSnapshot): RecipeQueryParams {
@@ -49,6 +52,17 @@ export class SearchSnapshotTransform {
     return JSON.parse(jsonStr);
   }
 
+  static toDisplayedIngredients(snapshot: SearchSnapshot): Map<TargetIngredients, DisplayedIngredient[]> {
+    const displayedIngredients = new Map<TargetIngredients, DisplayedIngredient[]>();
+
+    const targets = [TargetIngredients.Included, TargetIngredients.Excluded, TargetIngredients.Extra];
+    for (const target of targets) {
+      displayedIngredients.set(target, SearchSnapshotTransform.extractAsDisplayedIngredients(target, snapshot));
+    }
+
+    return displayedIngredients;
+  }
+
   private static toIncludedIngredientsQueryParam(query: SavedRecipeSearchQuery): number[] {
     const appSearchMode = determineAppSearchMode(query);
     if (appSearchMode === AppSearchMode.None) {
@@ -86,5 +100,39 @@ export class SearchSnapshotTransform {
     }
 
     return query.addIngTags ? query.addIngTags.map(i => i.id) : [];
+  }
+
+  private static extractAsDisplayedIngredients(target: TargetIngredients, snapshot: SearchSnapshot): DisplayedIngredient[] {
+    let sourceIngredientNames: IngredientName[] | undefined;
+    let sourceIngredientCategories: IngredientCategory[] | undefined;
+
+    const query = snapshot.search.query;
+    if (target === TargetIngredients.Included) {
+      sourceIngredientNames = query.inIngs;
+      sourceIngredientCategories = query.inIngTags;
+    }
+
+    if (target === TargetIngredients.Excluded) {
+      sourceIngredientNames = query.exIngs;
+      sourceIngredientCategories = query.exIngTags;
+    }
+
+    if (target === TargetIngredients.Extra) {
+      sourceIngredientNames = query.addIngs;
+      sourceIngredientCategories = query.addIngTags;
+    }
+
+    let ingredients: DisplayedIngredient[] = [];
+    let ingredientCategories: DisplayedIngredient[] = [];
+
+    if (sourceIngredientNames) {
+      ingredients = sourceIngredientNames.map(i => DisplayedIngredient.fromIngredientName(i));
+    }
+
+    if (sourceIngredientCategories) {
+      ingredientCategories = sourceIngredientCategories.map(c => DisplayedIngredient.fromIngredientCategory(c));
+    }
+
+    return ingredients.concat(ingredientCategories);
   }
 }
