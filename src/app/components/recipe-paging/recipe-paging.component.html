@@ -24,16 +24,16 @@
   </div>
 
   <div *ngIf="isEmpty">
-    <h4 class="text-center">
+    <h4 i18n="@@recipe-paging-no-results-title" class="text-center">
       not found such recipes! ☹️
     </h4>
-    <p class="text-center">try using different search parameters</p>
+    <p i18n="@@recipe-paging-no-results-text" class="text-center">try using different search parameters</p>
   </div>
 
   <div *ngIf="isError">
-    <h4 class="text-center">
+    <h4 i18n="@@recipe-paging-error-title" class="text-center">
       oh snap! ☹️
     </h4>
-    <p class="text-center">there was an error; try again maybe! 🤞</p>
+    <p i18n="@@recipe-paging-error-text" class="text-center">there was an error; try again maybe! 🤞</p>
   </div>
 </div>

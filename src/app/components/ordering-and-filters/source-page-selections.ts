@@ -13,13 +13,13 @@ export class SourcePageSelections {
   };
 
   texts: IMultiSelectTexts = {
-    defaultTitle: "select"
+    defaultTitle: $localize `:@@source-select-title:select`
   };
 
   options: IMultiSelectOption[] = [];
 
   private readonly supportedLanguages: any = {
-    "hu": {name: "Hungarian", code: 10000},
+    "hu": {name: $localize `:@@supported-language-hun:Hungarian`, code: 10000},
     // "en": {name: "English", code: 10001}
   };
 

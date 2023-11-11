@@ -9,7 +9,7 @@ import {RouteNames} from "./route-names";
 export class AppComponent {
   isMenuCollapsed = true;
   routes = [
-    {name: "Home", link: RouteNames.HOME},
-    {name: "About", link: RouteNames.ABOUT},
+    {name: $localize `:@@page-title-home:Home`, link: RouteNames.HOME},
+    {name: $localize `:@@page-title-about:About`, link: RouteNames.ABOUT},
   ]
 }

@@ -7,14 +7,14 @@
   <div class="form-check">
     <input class="form-check-input" [value]="ConflictResolution.LeaveAsItIs" [(ngModel)]="resolution" type="radio"
            name="conflictResolution">
-    <label i18n="@@conflict-modal-leave-as-it-is-label" class="form-check-label">
+    <label class="form-check-label">
       leave as it is
     </label>
   </div>
   <div class="form-check">
     <input class="form-check-input" [value]="ConflictResolution.Move" [(ngModel)]="resolution" type="radio"
            name="conflictResolution">
-    <label i18n="@@conflict-modal-move-to-label" class="form-check-label">
+    <label class="form-check-label">
       move to {{targetToText(target)}}
     </label>
   </div>

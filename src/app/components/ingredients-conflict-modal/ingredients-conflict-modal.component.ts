@@ -33,14 +33,14 @@ export class IngredientsConflictModalComponent {
 
   targetToText(target: TargetIngredients | undefined): string {
     if(target === TargetIngredients.Extra) {
-      return "extra";
+      return $localize `:@@conflict-modal-extra:extra`;
     } else if(target === TargetIngredients.Excluded) {
-      return "excluded";
+      return $localize `:@@conflict-modal-excluded:excluded`;
     } else if(target === TargetIngredients.Included) {
-      return "included";
+      return $localize `:@@conflict-modal-included:included`;
     }
 
-    return "<something's wrong>";
+    return $localize `:@@conflict-modal-something-wrong:<something's wrong>`;
   }
 
   okClicked() {
