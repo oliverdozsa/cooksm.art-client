@@ -28,7 +28,7 @@ export class SearchSnapshotUpdate {
     }
   }
 
-  static withSearchMode(appSearchMode: AppSearchMode, snapshot: SearchSnapshot) {
+  static withSearchMode(appSearchMode: AppSearchMode, snapshot: SearchSnapshot, ratio: number = 10) {
     const query = snapshot.search.query;
 
     if (appSearchMode === AppSearchMode.Contains) {
@@ -39,7 +39,7 @@ export class SearchSnapshotUpdate {
       query.goodIngs = query.inIngs?.length
     } else if (appSearchMode === AppSearchMode.ComposedOf) {
       query.searchMode = ApiSearchMode.RatioBased;
-      query.goodIngsRatio = 1;
+      query.goodIngsRatio = ratio / 10.0;
     } else if (appSearchMode === AppSearchMode.AnyOf) {
       query.searchMode = ApiSearchMode.NumberBased;
       query.unknownIngsRel = 'ge';

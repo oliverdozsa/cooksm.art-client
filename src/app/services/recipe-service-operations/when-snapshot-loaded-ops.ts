@@ -88,7 +88,7 @@ export class WhenSnapshotLoadedOps {
     const appSearchMode = determineAppSearchMode(this.snapshot.search.query);
     this.operation$.next({
       type: RecipeServiceOperationType.SetSearchMode,
-      payload: {searchMode: appSearchMode}
+      payload: {searchMode: appSearchMode, ratio: this.snapshot.search.query.goodIngsRatio}
     });
   }
 }

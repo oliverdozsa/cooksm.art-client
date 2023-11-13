@@ -1,10 +1,30 @@
 <div>
   <label i18n="@@search-mode-label">search mode</label>
   <select [(ngModel)]="searchMode" class="form-select" aria-label="select search mode">
-    <option i18n="@@search-mode-just-show-something-option" [disabled]="isDisabled(AppSearchMode.None)" [ngValue]="AppSearchMode.None">just show something</option>
-    <option i18n="@@search-mode-should-contain-option" [disabled]="isDisabled(AppSearchMode.Contains)" [ngValue]="AppSearchMode.Contains">should contain all from included</option>
-    <option i18n="@@search-mode-composed-of-option" [disabled]="isDisabled(AppSearchMode.ComposedOf)" [ngValue]="AppSearchMode.ComposedOf">composed of included</option>
-    <option i18n="@@search-mode-any-of-option" [disabled]="isDisabled(AppSearchMode.AnyOf)" [ngValue]="AppSearchMode.AnyOf">any of included</option>
-    <option i18n="@@search-mode-exactly-option" [disabled]="isDisabled(AppSearchMode.StrictlyComposedOf)" [ngValue]="AppSearchMode.StrictlyComposedOf">exactly from included</option>
+    <option i18n="@@search-mode-just-show-something-option" [disabled]="isDisabled(AppSearchMode.None)"
+            [ngValue]="AppSearchMode.None">just show something
+    </option>
+    <option i18n="@@search-mode-should-contain-option" [disabled]="isDisabled(AppSearchMode.Contains)"
+            [ngValue]="AppSearchMode.Contains">should contain all from included
+    </option>
+    <option i18n="@@search-mode-composed-of-option" [disabled]="isDisabled(AppSearchMode.ComposedOf)"
+            [ngValue]="AppSearchMode.ComposedOf">composed of included
+    </option>
+    <option i18n="@@search-mode-any-of-option" [disabled]="isDisabled(AppSearchMode.AnyOf)"
+            [ngValue]="AppSearchMode.AnyOf">any of included
+    </option>
+    <option i18n="@@search-mode-exactly-option" [disabled]="isDisabled(AppSearchMode.StrictlyComposedOf)"
+            [ngValue]="AppSearchMode.StrictlyComposedOf">exactly from included
+    </option>
   </select>
+</div>
+
+<div *ngIf="shouldShowRatioRange" class="mt-1">
+  <div class="text-center">
+    at least how much of the included ingredients should be used?
+  </div>
+  <div class="position-relative mb-3 mx-2">
+    <input [(ngModel)]="ratio" type="range" class="form-range" min="1" max="10" (change)="ratioChanged()">
+    <output class="bubble mt-4" [style.left]="bubblePositionLeftAsPercent">{{ratio*10}}%</output>
+  </div>
 </div>

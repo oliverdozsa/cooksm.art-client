@@ -12,6 +12,8 @@ import {RecipeServiceOperation, RecipeServiceOperationType} from "../../services
 export class SearchModeComponent implements OnDestroy {
   AppSearchMode = AppSearchMode;
 
+  ratio: number = 10;
+
   private _searchMode = AppSearchMode.None;
   private disabledSearchModes: AppSearchMode[] = [];
   private destroy$ = new Subject<void>();
@@ -33,8 +35,17 @@ export class SearchModeComponent implements OnDestroy {
     this.recipeService.searchModeChanged(this.searchMode);
   }
 
+  get shouldShowRatioRange(): boolean {
+    return this._searchMode === AppSearchMode.ComposedOf;
+  }
+
   isDisabled(searchMode: AppSearchMode) {
     return this.disabledSearchModes.includes(searchMode);
+  }
+
+  get bubblePositionLeftAsPercent(): string {
+    // Maps 1 - 10 ratio values to left percent values of 0 - 100%
+    return (((this.ratio - 1) * 10.0 / 9.0) * 10) + '%';
   }
 
   ngOnDestroy(): void {
@@ -42,9 +53,17 @@ export class SearchModeComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
+  ratioChanged() {
+    this.recipeService.searchModeChanged(this.searchMode, this.ratio);
+  }
+
   private onRecipesServiceOperation(operation: RecipeServiceOperation) {
     if (operation.type === RecipeServiceOperationType.SetSearchMode) {
       this._searchMode = operation.payload.searchMode;
+      if (operation.payload.ratio) {
+        this.ratio = Math.round(operation.payload.ratio * 10);
+        this.ratio = this.ratio === 0 ? 1 : this.ratio;
+      }
     }
 
     if (operation.type === RecipeServiceOperationType.DisableSearchModes) {

@@ -84,9 +84,9 @@ export class RecipesService {
     });
   }
 
-  searchModeChanged(searchMode: AppSearchMode) {
+  searchModeChanged(searchMode: AppSearchMode, ratio: number = 10) {
     this.anySearchParamChanged(() => {
-      SearchSnapshotUpdate.withSearchMode(searchMode, this.snapshotForCurrentQuery);
+      SearchSnapshotUpdate.withSearchMode(searchMode, this.snapshotForCurrentQuery, ratio);
 
       const whenSearchModeChanged = new WhenSearchModeChangedOps(this.snapshotForCurrentQuery, this.operation$);
       whenSearchModeChanged.doWhatNecessary();

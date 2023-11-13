@@ -44,7 +44,7 @@ export class WhenIngredientsChangedOps {
       SearchSnapshotUpdate.withSearchMode(AppSearchMode.Contains, this.snapshotForCurrentQuery);
       this.operation$.next({
         type: RecipeServiceOperationType.SetSearchMode,
-        payload: {searchMode: AppSearchMode.Contains}
+        payload: {searchMode: AppSearchMode.Contains, ratio: this.snapshotForCurrentQuery.search.query.goodIngsRatio}
       });
 
       whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
@@ -54,7 +54,7 @@ export class WhenIngredientsChangedOps {
       SearchSnapshotUpdate.withSearchMode(AppSearchMode.None, this.snapshotForCurrentQuery);
       this.operation$.next({
         type: RecipeServiceOperationType.SetSearchMode,
-        payload: {searchMode: AppSearchMode.None}
+        payload: {searchMode: AppSearchMode.None, ratio: this.snapshotForCurrentQuery.search.query.goodIngsRatio}
       });
 
       whenSearchModeChanged.disableIngredientsBasedOnSearchMode();
