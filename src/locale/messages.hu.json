@@ -78,6 +78,7 @@
     "search-mode-composed-of-option": "a felvettekből álljon",
     "search-mode-any-of-option": "bármely a felvettekből",
     "search-mode-exactly-option": "pontosan a felvettekből",
+    "search-mode-how-much-ratio-text": " mennyit szeretnél a felvett hozzávalókból használni? ",
     "filter-by-ingredients-title": " hozzávalók ",
     "ingredients-to-include-label": " mi legyen benne? ",
     "ingredients-to-exclude-label": " mi NE legyen benne? ",
