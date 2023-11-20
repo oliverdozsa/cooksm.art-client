@@ -12,6 +12,7 @@ export class Recipe {
   id: number = -1;
   name: string = '<NOT SET>';
   url: string = '<NOT SET>';
+  imageUrl: string | undefined = undefined;
   dateAdded: number = -1;
   numofings: number = -1;
   time: CookingTime = CookingTime.Unknown;
