@@ -5,7 +5,6 @@ import {TargetIngredients} from "../../data/target-ingredients";
 import {DisabledSearchModes} from "./disabled-search-modes";
 import {WhenIngredientsChangedHandleExtraRelationsOps} from "./when-ingredients-changed-handle-extra-relations-ops";
 import {determineAppSearchMode} from "../../data/saved-recipe-search";
-import {AppSearchMode} from "../../data/app-search-mode";
 import {WhenSearchModeChangedOps} from "./when-search-mode-changed-ops";
 
 export class WhenSnapshotLoadedOps {
@@ -21,6 +20,7 @@ export class WhenSnapshotLoadedOps {
     this.setOrderingAndFilters();
     this.handleExtraRelationAdjustments();
     this.setSearchMode();
+    this.setPageNumber();
 
     const whenSearchModeChanged =
       new WhenSearchModeChangedOps(this.snapshot, this.operation$);
@@ -90,5 +90,12 @@ export class WhenSnapshotLoadedOps {
       type: RecipeServiceOperationType.SetSearchMode,
       payload: {searchMode: appSearchMode, ratio: this.snapshot.search.query.goodIngsRatio}
     });
+  }
+
+  setPageNumber() {
+    this.operation$.next({
+      type: RecipeServiceOperationType.SetPageNumber,
+      payload: this.snapshot.currentPageNumber
+    })
   }
 }

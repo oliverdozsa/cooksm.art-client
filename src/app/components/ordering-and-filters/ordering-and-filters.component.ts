@@ -131,11 +131,14 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-  paramsEvent() {
+  paramsEvent(withSearchTriggered: boolean = true) {
     const isAnyParamChanged = !this.params.equals(this.oldParams);
     if (isAnyParamChanged) {
       this.oldParams = this.params.copy();
-      this.recipesService.orderingAndFiltersChanged(this.params);
+
+      if(withSearchTriggered) {
+        this.recipesService.orderingAndFiltersChanged(this.params);
+      }
     }
   }
 

@@ -30,10 +30,6 @@ export class RecipePagingComponent implements OnDestroy {
     return this.currentPage != undefined && this.currentPage.items.length === 0;
   }
 
-  get isGettingInitialPage(): boolean {
-    return this.currentPage === undefined;
-  }
-
   constructor(private recipesService: RecipesService) {
     recipesService.results$
       .pipe(takeUntil(this.destroy$))

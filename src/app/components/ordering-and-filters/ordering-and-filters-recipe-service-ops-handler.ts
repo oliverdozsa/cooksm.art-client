@@ -20,7 +20,7 @@ export class OrderingAndFiltersRecipeServiceOpsHandler {
         this.component.sourcePageSelections = new SourcePageSelections(this.component);
       }
 
-      this.component.paramsEvent();
+      this.component.paramsEvent(false);
     }
   }
 }
