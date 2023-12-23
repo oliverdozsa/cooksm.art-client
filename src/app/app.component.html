@@ -7,7 +7,17 @@
     </a>
 
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <span *ngIf="!userService.isLoggedIn" class="nav-link" style="cursor: pointer" (click)="onLoginClicked(login)">
+            <i class="bi bi-person-circle"></i>
+            Login
+          </span>
+          <span *ngIf="userService.isLoggedIn" class="nav-link" style="cursor: pointer" (click)="onLogoutClicked()">
+            <i class="bi bi-person-circle"></i>
+            Logout
+          </span>
+        </li>
         <li *ngFor="let route of routes" class="nav-item">
           <a class="nav-link" [routerLink]="route.link" routerLinkActive="active" (click)="isMenuCollapsed = true">
             {{route.name}}
@@ -22,3 +32,23 @@
 <div class="container-fluid">
   <router-outlet></router-outlet>
 </div>
+
+<ng-template #login let-modal>
+  <div class="modal-header">
+    <h6 class="modal-title" id="modal-basic-title">login with</h6>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class="d-flex justify-content-center align-items-center">
+      <div>
+        <asl-google-signin-button type='icon' size='medium'></asl-google-signin-button>
+      </div>
+      <div>
+        <button class="btn btn-sm btn-outline-primary ms-4" (click)="onFacebookLoginClicked()">
+          <i class="bi bi-facebook"></i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</ng-template>

@@ -13,15 +13,25 @@ import {IngredientSearcherComponent} from './components/ingredient-searcher/ingr
 import {ChipComponent} from './components/chip/chip.component';
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
-import { SearchModeComponent } from './components/search-mode/search-mode.component';
-import { RecipePagingComponent } from './components/recipe-paging/recipe-paging.component';
-import { RecipeCardComponent } from './components/recipe-card/recipe-card.component';
+import {SearchModeComponent} from './components/search-mode/search-mode.component';
+import {RecipePagingComponent} from './components/recipe-paging/recipe-paging.component';
+import {RecipeCardComponent} from './components/recipe-card/recipe-card.component';
 import {NgxSpinnerModule} from "ngx-spinner";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
-import { OrderingAndFiltersComponent } from './components/ordering-and-filters/ordering-and-filters.component';
-import { ExtraIngredientsSearcherComponent } from './components/extra-ingredients-searcher/extra-ingredients-searcher.component';
-import { IngredientsConflictModalComponent } from './components/ingredients-conflict-modal/ingredients-conflict-modal.component';
+import {OrderingAndFiltersComponent} from './components/ordering-and-filters/ordering-and-filters.component';
+import {
+  ExtraIngredientsSearcherComponent
+} from './components/extra-ingredients-searcher/extra-ingredients-searcher.component';
+import {
+  IngredientsConflictModalComponent
+} from './components/ingredients-conflict-modal/ingredients-conflict-modal.component';
 import {NgxBootstrapMultiselectModule} from "ngx-bootstrap-multiselect";
+import {
+  FacebookLoginProvider,
+  GoogleLoginProvider, GoogleSigninButtonModule,
+  SocialAuthServiceConfig,
+  SocialLoginModule
+} from "@abacritt/angularx-social-login";
 
 @NgModule({
   declarations: [
@@ -48,9 +58,31 @@ import {NgxBootstrapMultiselectModule} from "ngx-bootstrap-multiselect";
     NgOptimizedImage,
     FormsModule,
     NgxSpinnerModule,
-    NgxBootstrapMultiselectModule
+    NgxBootstrapMultiselectModule,
+    SocialLoginModule,
+    GoogleSigninButtonModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('422896297667-5etbi68ruhet99rhffonv8agg4qhc8i5.apps.googleusercontent.com')
+          },
+          {
+            id: FacebookLoginProvider.PROVIDER_ID,
+            provider: new FacebookLoginProvider('326225733567921')
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
