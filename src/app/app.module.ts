@@ -70,11 +70,17 @@ import {
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('422896297667-5etbi68ruhet99rhffonv8agg4qhc8i5.apps.googleusercontent.com')
+            provider: new GoogleLoginProvider('422896297667-5etbi68ruhet99rhffonv8agg4qhc8i5.apps.googleusercontent.com',
+              {
+                scopes: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
+              })
           },
           {
             id: FacebookLoginProvider.PROVIDER_ID,
-            provider: new FacebookLoginProvider('326225733567921')
+            provider: new FacebookLoginProvider('326225733567921',
+              {
+                scopes: "email public_profile"
+              })
           }
         ],
         onError: (err) => {
