@@ -32,6 +32,7 @@ import {
   SocialAuthServiceConfig,
   SocialLoginModule
 } from "@abacritt/angularx-social-login";
+import { ToastsComponent } from './components/toasts/toasts.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import {
     RecipeCardComponent,
     OrderingAndFiltersComponent,
     ExtraIngredientsSearcherComponent,
-    IngredientsConflictModalComponent
+    IngredientsConflictModalComponent,
+    ToastsComponent
   ],
   imports: [
     BrowserModule,

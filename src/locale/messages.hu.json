@@ -67,7 +67,7 @@
     "recipe-card-cooking-time-quick": "gyorsan kész",
     "recipe-card-cooking-time-average": "átlagos",
     "recipe-card-cooking-time-lengthy": "hosszadalmas",
-    "recipe-card-num-of-ingredeints": "{$INTERPOLATION} hozzávaló",
+    "recipe-card-num-of-ingredients": "{$INTERPOLATION} hozzávaló",
     "recipe-paging-no-results-title": " nincsenek ilyen receptek! ☹️ ",
     "recipe-paging-no-results-text": "próbálj más keresési értékeket",
     "recipe-paging-error-title": " ajjaj! ☹️ ",
@@ -85,6 +85,8 @@
     "search-filter-ordering-title": " szűrők / rendezés ",
     "about-page-title": "az oldalról",
     "about-page-text": "a cooksm.art segít recepteket keresni hozzávalók alapján",
-    "4863371103643861248": "1"
+    "4863371103643861248": "1",
+    "user-service-login-succeeded": "Üdv {$userName}! 👋",
+    "user-service-login-failed": "Nem sikerült belépni 😥."
   }
 }

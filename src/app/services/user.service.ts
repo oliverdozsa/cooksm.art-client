@@ -9,6 +9,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ApiPaths} from "../api-paths";
 import {ApiUserInfo} from "../data/api-user-info";
+import {ToastsService, ToastType} from "./toasts.service";
 
 @Injectable({
   providedIn: 'root'
@@ -18,26 +19,23 @@ export class UserService {
   apiUser: ApiUserInfo | undefined;
   isLoggedIn: boolean = false;
 
-  constructor(private authService: SocialAuthService, private httpClient: HttpClient) {
+  constructor(private authService: SocialAuthService, private httpClient: HttpClient, private toastService: ToastsService) {
     authService.authState.subscribe({
       next: u => this.onAuthStateChanged(u)
     })
   }
 
   private onAuthStateChanged(user: SocialUser) {
-    this.isLoggedIn = user != null;
-    this.apiUser = this.isLoggedIn ? this.apiUser : undefined;
+    this.apiUser = undefined;
     this.user = user;
 
-    if(this.isLoggedIn) {
+    if(user) {
       this.authService.getAccessToken(this.user.provider)
         .then(t => this.loginApi(t))
     }
   }
 
   private loginApi(accessToken: string) {
-    console.log(`social user: ${JSON.stringify(this.user)}`)
-
     const loginData = {
       token: accessToken
     }
@@ -58,10 +56,14 @@ export class UserService {
 
   private loginApiSucceeded(apiUser: ApiUserInfo) {
     this.apiUser = apiUser;
+    this.isLoggedIn = true;
+    const toastText = $localize `:@@user-service-login-succeeded:Welcome ${this.user?.name}:userName:! 👋`
+    this.toastService.display({type: ToastType.Success, text: toastText});
   }
 
   private loginApiFailed() {
-    // TODO: toast message.
     this.isLoggedIn = false;
+    const toastText = $localize `:@@user-service-login-failed:Could not log you in 😥.`
+    this.toastService.display({type: ToastType.Danger, text: "Could not log you in 😥."});
   }
 }
