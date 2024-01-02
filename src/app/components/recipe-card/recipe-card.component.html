@@ -9,9 +9,13 @@
                class="icon-link link-underline link-underline-opacity-0 clamp-title"
                target="_blank">
               <i class="bi bi-box-arrow-up-right"></i>
-              {{recipe.name}}
+              {{ recipe.name }}
             </a>
           </h6>
+          <div *ngIf="userService.isLoggedIn" class="ms-auto" style="max-width:27px">
+            <i class="bi bi-star me-2"></i>
+            <i class="bi bi-book"></i>
+          </div>
         </div>
 
 
@@ -36,7 +40,7 @@
 
             <div class="ms-1 d-flex align-items-center">
               <div><i class="bi bi-list-ul"></i></div>
-              <div i18n="@@recipe-card-num-of-ingredients" class="ms-1">{{recipe.numofings}} ingredients</div>
+              <div i18n="@@recipe-card-num-of-ingredients" class="ms-1">{{ recipe.numofings }} ingredients</div>
             </div>
           </div>
         </div>
@@ -50,19 +54,26 @@
 
     <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100 shadow-sm rounded-4">
       <div class="card-body px-0">
-        <h6 class="card-title px-3" style="height: 2rem">
-          <a [href]="recipe.url"
-             class="icon-link link-underline link-underline-opacity-0 clamp-title"
-             target="_blank">
-            <i class="bi bi-box-arrow-up-right"></i>
-            {{recipe.name}}
-          </a>
-        </h6>
-        <div class="overflow-y-auto overflow-x-hidden w-100" style="height:14.7rem;">
+        <div class="d-flex">
+          <h6 class="card-title px-3" style="height: 2rem">
+            <a [href]="recipe.url"
+               class="icon-link link-underline link-underline-opacity-0 clamp-title"
+               target="_blank">
+              <i class="bi bi-box-arrow-up-right"></i>
+              {{ recipe.name }}
+            </a>
+          </h6>
+
+          <div *ngIf="userService.isLoggedIn" class="ms-auto" style="max-width:27px">
+            <i class="bi bi-star me-2"></i>
+            <i class="bi bi-book"></i>
+          </div>
+        </div>
+        <div class="overflow-y-auto overflow-x-hidden w-100" style="height:14.1rem;">
           <ul class="list-group list-group-flush w-100 ms-3">
             <li *ngFor="let ingredient of recipe.ingredients" [ngClass]="getIngredientTextColorClass(ingredient)"
                 class="list-group-item p-1">
-              {{ingredient.name}}
+              {{ ingredient.name }}
             </li>
           </ul>
         </div>

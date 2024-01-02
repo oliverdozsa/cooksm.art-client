@@ -32,6 +32,8 @@ export class UserService {
     if(user) {
       this.authService.getAccessToken(this.user.provider)
         .then(t => this.loginApi(t))
+    } else {
+      this.isLoggedIn = false;
     }
   }
 
@@ -64,6 +66,6 @@ export class UserService {
   private loginApiFailed() {
     this.isLoggedIn = false;
     const toastText = $localize `:@@user-service-login-failed:Could not log you in 😥.`
-    this.toastService.display({type: ToastType.Danger, text: "Could not log you in 😥."});
+    this.toastService.display({type: ToastType.Danger, text: toastText});
   }
 }

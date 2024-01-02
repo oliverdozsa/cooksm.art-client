@@ -9,18 +9,20 @@
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <span *ngIf="!userService.isLoggedIn" class="nav-link" style="cursor: pointer" (click)="onLoginClicked(login)">
+          <span *ngIf="!userService.isLoggedIn" class="nav-link" style="cursor: pointer"
+                (click)="onLoginClicked(login)">
             <i class="bi bi-person-circle"></i>
             Login
           </span>
           <span *ngIf="userService.isLoggedIn" class="nav-link" style="cursor: pointer" (click)="onLogoutClicked()">
-            <i class="bi bi-person-circle"></i>
+            <img *ngIf="userService.user?.photoUrl" alt="User photo" [ngSrc]="userService.user?.photoUrl!" width="25" height="25" class="rounded-circle me-1">
+            <i *ngIf="!userService.user?.photoUrl" class="bi bi-person-circle"></i>
             Logout
           </span>
         </li>
         <li *ngFor="let route of routes" class="nav-item">
           <a class="nav-link" [routerLink]="route.link" routerLinkActive="active" (click)="isMenuCollapsed = true">
-            {{route.name}}
+            {{ route.name }}
           </a>
         </li>
       </ul>

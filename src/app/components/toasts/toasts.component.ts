@@ -13,7 +13,7 @@ export class ToastsComponent {
 
   getToastClass(toast: Toast): string {
     if (toast.type === ToastType.Success) {
-      return "text-bg-success text-white";
+      return "text-bg-light";
     } else if(toast.type === ToastType.Danger) {
       return "text-bg-danger";
     }

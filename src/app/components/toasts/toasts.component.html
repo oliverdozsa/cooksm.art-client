@@ -1,4 +1,12 @@
-<ngb-toast *ngFor="let toast of toastService.toasts" [class]="getToastClass(toast)"
-           (hidden)="toastService.remove(toast)">
-  {{ toast.text }}
+<ngb-toast #ngbToast *ngFor="let toast of toastService.toasts" [class]="getToastClass(toast)"
+           (hidden)="toastService.remove(toast)" [delay]="4000">
+  <div class="d-flex">
+    <div>
+      {{toast.text}}
+    </div>
+    <div class="ms-auto" (click)="ngbToast.hide()" style="cursor: pointer;">
+      <i class="bi bi-x-lg"></i>
+    </div>
+  </div>
+
 </ngb-toast>

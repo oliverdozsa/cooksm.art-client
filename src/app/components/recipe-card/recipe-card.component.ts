@@ -3,6 +3,7 @@ import {CookingTime, Recipe} from "../../data/recipe";
 import {RecipesService} from "../../services/recipes.service";
 import {IngredientCategory, IngredientName} from "../../data/ingredients";
 import {TargetIngredients} from "../../data/target-ingredients";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-recipe-card',
@@ -16,7 +17,7 @@ export class RecipeCardComponent {
 
   isFlipped: boolean = false;
 
-  constructor(private recipesService: RecipesService) {
+  constructor(private recipesService: RecipesService, public userService: UserService) {
   }
 
   getIngredientTextColorClass(ingredient: IngredientName): string {
