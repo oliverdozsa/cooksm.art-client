@@ -1,10 +1,10 @@
-<div class="position-relative recipe-card-container" style="width: 18rem; height: 19rem">
+<div class="position-relative recipe-card-container" style="width: 18rem; height: 20rem">
   <div class="recipe-parent-card position-absolute w-100 h-100" [ngClass]="isFlipped ? 'flipped' : ''">
 
     <div *ngIf="recipe" class="card recipe-card-front position-absolute w-100 h-100 shadow-sm rounded-4">
       <div class="card-body">
         <div class="d-flex align-items-center" style="height: 3.2rem;">
-          <h6 class="card-title px-3">
+          <h6 class="card-title px-2">
             <a [href]="recipe.url"
                class="icon-link link-underline link-underline-opacity-0 clamp-title"
                target="_blank">
@@ -13,15 +13,17 @@
             </a>
           </h6>
           <div *ngIf="userService.isLoggedIn" class="ms-auto" style="max-width:27px">
-            <i class="bi bi-star me-2"></i>
+            <div>
+              <app-favorite-recipe [recipeId]="recipe.id"></app-favorite-recipe>
+            </div>
             <i class="bi bi-book"></i>
           </div>
         </div>
 
 
         <div class="position-relative">
-          <div class="position-absolute overflow-y-hidden w-100" style="height: 12rem;">
-            <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" style="height: 12rem"
+          <div class="position-absolute overflow-y-hidden w-100" style="height: 12.7rem;">
+            <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" style="height: 12.7rem"
                  class="w-100 object-fit-cover border rounded"
                  alt="recipe image"/>
           </div>
@@ -53,9 +55,9 @@
 
 
     <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100 shadow-sm rounded-4">
-      <div class="card-body px-0">
+      <div class="card-body">
         <div class="d-flex">
-          <h6 class="card-title px-3" style="height: 2rem">
+          <h6 class="card-title px-2" style="height: 2rem">
             <a [href]="recipe.url"
                class="icon-link link-underline link-underline-opacity-0 clamp-title"
                target="_blank">
@@ -65,7 +67,9 @@
           </h6>
 
           <div *ngIf="userService.isLoggedIn" class="ms-auto" style="max-width:27px">
-            <i class="bi bi-star me-2"></i>
+            <div>
+              <app-favorite-recipe [recipeId]="recipe.id"></app-favorite-recipe>
+            </div>
             <i class="bi bi-book"></i>
           </div>
         </div>
@@ -78,7 +82,6 @@
           </ul>
         </div>
       </div>
-
 
       <a class="icon-link flip-control" (click)="isFlipped = !isFlipped">
         <i class="bi bi-chevron-left"></i>

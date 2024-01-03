@@ -10,6 +10,7 @@ import {environment} from "../../environments/environment";
 import {ApiPaths} from "../api-paths";
 import {ApiUserInfo} from "../data/api-user-info";
 import {ToastsService, ToastType} from "./toasts.service";
+import {Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,8 @@ export class UserService {
   user: SocialUser | undefined;
   apiUser: ApiUserInfo | undefined;
   isLoggedIn: boolean = false;
+
+  apiUserAvailable$: Subject<void> = new Subject<void>();
 
   constructor(private authService: SocialAuthService, private httpClient: HttpClient, private toastService: ToastsService) {
     authService.authState.subscribe({
@@ -59,6 +62,7 @@ export class UserService {
   private loginApiSucceeded(apiUser: ApiUserInfo) {
     this.apiUser = apiUser;
     this.isLoggedIn = true;
+    this.apiUserAvailable$.next();
     const toastText = $localize `:@@user-service-login-succeeded:Welcome ${this.user?.name}:userName:! 👋`
     this.toastService.display({type: ToastType.Success, text: toastText});
   }

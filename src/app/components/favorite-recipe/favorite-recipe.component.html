@@ -1,0 +1,9 @@
+<div *ngIf="!isLoading">
+  <i *ngIf="!isFavorite" class="bi bi-star" style="cursor: pointer" (click)="like()"></i>
+  <i *ngIf="isFavorite" class="bi bi-star-fill" style="cursor: pointer" (click)="dislike()"></i>
+</div>
+
+<div *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
+

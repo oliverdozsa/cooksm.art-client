@@ -11,7 +11,7 @@ import {NgOptimizedImage} from "@angular/common";
 import {SearchParamsComponent} from './components/search-params/search-params.component';
 import {IngredientSearcherComponent} from './components/ingredient-searcher/ingredient-searcher.component';
 import {ChipComponent} from './components/chip/chip.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
 import {SearchModeComponent} from './components/search-mode/search-mode.component';
 import {RecipePagingComponent} from './components/recipe-paging/recipe-paging.component';
@@ -33,6 +33,9 @@ import {
   SocialLoginModule
 } from "@abacritt/angularx-social-login";
 import { ToastsComponent } from './components/toasts/toasts.component';
+import { FavoriteRecipeComponent } from './components/favorite-recipe/favorite-recipe.component';
+import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
+import {FavoriteRecipesService} from "./services/favorite-recipes.service";
 
 @NgModule({
   declarations: [
@@ -49,7 +52,8 @@ import { ToastsComponent } from './components/toasts/toasts.component';
     OrderingAndFiltersComponent,
     ExtraIngredientsSearcherComponent,
     IngredientsConflictModalComponent,
-    ToastsComponent
+    ToastsComponent,
+    FavoriteRecipeComponent
   ],
   imports: [
     BrowserModule,
@@ -89,7 +93,8 @@ import { ToastsComponent } from './components/toasts/toasts.component';
           console.error(err);
         }
       } as SocialAuthServiceConfig,
-    }
+    },
+    {provide: HTTP_INTERCEPTORS, useClass: JwtBearerInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })

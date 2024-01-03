@@ -4,6 +4,7 @@ import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {FacebookLoginProvider, SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
 import {UserService} from "./services/user.service";
 import {first} from "rxjs";
+import {FavoriteRecipesService} from "./services/favorite-recipes.service";
 
 @Component({
   selector: 'app-root',
@@ -19,7 +20,8 @@ export class AppComponent {
 
   private loginModal: NgbModalRef|undefined;
 
-  constructor(private modalService: NgbModal, private authService: SocialAuthService, public userService: UserService) {
+  constructor(private modalService: NgbModal, private authService: SocialAuthService, public userService: UserService,
+              private eagerInitFavoriteRecipesService: FavoriteRecipesService) {
     this.authService.authState
       .subscribe({
         next: u => this.onAuthStateChanged(u)
