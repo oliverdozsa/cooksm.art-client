@@ -85,8 +85,10 @@
     "search-filter-ordering-title": " search filters / ordering ",
     "about-page-title": "about",
     "about-page-text": "cooksm.art is a recipe search engine with focus on the ingredients to use or to avoid.",
+    "favorite-service-like-failed": "could not do it! 😥",
+    "favorite-service-dislike-failed": "could not do it! 😥",
     "4863371103643861248": "1",
-    "user-service-login-succeeded": "Welcome {$userName}! 👋",
-    "user-service-login-failed": "Could not log you in 😥."
+    "user-service-login-succeeded": "welcome {$userName}! 👋",
+    "user-service-login-failed": "could not log you in 😥."
   }
 }

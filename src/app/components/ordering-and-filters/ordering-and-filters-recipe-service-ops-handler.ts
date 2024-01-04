@@ -15,6 +15,7 @@ export class OrderingAndFiltersRecipeServiceOpsHandler {
       this.component.params.maxIngs = operation.payload.maxIngs;
       this.component.params.times = operation.payload.times;
       this.component.params.sourcePages = operation.payload.sourcePages;
+      this.component.params.useFavoritesOnly = operation.payload.useFavoritesOnly;
 
       if(this.component.sourcePagesService.allSourcePages.length > 0) {
         this.component.sourcePageSelections = new SourcePageSelections(this.component);

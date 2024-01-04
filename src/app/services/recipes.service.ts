@@ -23,6 +23,7 @@ import {
   IngredientAlreadyPresentElsewhereChecker
 } from "./recipe-service-operations/ingredient-already-present-elsewhere-checker";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
@@ -41,8 +42,12 @@ export class RecipesService {
   }
 
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
-              modalService: NgbModal) {
+              modalService: NgbModal, private userService: UserService) {
     this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
+    if(!this.userService.isLoggedIn) {
+      this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
+    }
+
     this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(modalService, this, this.snapshotForCurrentQuery);
   }
 
@@ -50,7 +55,7 @@ export class RecipesService {
     const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
     this.previousQueryParams = queryParams;
 
-    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$);
+    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$, this.userService);
     whenSnapshotIsLoaded.doWhatNecessary();
 
     this.recipeQueryService.query(queryParams).subscribe({

@@ -8,6 +8,7 @@ export class OrderingAndFiltersParams {
   maxIngs: number | undefined;
   times: number[] | undefined;
   sourcePages: SourcePage[] | undefined;
+  useFavoritesOnly: boolean | undefined;
 
   private _filterByName: string | undefined;
 
@@ -30,7 +31,8 @@ export class OrderingAndFiltersParams {
       this.minIngs === other.minIngs &&
       this.maxIngs === other.maxIngs &&
       JSON.stringify(this.times) === JSON.stringify(other.times) &&
-      JSON.stringify(this.sourcePages) === JSON.stringify(other.sourcePages)
+      JSON.stringify(this.sourcePages) === JSON.stringify(other.sourcePages) &&
+      this.useFavoritesOnly === other.useFavoritesOnly;
   }
 
   copy(): OrderingAndFiltersParams {
@@ -40,8 +42,9 @@ export class OrderingAndFiltersParams {
     copy.orderBy = this.orderBySort?.slice();
     copy.minIngs = this.minIngs;
     copy.maxIngs = this.maxIngs;
-    copy.times = this.times?.slice()
-    copy.sourcePages = this.sourcePages?.slice()
+    copy.times = this.times?.slice();
+    copy.sourcePages = this.sourcePages?.slice();
+    copy.useFavoritesOnly = this.useFavoritesOnly;
 
     return copy;
   }
@@ -83,9 +86,5 @@ export class OrderingAndFiltersParams {
     }
 
     this.times = this.times.filter(t => t != value);
-  }
-
-  useSourcePages(sourcePages: SourcePage[]) {
-    // TODO
   }
 }

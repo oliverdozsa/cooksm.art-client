@@ -6,11 +6,13 @@ import {DisabledSearchModes} from "./disabled-search-modes";
 import {WhenIngredientsChangedHandleExtraRelationsOps} from "./when-ingredients-changed-handle-extra-relations-ops";
 import {determineAppSearchMode} from "../../data/saved-recipe-search";
 import {WhenSearchModeChangedOps} from "./when-search-mode-changed-ops";
+import {UserService} from "../user.service";
 
 export class WhenSnapshotLoadedOps {
   private disabledSearchModes: DisabledSearchModes;
 
-  constructor(private snapshot: SearchSnapshot, private operation$: Subject<RecipeServiceOperation>) {
+  constructor(private snapshot: SearchSnapshot, private operation$: Subject<RecipeServiceOperation>,
+              private userService: UserService) {
     this.disabledSearchModes = new DisabledSearchModes(snapshot, operation$);
   }
 
@@ -73,7 +75,8 @@ export class WhenSnapshotLoadedOps {
         minIngs: query.minIngs,
         maxIngs: query.maxIngs,
         times: query.times,
-        sourcePages: query.sourcePages
+        sourcePages: query.sourcePages,
+        useFavoritesOnly: this.userService.isLoggedIn ? query.useFavoritesOnly : undefined
       }
     })
   }

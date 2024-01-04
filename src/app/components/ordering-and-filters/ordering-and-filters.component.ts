@@ -7,6 +7,7 @@ import {CookingTime} from 'src/app/data/recipe';
 import {SourcePagesService} from "../../services/source-pages.service";
 import {IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts} from "ngx-bootstrap-multiselect";
 import {SourcePageSelections} from "./source-page-selections";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-ordering-and-filters',
@@ -94,7 +95,17 @@ export class OrderingAndFiltersComponent implements OnDestroy {
     return this.params.times != undefined && this.params.times.length > 0;
   }
 
-  constructor(private recipesService: RecipesService, public sourcePagesService: SourcePagesService) {
+  set useFavoritesOnly(value: boolean) {
+    this.params.useFavoritesOnly = value;
+    this.paramsEvent();
+  }
+
+  get useFavoritesOnly(): boolean {
+    return this.params.useFavoritesOnly === undefined ? false : this.params.useFavoritesOnly;
+  }
+
+  constructor(private recipesService: RecipesService, public sourcePagesService: SourcePagesService,
+              public userService: UserService) {
     const opsHandler = new OrderingAndFiltersRecipeServiceOpsHandler(this);
     recipesService.operation$
       .pipe(takeUntil(this.destroy$))

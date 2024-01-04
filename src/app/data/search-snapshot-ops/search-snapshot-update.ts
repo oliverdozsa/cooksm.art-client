@@ -70,6 +70,7 @@ export class SearchSnapshotUpdate {
     query.maxIngs = params.maxIngs;
     query.times = params.times;
     query.sourcePages = params.sourcePages;
+    query.useFavoritesOnly = params.useFavoritesOnly;
   }
 
   static withExtraRelation(relation: ExtraRelation, value: number, snapshot: SearchSnapshot) {
