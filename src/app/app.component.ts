@@ -14,8 +14,9 @@ import {FavoriteRecipesService} from "./services/favorite-recipes.service";
 export class AppComponent {
   isMenuCollapsed = true;
   routes = [
-    {name: $localize`:@@page-title-home:Home`, link: RouteNames.HOME},
-    {name: $localize`:@@page-title-about:About`, link: RouteNames.ABOUT},
+    {name: $localize`:@@page-title-home:Home`, link: RouteNames.HOME, isAuthNeeded: false},
+    {name: $localize`:@@page-title-recipe-books:Recipe Books`, link: RouteNames.RECIPE_BOOKS, isAuthNeeded: true},
+    {name: $localize`:@@page-title-about:About`, link: RouteNames.ABOUT, isAuthNeeded: false},
   ]
 
   private loginModal: NgbModalRef|undefined;
@@ -38,7 +39,15 @@ export class AppComponent {
   }
 
   onLogoutClicked() {
-    this.authService.signOut();
+    this.userService.logout();
+  }
+
+  isAvailable(route: any): boolean {
+    if(!route.isAuthNeeded) {
+      return true;
+    }
+
+    return this.userService.isLoggedIn;
   }
 
   private onAuthStateChanged(user: SocialUser) {

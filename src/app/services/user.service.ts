@@ -32,6 +32,13 @@ export class UserService {
     setTimeout(() => this.useCachedIfValid());
   }
 
+  logout() {
+    this.authService.signOut();
+    this.isLoggedIn = false;
+    this.apiUser = undefined;
+    localStorage.removeItem("apiUser");
+  }
+
   private onAuthStateChanged(user: SocialUser) {
     this.apiUser = undefined;
     this.user = user;

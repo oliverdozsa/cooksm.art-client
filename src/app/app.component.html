@@ -20,11 +20,13 @@
             Logout
           </span>
         </li>
-        <li *ngFor="let route of routes" class="nav-item">
-          <a class="nav-link" [routerLink]="route.link" routerLinkActive="active" (click)="isMenuCollapsed = true">
-            {{ route.name }}
-          </a>
-        </li>
+        <ng-container *ngFor="let route of routes">
+          <li *ngIf="isAvailable(route)" class="nav-item">
+            <a class="nav-link" [routerLink]="route.link" routerLinkActive="active" (click)="isMenuCollapsed = true">
+              {{ route.name }}
+            </a>
+          </li>
+        </ng-container>
       </ul>
     </div>
 

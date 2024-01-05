@@ -36,6 +36,7 @@ import { ToastsComponent } from './components/toasts/toasts.component';
 import { FavoriteRecipeComponent } from './components/favorite-recipe/favorite-recipe.component';
 import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
 import {FavoriteRecipesService} from "./services/favorite-recipes.service";
+import { RecipeBooksComponent } from './pages/recipe-books/recipe-books.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import {FavoriteRecipesService} from "./services/favorite-recipes.service";
     ExtraIngredientsSearcherComponent,
     IngredientsConflictModalComponent,
     ToastsComponent,
-    FavoriteRecipeComponent
+    FavoriteRecipeComponent,
+    RecipeBooksComponent
   ],
   imports: [
     BrowserModule,
@@ -78,6 +80,7 @@ import {FavoriteRecipesService} from "./services/favorite-recipes.service";
             id: GoogleLoginProvider.PROVIDER_ID,
             provider: new GoogleLoginProvider('422896297667-5etbi68ruhet99rhffonv8agg4qhc8i5.apps.googleusercontent.com',
               {
+                oneTapEnabled: false,
                 scopes: "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
               })
           },
