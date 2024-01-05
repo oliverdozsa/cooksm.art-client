@@ -16,16 +16,20 @@ import {Subject} from "rxjs";
   providedIn: 'root'
 })
 export class UserService {
-  user: SocialUser | undefined;
   apiUser: ApiUserInfo | undefined;
   isLoggedIn: boolean = false;
 
   apiUserAvailable$: Subject<void> = new Subject<void>();
 
+  private user: SocialUser | undefined;
+  private readonly CACHED_VALIDITY_MINS = 60;
+
   constructor(private authService: SocialAuthService, private httpClient: HttpClient, private toastService: ToastsService) {
     authService.authState.subscribe({
       next: u => this.onAuthStateChanged(u)
-    })
+    });
+
+    setTimeout(() => this.useCachedIfValid());
   }
 
   private onAuthStateChanged(user: SocialUser) {
@@ -63,13 +67,44 @@ export class UserService {
     this.apiUser = apiUser;
     this.isLoggedIn = true;
     this.apiUserAvailable$.next();
-    const toastText = $localize `:@@user-service-login-succeeded:Welcome ${this.user?.name}:userName:! 👋`
+    const toastText = $localize `:@@user-service-login-succeeded:Welcome ${apiUser.fullName}:userName:! 👋`;
     this.toastService.display({type: ToastType.Success, text: toastText});
+
+    this.cacheApiUser();
   }
 
   private loginApiFailed() {
     this.isLoggedIn = false;
     const toastText = $localize `:@@user-service-login-failed:Could not log you in 😥.`
     this.toastService.display({type: ToastType.Danger, text: toastText});
+  }
+
+  private cacheApiUser() {
+    const validUntilMillis = new Date(new Date().valueOf() + this.CACHED_VALIDITY_MINS * 60 * 1000).valueOf();
+
+    const cachedUser = {
+      user: this.apiUser,
+      validUntilMillis: validUntilMillis
+    }
+
+    localStorage.setItem("apiUser", JSON.stringify(cachedUser));
+  }
+
+  private useCachedIfValid() {
+    const cachedApiUserStr = localStorage.getItem("apiUser");
+
+    if(cachedApiUserStr == null) {
+      return;
+    }
+
+    const cachedApiUser = JSON.parse(cachedApiUserStr);
+
+    const nowMillis = new Date().valueOf();
+    const validUntilMillis = cachedApiUser.validUntilMillis;
+
+    if(nowMillis < validUntilMillis) {
+      this.apiUser = cachedApiUser.user;
+      this.loginApiSucceeded(this.apiUser!)
+    }
   }
 }

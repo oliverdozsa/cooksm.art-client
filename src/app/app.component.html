@@ -15,8 +15,8 @@
             Login
           </span>
           <span *ngIf="userService.isLoggedIn" class="nav-link" style="cursor: pointer" (click)="onLogoutClicked()">
-            <img *ngIf="userService.user?.photoUrl" alt="User photo" [ngSrc]="userService.user?.photoUrl!" width="25" height="25" class="rounded-circle me-1">
-            <i *ngIf="!userService.user?.photoUrl" class="bi bi-person-circle"></i>
+            <img *ngIf="userService.apiUser?.picture" alt="User photo" [ngSrc]="userService.apiUser?.picture!" width="25" height="25" class="rounded-circle me-1">
+            <i *ngIf="!userService.apiUser?.picture" class="bi bi-person-circle"></i>
             Logout
           </span>
         </li>
