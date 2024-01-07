@@ -18,8 +18,8 @@
           </span>
         </div>
 
-        <div class="ms-auto">
-          <button *ngFor="let itemControl of itemControls" type="button" class="btn btn-outline-primary me-2"
+        <div class="ms-auto" style="min-width: 120px;">
+          <button *ngFor="let itemControl of itemControls" type="button" class="btn btn-sm btn-outline-primary me-2"
                   (click)="itemControl.onClick(item)">
             <i [class]="'bi ' + itemControl.icon"></i>
           </button>

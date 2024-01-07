@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-recipe-books',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./recipe-books.component.scss']
 })
 export class RecipeBooksComponent {
-
+  constructor(public userService: UserService) {
+  }
 }
