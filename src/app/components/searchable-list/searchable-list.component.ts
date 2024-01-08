@@ -18,11 +18,7 @@ export class SearchableListComponent {
   nameKey: string = "name";
 
   @Input()
-  itemControls: SearchableListItemControl[] = [
-    {icon: "bi-list-ul", onClick: i => console.log(`clicked on item through control ${JSON.stringify(i)}`)},
-    {icon: "bi-pen", onClick: i => console.log(`clicked on item through control ${JSON.stringify(i)}`)},
-    {icon: "bi-trash", onClick: i => console.log(`clicked on item through control ${JSON.stringify(i)}`)},
-  ];
+  itemControls: SearchableListItemControl[] = [];
 
   @Input()
   itemCreatable: boolean = false;
@@ -42,19 +38,11 @@ export class SearchableListComponent {
     this.filteredItems = [...this._items];
   }
 
-  filteredItems: any[] = [
-    {name: "alma"},
-    {name: "alak"},
-    {name: "bab ablak"}
-  ];
+  filteredItems: any[] = [];
 
   search: string = "";
 
-  private _items: any[] = [
-    {name: "alma"},
-    {name: "alak"},
-    {name: "bab ablak"}
-  ];
+  private _items: any[] = [];
 
   filterList() {
     this.filteredItems = this._items

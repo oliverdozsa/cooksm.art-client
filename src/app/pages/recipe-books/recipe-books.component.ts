@@ -9,4 +9,8 @@ import {UserService} from "../../services/user.service";
 export class RecipeBooksComponent {
   constructor(public userService: UserService) {
   }
+
+  onCreateNewClicked() {
+    console.log("create new clicked.")
+  }
 }

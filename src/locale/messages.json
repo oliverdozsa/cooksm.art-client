@@ -34,6 +34,7 @@
     "ngb.timepicker.PM": "{$INTERPOLATION}",
     "ngb.timepicker.AM": "{$INTERPOLATION}",
     "page-title-home": "Home",
+    "page-title-recipe-books": "Recipe Books",
     "page-title-about": "About",
     "additional-ingredients-label": "additional ingredients?",
     "can-be-more-than-extra-relation-option": "can be more than",
@@ -83,12 +84,14 @@
     "ingredients-to-include-label": "ingredients to include?",
     "ingredients-to-exclude-label": "ingredients to exclude?",
     "search-filter-ordering-title": " search filters / ordering ",
+    "searchable-list-no-items": "no items",
     "about-page-title": "about",
     "about-page-text": "cooksm.art is a recipe search engine with focus on the ingredients to use or to avoid.",
-    "favorite-service-like-failed": "could not do it! 😥",
-    "favorite-service-dislike-failed": "could not do it! 😥",
+    "recipe-books-page-login-needed": " please login to view this page\n",
+    "favorite-service-like-failed": "Could not do it! 😥",
+    "favorite-service-dislike-failed": "Could not do it! 😥",
     "4863371103643861248": "1",
-    "user-service-login-succeeded": "welcome {$userName}! 👋",
-    "user-service-login-failed": "could not log you in 😥."
+    "user-service-login-succeeded": "Welcome {$userName}! 👋",
+    "user-service-login-failed": "Could not log you in 😥."
   }
 }

@@ -1,14 +1,26 @@
 <div class="card">
   <div class="card-header">
-    <div class="input-group">
-      <input type="text" class="form-control" placeholder="search" aria-label="search" [(ngModel)]="search"
-             (keyup)="filterList()">
-      <span class="input-group-text">
+    <div class="d-flex">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="search" aria-label="search" [(ngModel)]="search"
+               (keyup)="filterList()">
+        <span class="input-group-text">
         <i class="bi bi-search"></i>
       </span>
+      </div>
+
+      <div *ngIf="itemCreatable" class="ps-4 ms-auto">
+        <button class="btn btn-outline-primary" (click)="onItemAddClick()">
+          <i class="bi bi-plus-lg"></i>
+        </button>
+      </div>
     </div>
   </div>
   <ul class="list-group list-group-flush">
+    <li *ngIf="filteredItems.length === 0" class="list-group-item text-center">
+      <span class="text-body-tertiary" i18n="@@searchable-list-no-items">no items</span>
+    </li>
+
     <li *ngFor="let item of filteredItems" class="list-group-item">
       <div class="d-flex align-items-center">
         <div (click)="onItemClick(item)">
