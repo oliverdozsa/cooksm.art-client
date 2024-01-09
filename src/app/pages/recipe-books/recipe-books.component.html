@@ -1,7 +1,9 @@
 <div *ngIf="userService.isLoggedIn" class="row">
   <div class="col-md-2"></div>
   <div class="col-12 col-md-8">
-    <app-searchable-list [itemCreatable]="true" [onItemAddClick]="onCreateNewClicked"></app-searchable-list>
+    <app-searchable-list [itemCreatable]="true" [onItemAddClick]="onCreateNewClicked"
+                         [items]="recipeBooksService.recipeBooks" nameKey="name"
+                         [showCreatePopover]="showCreatePopover"></app-searchable-list>
   </div>
   <div class="col-md-2"></div>
 </div>
@@ -9,3 +11,11 @@
 <h5 *ngIf="!userService.isLoggedIn" i18n="@@recipe-books-page-login-needed" class="text-dark-emphasis text-center mt-2">
   please login to view this page
 </h5>
+
+<ngx-spinner
+  [fullScreen]="true"
+  name="recipeBooks"
+  type="ball-clip-rotate"
+  [showSpinner]="recipeBooksService.isLoading"
+>
+</ngx-spinner>

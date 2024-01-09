@@ -10,7 +10,9 @@
       </div>
 
       <div *ngIf="itemCreatable" class="ps-4 ms-auto">
-        <button class="btn btn-outline-primary" (click)="onItemAddClick()">
+        <button class="btn btn-outline-primary" (click)="onItemAddClick()" ngbPopover="Create new here!"
+                #createPopover="ngbPopover" [disablePopover]="isCreatePopoverDisabled" (hidden)="onPopoverHidden()"
+                [autoClose]="'inside'">
           <i class="bi bi-plus-lg"></i>
         </button>
       </div>
