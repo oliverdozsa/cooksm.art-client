@@ -38,6 +38,7 @@ import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
 import {FavoriteRecipesService} from "./services/favorite-recipes.service";
 import { RecipeBooksComponent } from './pages/recipe-books/recipe-books.component';
 import { SearchableListComponent } from './components/searchable-list/searchable-list.component';
+import { CreateNewRecipeBookModalComponent } from './components/create-new-recipe-book-modal/create-new-recipe-book-modal.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import { SearchableListComponent } from './components/searchable-list/searchable
     ToastsComponent,
     FavoriteRecipeComponent,
     RecipeBooksComponent,
-    SearchableListComponent
+    SearchableListComponent,
+    CreateNewRecipeBookModalComponent
   ],
   imports: [
     BrowserModule,

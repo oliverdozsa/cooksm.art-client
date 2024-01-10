@@ -60,6 +60,8 @@ export class SearchableListComponent {
 
   search: string = "";
 
+  readonly createNewPopoverText: string = $localize`:@@searchable-list-create-new-popover:create new here!`
+
   private _items: any[] = [];
   private _showCreatePopover: boolean = false;
   private _popoverGotHidden: boolean = false;

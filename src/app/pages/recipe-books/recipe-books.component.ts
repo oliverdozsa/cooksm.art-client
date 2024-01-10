@@ -1,8 +1,12 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, TemplateRef, ViewChild} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {RecipeBooksService} from "../../services/recipe-books.service";
 import {Subject, takeUntil} from "rxjs";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {
+  CreateNewRecipeBookModalComponent
+} from "../../components/create-new-recipe-book-modal/create-new-recipe-book-modal.component";
 
 @Component({
   selector: 'app-recipe-books',
@@ -12,9 +16,10 @@ import {Subject, takeUntil} from "rxjs";
 export class RecipeBooksComponent implements OnDestroy {
   showCreatePopover: boolean = false;
 
-  private destroy$ = new Subject<void>()
+  private destroy$ = new Subject<void>();
 
-  constructor(public userService: UserService, spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService) {
+  constructor(public userService: UserService, spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService,
+              private modalService: NgbModal) {
     if (recipeBooksService.isLoading) {
       spinnerService.show("recipeBooks");
     } else {
@@ -30,8 +35,9 @@ export class RecipeBooksComponent implements OnDestroy {
       })
   }
 
-  onCreateNewClicked() {
-    // TODO
+  onCreateNewClicked = () => {
+    const modalRef = this.modalService.open(CreateNewRecipeBookModalComponent);
+    modalRef.result.then(() => this.createNewRecipeBook(modalRef.componentInstance.name));
   }
 
   ngOnDestroy(): void {
@@ -39,5 +45,8 @@ export class RecipeBooksComponent implements OnDestroy {
     this.destroy$.complete();
   }
 
-
+  private createNewRecipeBook(name: string) {
+    // TODO
+    console.log(`new recipe book name: ${name}`);
+  }
 }
