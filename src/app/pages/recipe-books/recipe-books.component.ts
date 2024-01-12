@@ -7,6 +7,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {
   CreateNewRecipeBookModalComponent
 } from "../../components/create-new-recipe-book-modal/create-new-recipe-book-modal.component";
+import {SearchableListItemControl} from "../../components/searchable-list/searchable-list.component";
+import {RecipeBook} from "../../data/recipe-book";
 
 @Component({
   selector: 'app-recipe-books',
@@ -15,6 +17,10 @@ import {
 })
 export class RecipeBooksComponent implements OnDestroy {
   showCreatePopover: boolean = false;
+
+  bookControls: SearchableListItemControl[] = [
+    {icon:"bi-trash", onClick: item => this.onDeleteClicked(item)}
+  ];
 
   private destroy$ = new Subject<void>();
 
@@ -40,8 +46,8 @@ export class RecipeBooksComponent implements OnDestroy {
     modalRef.result.then(() => this.createNewRecipeBook(modalRef.componentInstance.name));
   }
 
-  onDeleteClicked() {
-
+  onDeleteClicked(recipeBook: RecipeBook) {
+    console.log(`delete: ${recipeBook.id}`);
   }
 
   ngOnDestroy(): void {
