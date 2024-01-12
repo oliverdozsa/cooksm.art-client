@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
-import {delay, Observable, Subject, tap} from "rxjs";
+import {delay, Subject} from "rxjs";
 import {RecipeBook} from "../data/recipe-book";
 import {environment} from "../../environments/environment";
 
@@ -19,12 +19,23 @@ export class RecipeBooksService {
     if (userService.isLoggedIn) {
       this.load();
     } else {
+      this.isLoading = false;
       userService.apiUserAvailable$.subscribe({
         next: () => this.load()
       })
     }
   }
 
+  create(name: string) {
+    const request = {
+      name: name
+    };
+
+    this.isLoading = true;
+    return this.httpClient.post<any>(this.baseUrl, request).subscribe({
+      next: () => this.load()
+    });
+  }
 
   private load() {
     this.isLoading = true;

@@ -4,10 +4,16 @@
 </div>
 <div class="modal-body">
   <div class="mb-3">
-    <input [(ngModel)]="name" type="email" class="form-control" id="recipeBookName" placeholder="name">
+    <div class="input-group has-validation">
+      <input [(ngModel)]="name" type="email" class="form-control" [class.is-invalid]="isInvalid"
+             [class.is-valid]="!isInvalid" id="recipeBookName" placeholder="name">
+      <div class="invalid-feedback">
+        at least 3 characters
+      </div>
+    </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('save')">save</button>
+  <button type="button" class="btn btn-outline-dark" [disabled]="isInvalid" (click)="activeModal.close('save')">save</button>
   <button type="button" class="btn btn-outline-" (click)="activeModal.dismiss('cancel')">cancel</button>
 </div>

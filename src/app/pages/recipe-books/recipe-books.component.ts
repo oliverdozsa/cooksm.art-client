@@ -18,7 +18,7 @@ export class RecipeBooksComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(public userService: UserService, spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService,
+  constructor(public userService: UserService, private spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService,
               private modalService: NgbModal) {
     if (recipeBooksService.isLoading) {
       spinnerService.show("recipeBooks");
@@ -40,13 +40,16 @@ export class RecipeBooksComponent implements OnDestroy {
     modalRef.result.then(() => this.createNewRecipeBook(modalRef.componentInstance.name));
   }
 
+  onDeleteClicked() {
+
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   private createNewRecipeBook(name: string) {
-    // TODO
-    console.log(`new recipe book name: ${name}`);
+    this.recipeBooksService.create(name);
   }
 }

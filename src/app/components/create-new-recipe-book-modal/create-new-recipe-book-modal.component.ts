@@ -9,6 +9,10 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 export class CreateNewRecipeBookModalComponent {
   name: string = "";
 
+  get isInvalid(): boolean {
+    return this.name.length < 3;
+  }
+
   constructor(public activeModal: NgbActiveModal) {
   }
 }
