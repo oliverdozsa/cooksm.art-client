@@ -9,6 +9,9 @@ import {
 } from "../../components/create-new-recipe-book-modal/create-new-recipe-book-modal.component";
 import {SearchableListItemControl} from "../../components/searchable-list/searchable-list.component";
 import {RecipeBook} from "../../data/recipe-book";
+import {
+  DeleteRecipeBookModalComponent
+} from "../../components/delete-recipe-book-modal/delete-recipe-book-modal.component";
 
 @Component({
   selector: 'app-recipe-books',
@@ -19,16 +22,16 @@ export class RecipeBooksComponent implements OnDestroy {
   showCreatePopover: boolean = false;
 
   bookControls: SearchableListItemControl[] = [
-    {icon:"bi-trash", onClick: item => this.onDeleteClicked(item)}
+    {icon: "bi-trash", onClick: item => this.onDeleteClicked(item)}
   ];
 
   private destroy$ = new Subject<void>();
 
-  constructor(public userService: UserService, private spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService,
+  constructor(public userService: UserService, spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService,
               private modalService: NgbModal) {
     if (recipeBooksService.isLoading) {
       spinnerService.show("recipeBooks");
-    } else {
+    } else if(userService.isLoggedIn) {
       setTimeout(() => {
         this.showCreatePopover = recipeBooksService.recipeBooks.length < 1;
       });
@@ -47,7 +50,9 @@ export class RecipeBooksComponent implements OnDestroy {
   }
 
   onDeleteClicked(recipeBook: RecipeBook) {
-    console.log(`delete: ${recipeBook.id}`);
+    const modalRef = this.modalService.open(DeleteRecipeBookModalComponent);
+    modalRef.componentInstance.name = recipeBook.name;
+    modalRef.result.then(() => this.deleteRecipeBook(recipeBook));
   }
 
   ngOnDestroy(): void {
@@ -57,5 +62,9 @@ export class RecipeBooksComponent implements OnDestroy {
 
   private createNewRecipeBook(name: string) {
     this.recipeBooksService.create(name);
+  }
+
+  private deleteRecipeBook(recipeBook: RecipeBook) {
+    this.recipeBooksService.delete(recipeBook.id);
   }
 }

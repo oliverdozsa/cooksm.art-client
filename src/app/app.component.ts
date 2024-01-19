@@ -14,9 +14,9 @@ import {FavoriteRecipesService} from "./services/favorite-recipes.service";
 export class AppComponent {
   isMenuCollapsed = true;
   routes = [
-    {name: $localize`:@@page-title-home:Home`, link: RouteNames.HOME, isAuthNeeded: false},
-    {name: $localize`:@@page-title-recipe-books:Recipe Books`, link: RouteNames.RECIPE_BOOKS, isAuthNeeded: true},
-    {name: $localize`:@@page-title-about:About`, link: RouteNames.ABOUT, isAuthNeeded: false},
+    {name: $localize`:@@page-title-home:home`, link: RouteNames.HOME, isAuthNeeded: false},
+    {name: $localize`:@@page-title-recipe-books:recipe books`, link: RouteNames.RECIPE_BOOKS, isAuthNeeded: true},
+    {name: $localize`:@@page-title-about:about`, link: RouteNames.ABOUT, isAuthNeeded: false},
   ]
 
   private loginModal: NgbModalRef|undefined;

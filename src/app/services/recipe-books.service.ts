@@ -4,6 +4,7 @@ import {UserService} from "./user.service";
 import {delay, Subject} from "rxjs";
 import {RecipeBook} from "../data/recipe-book";
 import {environment} from "../../environments/environment";
+import {ToastsService} from "./toasts.service";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class RecipeBooksService {
 
   private readonly baseUrl = environment.apiUrl + "/recipebooks";
 
-  constructor(private httpClient: HttpClient, userService: UserService) {
+  constructor(private httpClient: HttpClient, userService: UserService, private toastService: ToastsService) {
     if (userService.isLoggedIn) {
       this.load();
     } else {
@@ -33,7 +34,15 @@ export class RecipeBooksService {
 
     this.isLoading = true;
     return this.httpClient.post<any>(this.baseUrl, request).subscribe({
-      next: () => this.load()
+      next: () => this.load(),
+      error: () => this.onRequestError()
+    });
+  }
+
+  delete(id: number) {
+    this.httpClient.delete(this.baseUrl + `/${id}`).subscribe({
+      next: () => this.load(),
+      error: () => this.onRequestError()
     });
   }
 
@@ -52,5 +61,11 @@ export class RecipeBooksService {
     this.isLoading = false;
     this.recipeBooks = recipeBooks;
     this.available$.next();
+  }
+
+  private onRequestError() {
+    this.isLoading = false;
+    const errorMessage = $localize`:@@recipe-books-service-request-error:couldn't do it!`;
+    // TODO: toast
   }
 }
