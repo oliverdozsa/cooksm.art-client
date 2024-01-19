@@ -38,8 +38,10 @@ import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
 import {FavoriteRecipesService} from "./services/favorite-recipes.service";
 import { RecipeBooksComponent } from './pages/recipe-books/recipe-books.component';
 import { SearchableListComponent } from './components/searchable-list/searchable-list.component';
-import { CreateNewRecipeBookModalComponent } from './components/create-new-recipe-book-modal/create-new-recipe-book-modal.component';
-import { DeleteRecipeBookModalComponent } from './components/delete-recipe-book-modal/delete-recipe-book-modal.component';
+import { CreateEditRecipeBookModalComponent } from './components/recipe-book-modals/create-edit-recipe-book-modal/create-edit-recipe-book-modal.component';
+import { DeleteRecipeBookModalComponent } from './components/recipe-book-modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
+import {TransitionGroupComponent, TransitionGroupItemDirective} from "./directives/transition-group.directive";
+import { IngredientsOfRecipeBookModalComponent } from './components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component';
 
 @NgModule({
   declarations: [
@@ -60,8 +62,11 @@ import { DeleteRecipeBookModalComponent } from './components/delete-recipe-book-
     FavoriteRecipeComponent,
     RecipeBooksComponent,
     SearchableListComponent,
-    CreateNewRecipeBookModalComponent,
-    DeleteRecipeBookModalComponent
+    CreateEditRecipeBookModalComponent,
+    DeleteRecipeBookModalComponent,
+    TransitionGroupComponent,
+    TransitionGroupItemDirective,
+    IngredientsOfRecipeBookModalComponent
   ],
   imports: [
     BrowserModule,

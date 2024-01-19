@@ -5,13 +5,16 @@ import {RecipeBooksService} from "../../services/recipe-books.service";
 import {Subject, takeUntil} from "rxjs";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {
-  CreateNewRecipeBookModalComponent
-} from "../../components/create-new-recipe-book-modal/create-new-recipe-book-modal.component";
+  CreateEditRecipeBookModalComponent
+} from "../../components/recipe-book-modals/create-edit-recipe-book-modal/create-edit-recipe-book-modal.component";
 import {SearchableListItemControl} from "../../components/searchable-list/searchable-list.component";
 import {RecipeBook} from "../../data/recipe-book";
 import {
   DeleteRecipeBookModalComponent
-} from "../../components/delete-recipe-book-modal/delete-recipe-book-modal.component";
+} from "../../components/recipe-book-modals/delete-recipe-book-modal/delete-recipe-book-modal.component";
+import {
+  IngredientsOfRecipeBookModalComponent
+} from "../../components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component";
 
 @Component({
   selector: 'app-recipe-books',
@@ -22,7 +25,9 @@ export class RecipeBooksComponent implements OnDestroy {
   showCreatePopover: boolean = false;
 
   bookControls: SearchableListItemControl[] = [
-    {icon: "bi-trash", onClick: item => this.onDeleteClicked(item)}
+    {icon: "bi-trash", onClick: item => this.onDeleteClicked(item)},
+    {icon: "bi-pen", onClick: item => this.onEditClicked(item)},
+    {icon: "bi-list-check", onClick: item => this.onShowIngredientsClicked(item)}
   ];
 
   private destroy$ = new Subject<void>();
@@ -31,7 +36,7 @@ export class RecipeBooksComponent implements OnDestroy {
               private modalService: NgbModal) {
     if (recipeBooksService.isLoading) {
       spinnerService.show("recipeBooks");
-    } else if(userService.isLoggedIn) {
+    } else if (userService.isLoggedIn) {
       setTimeout(() => {
         this.showCreatePopover = recipeBooksService.recipeBooks.length < 1;
       });
@@ -45,7 +50,7 @@ export class RecipeBooksComponent implements OnDestroy {
   }
 
   onCreateNewClicked = () => {
-    const modalRef = this.modalService.open(CreateNewRecipeBookModalComponent);
+    const modalRef = this.modalService.open(CreateEditRecipeBookModalComponent);
     modalRef.result.then(() => this.createNewRecipeBook(modalRef.componentInstance.name));
   }
 
@@ -53,6 +58,17 @@ export class RecipeBooksComponent implements OnDestroy {
     const modalRef = this.modalService.open(DeleteRecipeBookModalComponent);
     modalRef.componentInstance.name = recipeBook.name;
     modalRef.result.then(() => this.deleteRecipeBook(recipeBook));
+  }
+
+  onEditClicked(recipeBook: RecipeBook) {
+    const modalRef = this.modalService.open(CreateEditRecipeBookModalComponent);
+    modalRef.componentInstance.name = recipeBook.name;
+    modalRef.result.then(() => this.updateRecipeBookName(recipeBook, modalRef.componentInstance.name));
+  }
+
+  onShowIngredientsClicked(recipeBook: RecipeBook) {
+    const modalRef = this.modalService.open(IngredientsOfRecipeBookModalComponent);
+    modalRef.componentInstance.recipeBook = recipeBook;
   }
 
   ngOnDestroy(): void {
@@ -66,5 +82,10 @@ export class RecipeBooksComponent implements OnDestroy {
 
   private deleteRecipeBook(recipeBook: RecipeBook) {
     this.recipeBooksService.delete(recipeBook.id);
+  }
+
+  private updateRecipeBookName(recipeBook: RecipeBook, newName: string) {
+    recipeBook.name = newName;
+    this.recipeBooksService.updateName(recipeBook);
   }
 }

@@ -46,6 +46,16 @@ export class RecipeBooksService {
     });
   }
 
+  updateName(recipeBook: RecipeBook) {
+    const request = {
+      name: recipeBook.name
+    };
+    this.httpClient.put(this.baseUrl + `/${recipeBook.id}`, request).subscribe({
+      next: () => this.load(),
+      error: () => this.onRequestError()
+    });
+  }
+
   private load() {
     this.isLoading = true;
     this.httpClient.get<RecipeBook[]>(this.baseUrl)
