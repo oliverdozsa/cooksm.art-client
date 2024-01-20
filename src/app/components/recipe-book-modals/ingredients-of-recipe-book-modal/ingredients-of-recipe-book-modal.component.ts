@@ -22,12 +22,7 @@ export class IngredientsOfRecipeBookModalComponent {
 
   isWorkLeft = true;
 
-  ingredients: IngredientName[] = [
-    {id: 1, name: "apple", altNames: []},
-    {id: 2, name: "peach", altNames: []},
-    {id: 3, name: "orange", altNames: []},
-    {id: 4, name: "raspberry", altNames: []},
-  ];
+  ingredients: IngredientName[] = [];
 
   private uniqueIngredients: Map<number, IngredientName> = new Map();
 

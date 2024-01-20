@@ -1,14 +1,24 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="modal-basic-title">ingredients of "{{recipeBook?.name}}"</h5>
+  <h5 class="modal-title" id="modal-basic-title">ingredients of "{{ recipeBook?.name }}"</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body p-0">
   <div class="mb-3">
-    <ul class="list-group list-group-flush">
-      <li *ngFor="let ingredient of ingredients" class="list-group-item">
-        {{ingredient.name}}
-      </li>
-    </ul>
+    <app-transition-group [className]="'flip-list'">
+      <ul *ngIf="!isWorkLeft" class="list-group list-group-flush">
+        <li *ngFor="let ingredient of ingredients" class="list-group-item" appTransitionGroupItem>
+          <div class="d-flex">
+            <div class="me-auto">{{ ingredient.name }}</div>
+            <div>
+              <button (click)="onIncludedToggleClick(ingredient.id)" class="btn btn-outline-primary border-0">
+                <i *ngIf="!isIncluded(ingredient.id)" class="bi bi-square"></i>
+                <i *ngIf="isIncluded(ingredient.id)" class="bi bi-check-square"></i>
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </app-transition-group>
   </div>
 </div>
 <div class="modal-footer">
