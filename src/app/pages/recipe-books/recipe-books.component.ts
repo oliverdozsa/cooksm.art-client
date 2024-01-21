@@ -69,6 +69,7 @@ export class RecipeBooksComponent implements OnDestroy {
   onShowIngredientsClicked(recipeBook: RecipeBook) {
     const modalRef = this.modalService.open(IngredientsOfRecipeBookModalComponent);
     modalRef.componentInstance.recipeBook = recipeBook;
+    modalRef.componentInstance.start();
   }
 
   ngOnDestroy(): void {

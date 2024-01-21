@@ -3,7 +3,18 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body p-0">
-  <div class="mb-3">
+  <div *ngIf="isWorkLeft" class="mb-3">
+    <div class="d-flex justify-content-center mt-2">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+
+    <ngb-progressbar *ngIf="isWorkLeft && progress > 0" class="mt-1" type="success" [value]="progress" [striped]="true" [animated]="true" />
+
+    <p *ngIf="!isWorkLeft && ingredients.length == 0" class="text-center">
+      no recipes in recipe book yet
+    </p>
+
     <app-transition-group [className]="'flip-list'">
       <ul *ngIf="!isWorkLeft" class="list-group list-group-flush">
         <li *ngFor="let ingredient of ingredients" class="list-group-item" appTransitionGroupItem>
