@@ -1,0 +1,17 @@
+<i class="bi bi-book" style="cursor: pointer" (click)="open(content)"></i>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">to which recipe books</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
+  </div>
+  <div class="modal-body">
+    <p>TODO</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('ok')">ok</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('ok')">cancel</button>
+  </div>
+</ng-template>
+
+
