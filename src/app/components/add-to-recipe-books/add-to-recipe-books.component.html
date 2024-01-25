@@ -2,15 +2,24 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="modal-basic-title">to which recipe books</h5>
+    <h5 class="modal-title" id="modal-basic-title">add "{{recipe?.name}}" to recipe books</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
   </div>
   <div class="modal-body">
-    <p>TODO</p>
+    <div *ngIf="recipeBookService.isLoading">
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">getting recipe books</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!recipeBookService.isLoading">
+
+    </div>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="modal.close('ok')">ok</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('ok')">cancel</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('close')">close</button>
   </div>
 </ng-template>
 
