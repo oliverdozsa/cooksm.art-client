@@ -21,7 +21,21 @@ export class ToastsService {
   constructor() {
   }
 
-  display(toast: Toast) {
+  success(message: string) {
+    this.display({
+      text: message,
+      type: ToastType.Success
+    });
+  }
+
+  danger(message: string) {
+    this.display({
+      text: message,
+      type: ToastType.Danger
+    });
+  }
+
+  private display(toast: Toast) {
     this.toasts.push(toast);
   }
 

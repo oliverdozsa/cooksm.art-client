@@ -5,17 +5,26 @@
     <h5 class="modal-title" id="modal-basic-title">add "{{recipe?.name}}" to recipe books</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
   </div>
-  <div class="modal-body">
-    <div *ngIf="recipeBookService.isLoading">
+  <div class="modal-body p-0">
+    <div *ngIf="isLoading">
       <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
-          <span class="visually-hidden">getting recipe books</span>
+          <span class="visually-hidden">working</span>
         </div>
       </div>
     </div>
 
-    <div *ngIf="!recipeBookService.isLoading">
-
+    <div *ngIf="!isLoading">
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let recipeBook of recipeBookService.recipeBooks" class="list-group-item">
+          <div class="d-flex">
+            <div>{{recipeBook.name}}</div>
+            <div class="ms-auto">
+              <button class="btn btn-outline-dark border-0"><i class="bi bi-check-square"></i></button>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </div>
   <div class="modal-footer">

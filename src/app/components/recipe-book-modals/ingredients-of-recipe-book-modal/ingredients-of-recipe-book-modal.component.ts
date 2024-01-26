@@ -66,10 +66,7 @@ export class IngredientsOfRecipeBookModalComponent {
     const clipboardText = includedNames.join("\n");
     this.clipboardService.copy(clipboardText);
 
-    this.toastService.display({
-      text: `a vágólapra másoltam ${includedNames.length} hozzávalót`,
-      type: ToastType.Success
-    });
+    this.toastService.success(`a vágólapra másoltam ${includedNames.length} hozzávalót`);
   }
 
   isIncluded(ingredientId: number): boolean {
@@ -105,10 +102,7 @@ export class IngredientsOfRecipeBookModalComponent {
           next: p => this.onRecipePage(p),
           error: () => {
             this.isWorkLeft = false;
-            this.toastService.display({
-              text: "nem sikerült! 😥 próbáld újra, hátha",
-              type: ToastType.Danger
-            });
+            this.toastService.danger("nem sikerült! 😥 próbáld újra, hátha");
           }
         })
     } else {

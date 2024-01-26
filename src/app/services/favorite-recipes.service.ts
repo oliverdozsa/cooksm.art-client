@@ -71,7 +71,7 @@ export class FavoriteRecipesService {
 
   private onLikeFail() {
     const toastText = $localize`:@@favorite-service-like-failed:Could not do it! 😥`
-    this.toastService.display({text: toastText, type: ToastType.Danger});
+    this.toastService.danger(toastText);
   }
 
   private onDislikeSuccess(recipeId: number) {
@@ -80,7 +80,7 @@ export class FavoriteRecipesService {
 
   private onDislikeFail() {
     const toastText = $localize`:@@favorite-service-dislike-failed:Could not do it! 😥`
-    this.toastService.display({text: toastText, type: ToastType.Danger});
+    this.toastService.danger(toastText);
   }
 }
 

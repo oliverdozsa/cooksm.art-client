@@ -75,7 +75,7 @@ export class UserService {
     this.isLoggedIn = true;
     this.apiUserAvailable$.next();
     const toastText = $localize `:@@user-service-login-succeeded:Welcome ${apiUser.fullName}:userName:! 👋`;
-    this.toastService.display({type: ToastType.Success, text: toastText});
+    this.toastService.success(toastText);
 
     this.cacheApiUser();
   }
@@ -83,7 +83,7 @@ export class UserService {
   private loginApiFailed() {
     this.isLoggedIn = false;
     const toastText = $localize `:@@user-service-login-failed:Could not log you in 😥.`
-    this.toastService.display({type: ToastType.Danger, text: toastText});
+    this.toastService.danger(toastText);
   }
 
   private cacheApiUser() {

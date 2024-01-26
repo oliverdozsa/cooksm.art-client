@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
-import {delay, Subject, tap} from "rxjs";
+import {delay, Observable, Subject, tap} from "rxjs";
 import {RecipeBook, RecipeBooksOfRecipe} from "../data/recipe-book";
 import {environment} from "../../environments/environment";
 import {ToastsService, ToastType} from "./toasts.service";
@@ -56,15 +56,12 @@ export class RecipeBooksService {
     });
   }
 
-  recipeBooksOf(recipeId: number) {
+  recipeBooksOf(recipeId: number): Observable<RecipeBooksOfRecipe> {
     const url = environment.apiUrl + `/recipes/${recipeId}/recipebooks`;
     return this.httpClient.get<RecipeBooksOfRecipe>(url)
       .pipe(
         tap({
-          error: () => this.toastService.display({
-            text: "nem sikerült letölteni a recepthez tartozó füzeteket!",
-            type: ToastType.Danger
-          })
+          error: () => this.toastService.danger("nem sikerült letölteni a recepthez tartozó füzeteket!")
         })
       );
   }
