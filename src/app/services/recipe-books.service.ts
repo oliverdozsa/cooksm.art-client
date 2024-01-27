@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {UserService} from "./user.service";
-import {delay, Observable, Subject, tap} from "rxjs";
+import {delay, Observable, of, Subject, tap} from "rxjs";
 import {RecipeBook, RecipeBooksOfRecipe} from "../data/recipe-book";
 import {environment} from "../../environments/environment";
 import {ToastsService, ToastType} from "./toasts.service";
@@ -66,6 +66,30 @@ export class RecipeBooksService {
       );
   }
 
+  addToRecipeBook(recipeId: number, recipeBookId: number): Observable<any> {
+    const request = {
+      recipeIds: [recipeId]
+    };
+
+    const url = `${this.baseUrl}/${recipeBookId}/recipes`;
+    return this.httpClient.post(url, request)
+      .pipe(
+        delay(700)
+      );
+  }
+
+  removeFromRecipeBook(recipeId: number, recipeBookId: number): Observable<any> {
+    const request = {
+      recipeIds: [recipeId]
+    };
+
+    const url = `${this.baseUrl}/${recipeBookId}/recipes`;
+    return this.httpClient.delete(url, {body: request})
+      .pipe(
+        delay(700)
+      );
+  }
+
   private load() {
     this.isLoading = true;
     this.httpClient.get<RecipeBook[]>(this.baseUrl)
@@ -86,6 +110,6 @@ export class RecipeBooksService {
   private onRequestError() {
     this.isLoading = false;
     const errorMessage = $localize`:@@recipe-books-service-request-error:couldn't do it!`;
-    // TODO: toast
+    this.toastService.danger(errorMessage);
   }
 }
