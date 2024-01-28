@@ -27,6 +27,14 @@
   </div>
 </div>
 
+<div class="mt-1">
+  <select [(ngModel)]="searchIngredients.searchMode" class="form-select form-select-sm" aria-label="search for ingredient in">
+    <option [ngValue]="IngredientsSearchMode.NamesAndCategories">everywhere</option>
+    <option [ngValue]="IngredientsSearchMode.Categories">categories only</option>
+  </select>
+
+</div>
+
 <ng-template #searchResultTemplate let-r="result">
   <span *ngIf="!r.isSearching">{{r.displayedName}}</span>
 </ng-template>

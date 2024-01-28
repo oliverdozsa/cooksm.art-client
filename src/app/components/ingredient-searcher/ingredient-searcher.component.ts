@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy} from '@angular/core';
 import {TargetIngredients} from "../../data/target-ingredients";
 import {DisplayedIngredient} from "../../data/displayed-ingredient";
 import {IngredientSearchService} from "../../services/ingredient-search.service";
-import {SearchIngredients} from "./search-ingredients";
+import {IngredientsSearchMode, SearchIngredients} from "./search-ingredients";
 import {
   catchError,
   debounceTime,
@@ -27,6 +27,8 @@ import {DisabledIngredients} from "../../data/ingredients-disabled-states";
   styleUrls: ['./ingredient-searcher.component.scss']
 })
 export class IngredientSearcherComponent implements OnDestroy {
+  IngredientsSearchMode = IngredientsSearchMode;
+
   @Input() target = TargetIngredients.Included;
   @Input() label: string = "";
 
