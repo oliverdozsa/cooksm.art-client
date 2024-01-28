@@ -23,6 +23,7 @@ export class UserService {
 
   private user: SocialUser | undefined;
   private readonly CACHED_VALIDITY_MINS = 60;
+  private autoLogoutTimeutID: number | undefined;
 
   constructor(private authService: SocialAuthService, private httpClient: HttpClient, private toastService: ToastsService) {
     authService.authState.subscribe({
@@ -37,6 +38,7 @@ export class UserService {
     this.isLoggedIn = false;
     this.apiUser = undefined;
     localStorage.removeItem("apiUser");
+    clearTimeout(this.autoLogoutTimeutID)
   }
 
   private onAuthStateChanged(user: SocialUser) {
@@ -65,7 +67,7 @@ export class UserService {
     }
 
     this.httpClient.post<ApiUserInfo>(url, loginData).subscribe({
-      next: u => this.loginApiSucceeded(u),
+      next: u => this.loginApiSucceededAndCache(u),
       error: e => this.loginApiFailed()
     })
   }
@@ -76,7 +78,10 @@ export class UserService {
     this.apiUserAvailable$.next();
     const toastText = $localize `:@@user-service-login-succeeded:Welcome ${apiUser.fullName}:userName:! 👋`;
     this.toastService.success(toastText);
+  }
 
+  private loginApiSucceededAndCache(apiUser: ApiUserInfo) {
+    this.loginApiSucceeded(apiUser);
     this.cacheApiUser();
   }
 
@@ -95,6 +100,7 @@ export class UserService {
     }
 
     localStorage.setItem("apiUser", JSON.stringify(cachedUser));
+    this.logoutAt(validUntilMillis);
   }
 
   private useCachedIfValid() {
@@ -112,6 +118,14 @@ export class UserService {
     if(nowMillis < validUntilMillis) {
       this.apiUser = cachedApiUser.user;
       this.loginApiSucceeded(this.apiUser!)
+      this.logoutAt(validUntilMillis);
     }
+  }
+
+  private logoutAt(logoutDateTimeMillis: number) {
+    const nowMillis = Date.now().valueOf();
+    const logoutDelay = logoutDateTimeMillis - nowMillis;
+
+    this.autoLogoutTimeutID = setTimeout(() => this.logout(), logoutDelay);
   }
 }
