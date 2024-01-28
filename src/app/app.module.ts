@@ -43,6 +43,7 @@ import { DeleteRecipeBookModalComponent } from './components/recipe-book-modals/
 import {TransitionGroupComponent, TransitionGroupItemDirective} from "./directives/transition-group.directive";
 import { IngredientsOfRecipeBookModalComponent } from './components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component';
 import { AddToRecipeBooksComponent } from './components/add-to-recipe-books/add-to-recipe-books.component';
+import { ResetSearchParamsComponent } from './components/reset-search-params/reset-search-params.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { AddToRecipeBooksComponent } from './components/add-to-recipe-books/add-
     TransitionGroupComponent,
     TransitionGroupItemDirective,
     IngredientsOfRecipeBookModalComponent,
-    AddToRecipeBooksComponent
+    AddToRecipeBooksComponent,
+    ResetSearchParamsComponent
   ],
   imports: [
     BrowserModule,

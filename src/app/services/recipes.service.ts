@@ -33,22 +33,17 @@ export class RecipesService {
   results$: Subject<Page<Recipe>> = new Subject<Page<Recipe>>();
 
   private recipeQuerySub: Subscription | undefined = undefined;
-  private snapshotForCurrentQuery: SearchSnapshot;
+  private snapshotForCurrentQuery: SearchSnapshot = new SearchSnapshot();
   private previousQueryParams: RecipeQueryParams | undefined = undefined;
-  private ingredientsAlreadyPresentChecker: IngredientAlreadyPresentElsewhereChecker;
+  private ingredientsAlreadyPresentChecker: IngredientAlreadyPresentElsewhereChecker | undefined;
 
   get currentSearchSnapshot(): SearchSnapshot {
     return this.snapshotForCurrentQuery;
   }
 
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
-              modalService: NgbModal, private userService: UserService) {
-    this.snapshotForCurrentQuery = searchSnapshotService.cloneSnapshot();
-    if(!this.userService.isLoggedIn) {
-      this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
-    }
-
-    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(modalService, this, this.snapshotForCurrentQuery);
+              private modalService: NgbModal, private userService: UserService) {
+    this.init();
   }
 
   queryInitialSnapshot() {
@@ -65,8 +60,8 @@ export class RecipesService {
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
-    if (this.ingredientsAlreadyPresentChecker.findWhenIngredientsChangedIn(target, items)) {
-      this.ingredientsAlreadyPresentChecker.askUser();
+    if (this.ingredientsAlreadyPresentChecker!.findWhenIngredientsChangedIn(target, items)) {
+      this.ingredientsAlreadyPresentChecker!.askUser();
     } else {
       const changedIngredients = new Map<TargetIngredients, DisplayedIngredient[]>;
       changedIngredients.set(target, items);
@@ -122,6 +117,12 @@ export class RecipesService {
     });
   }
 
+  reset() {
+    this.searchSnapshotService.set(new SearchSnapshot());
+    this.init();
+    this.queryInitialSnapshot();
+  }
+
   private anySearchParamChanged(updateSnapshotForQuery: () => void) {
     if (this.recipeQuerySub) {
       this.recipeQuerySub.unsubscribe();
@@ -145,5 +146,14 @@ export class RecipesService {
   private onQuerySuccessful(page: Page<Recipe>) {
     this.searchSnapshotService.set(this.snapshotForCurrentQuery);
     this.results$.next(page);
+  }
+
+  private init() {
+    this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
+    if(!this.userService.isLoggedIn) {
+      this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
+    }
+
+    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(this.modalService, this, this.snapshotForCurrentQuery);
   }
 }
