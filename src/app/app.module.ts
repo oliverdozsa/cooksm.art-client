@@ -44,6 +44,7 @@ import {TransitionGroupComponent, TransitionGroupItemDirective} from "./directiv
 import { IngredientsOfRecipeBookModalComponent } from './components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component';
 import { AddToRecipeBooksComponent } from './components/add-to-recipe-books/add-to-recipe-books.component';
 import { ResetSearchParamsComponent } from './components/reset-search-params/reset-search-params.component';
+import { SearchInRecipeBooksComponent } from './components/search-in-recipe-books/search-in-recipe-books.component';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { ResetSearchParamsComponent } from './components/reset-search-params/res
     TransitionGroupItemDirective,
     IngredientsOfRecipeBookModalComponent,
     AddToRecipeBooksComponent,
-    ResetSearchParamsComponent
+    ResetSearchParamsComponent,
+    SearchInRecipeBooksComponent
   ],
   imports: [
     BrowserModule,

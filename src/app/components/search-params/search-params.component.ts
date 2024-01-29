@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {TargetIngredients} from "../../data/target-ingredients";
+import {UserService} from "../../services/user.service";
 
 @Component({
   selector: 'app-search-params',
@@ -8,4 +9,7 @@ import {TargetIngredients} from "../../data/target-ingredients";
 })
 export class SearchParamsComponent {
   TargetIngredients = TargetIngredients;
+
+  constructor(public userService: UserService) {
+  }
 }

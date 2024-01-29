@@ -49,4 +49,18 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="userService.isLoggedIn" ngbAccordionItem [collapsed]="false">
+    <h2 ngbAccordionHeader>
+      <button i18n="@@search-params-recipe-book" ngbAccordionButton class="py-2">
+        recipe books
+      </button>
+    </h2>
+
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody class="py-2">
+        <app-search-in-recipe-books></app-search-in-recipe-books>
+      </div>
+    </div>
+  </div>
 </div>
