@@ -1,1 +1,23 @@
-<p>search-in-recipe-books works!</p>
+<div class="position-relative">
+  <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
+    <div class="d-flex flex-row flex-wrap justify-content-start">
+      <app-chip *ngFor="let recipeBook of added" [name]="recipeBook.name" color="success" (closeClicked)="removeRecipeBook(recipeBook)"></app-chip>
+      <div class="flex-grow-1">
+        <input class="form-control form-control-sm border border-0 shadow-none" style="min-width: 160px;" type="text"
+               i18n-placeholder="@@search-ingredients-placeholder" placeholder="search ingredients"
+               #typeahead="ngbTypeahead"
+               [ngbTypeahead]="search"
+               [resultTemplate]="searchResultTemplate"
+               [editable]="false"
+               [focusFirst]="false"
+               [inputFormatter]="inputFormatter"
+               (selectItem)="addRecipeBook($event.item)"
+               (focus)="inputElementFocused()" (focusout)="inputElementLostFocus()">
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #searchResultTemplate let-r="result">
+  <span *ngIf="!r.isSearching">{{r.displayedName}}</span>
+</ng-template>
