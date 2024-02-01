@@ -13,6 +13,6 @@ export class ChipComponent {
   @Output() closeClicked: EventEmitter<void> = new EventEmitter();
 
   get shouldTextBeLightColored() {
-    return this.color == "danger";
+    return this.color == "danger" || this.color == "secondary";
   }
 }

@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, ElementRef, ViewChild} from '@angular/core';
 import {RecipeBook} from "../../data/recipe-book";
 import {debounceTime, distinctUntilChanged, Observable, of, OperatorFunction, switchMap} from "rxjs";
+import {RecipeBooksService} from "../../services/recipe-books.service";
 
 @Component({
   selector: 'app-search-in-recipe-books',
@@ -11,6 +12,9 @@ export class SearchInRecipeBooksComponent {
   isInputFocused = false;
   added: RecipeBook[] = [];
   inputFormatter = () => '';
+
+  constructor(private recipeBookService: RecipeBooksService) {
+  }
 
   removeRecipeBook(recipeBook: RecipeBook) {
     this.added = this.added.filter(a => a.id != recipeBook.id);
@@ -39,11 +43,11 @@ export class SearchInRecipeBooksComponent {
   }
 
   private performSearch(term: string): Observable<RecipeBook[]> {
-    if (!term || term.length < 2) {
-      return of([]);
+    if(!term) {
+      return of(this.recipeBookService.recipeBooks.slice(0, 20))
     }
 
-    // TODO
-    return of([]);
+    const matchingRecipeBooks = this.recipeBookService.recipeBooks.filter(r => r.name.includes(term));
+    return of(matchingRecipeBooks);
   }
 }
