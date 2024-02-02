@@ -3,8 +3,8 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body p-0">
-  <div *ngIf="isWorkLeft" class="mb-3">
-    <div class="d-flex justify-content-center mt-2">
+  <div class="mb-3">
+    <div *ngIf="isWorkLeft" class="d-flex justify-content-center mt-2">
       <div class="spinner-border" role="status">
       </div>
     </div>
@@ -33,5 +33,6 @@
   </div>
 </div>
 <div class="modal-footer">
-
+  <button type="button" class="btn btn-outline-primary" [disabled]="isWorkLeft || isNoneIncluded" (click)="onCopySelectedToClipboardClick()">kijelöltek másolása</button>
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('close')">bezár</button>
 </div>
