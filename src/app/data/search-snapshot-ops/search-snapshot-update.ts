@@ -5,6 +5,7 @@ import {ApiSearchMode} from "../../services/recipe-query-params";
 import {SearchSnapshot} from "../search-snapshot";
 import {OrderingAndFiltersParams} from "../ordering-and-filters-params";
 import {ExtraRelation} from "../extra-ingredients";
+import {RecipeBook} from "../recipe-book";
 
 export class SearchSnapshotUpdate {
   static withIngredients(target: TargetIngredients, items: DisplayedIngredient[], snapshot: SearchSnapshot) {
@@ -89,5 +90,10 @@ export class SearchSnapshotUpdate {
     const query = snapshot.search.query;
     query.goodAdditionalIngsRel = undefined;
     query.goodAdditionalIngs = undefined;
+  }
+
+  static withRecipeBooks(recipeBooks: RecipeBook[], snapshot: SearchSnapshot) {
+    const query = snapshot.search.query;
+    query.recipeBooks = recipeBooks;
   }
 }

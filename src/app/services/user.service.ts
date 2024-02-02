@@ -30,7 +30,7 @@ export class UserService {
       next: u => this.onAuthStateChanged(u)
     });
 
-    setTimeout(() => this.useCachedIfValid());
+    this.useCachedIfValid();
   }
 
   logout() {
@@ -68,7 +68,7 @@ export class UserService {
 
     this.httpClient.post<ApiUserInfo>(url, loginData).subscribe({
       next: u => this.loginApiSucceededAndCache(u),
-      error: e => this.loginApiFailed()
+      error: () => this.loginApiFailed()
     })
   }
 
@@ -117,7 +117,8 @@ export class UserService {
 
     if(nowMillis < validUntilMillis) {
       this.apiUser = cachedApiUser.user;
-      this.loginApiSucceeded(this.apiUser!)
+      this.isLoggedIn = true;
+      setTimeout(() => this.loginApiSucceeded(this.apiUser!));
       this.logoutAt(validUntilMillis);
     }
   }

@@ -24,6 +24,7 @@ import {
 } from "./recipe-service-operations/ingredient-already-present-elsewhere-checker";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "./user.service";
+import {RecipeBook} from "../data/recipe-book";
 
 @Injectable({
   providedIn: 'root'
@@ -96,7 +97,7 @@ export class RecipesService {
   recipePageChanged(newPage: number) {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withPage(newPage, this.snapshotForCurrentQuery);
-    })
+    });
   }
 
   orderingAndFiltersChanged(params: OrderingAndFiltersParams) {
@@ -123,6 +124,22 @@ export class RecipesService {
     this.queryInitialSnapshot();
   }
 
+  recipeBooksChanged(recipeBooks: RecipeBook[]){
+    this.anySearchParamChanged(() => {
+      SearchSnapshotUpdate.withRecipeBooks(recipeBooks, this.snapshotForCurrentQuery);
+    });
+  }
+
+  init() {
+    this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
+    if(!this.userService.isLoggedIn) {
+      this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
+      this.snapshotForCurrentQuery.search.query.recipeBooks = undefined;
+    }
+
+    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(this.modalService, this, this.snapshotForCurrentQuery);
+  }
+
   private anySearchParamChanged(updateSnapshotForQuery: () => void) {
     if (this.recipeQuerySub) {
       this.recipeQuerySub.unsubscribe();
@@ -146,14 +163,5 @@ export class RecipesService {
   private onQuerySuccessful(page: Page<Recipe>) {
     this.searchSnapshotService.set(this.snapshotForCurrentQuery);
     this.results$.next(page);
-  }
-
-  private init() {
-    this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
-    if(!this.userService.isLoggedIn) {
-      this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
-    }
-
-    this.ingredientsAlreadyPresentChecker = new IngredientAlreadyPresentElsewhereChecker(this.modalService, this, this.snapshotForCurrentQuery);
   }
 }

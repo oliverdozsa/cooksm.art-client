@@ -1,4 +1,4 @@
-import {Component, OnDestroy, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {UserService} from "../../services/user.service";
 import {NgxSpinnerService} from "ngx-spinner";
 import {RecipeBooksService} from "../../services/recipe-books.service";
@@ -15,6 +15,10 @@ import {
 import {
   IngredientsOfRecipeBookModalComponent
 } from "../../components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component";
+import {SearchSnapshotService} from "../../services/search-snapshot.service";
+import {Router} from "@angular/router";
+import {RouteNames} from "../../route-names";
+import {RecipesService} from "../../services/recipes.service";
 
 @Component({
   selector: 'app-recipe-books',
@@ -33,7 +37,8 @@ export class RecipeBooksComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(public userService: UserService, spinnerService: NgxSpinnerService, public recipeBooksService: RecipeBooksService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal, private searchSnapshotService: SearchSnapshotService,
+              private router: Router, private recipesService: RecipesService) {
     if (recipeBooksService.isLoading) {
       spinnerService.show("recipeBooks");
     } else if (userService.isLoggedIn) {
@@ -75,6 +80,15 @@ export class RecipeBooksComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+  }
+
+  onRecipeBookClicked = (recipeBook: RecipeBook) => {
+    console.log(`clicked on: ${JSON.stringify(recipeBook)}`)
+    const snapshot = this.searchSnapshotService.cloneSnapshot();
+    snapshot.search.query.recipeBooks = [recipeBook];
+    this.searchSnapshotService.set(snapshot);
+    this.recipesService.init();
+    this.router.navigate([`/${RouteNames.HOME}`]);
   }
 
   private createNewRecipeBook(name: string) {

@@ -4,7 +4,7 @@
     <app-searchable-list [itemCreatable]="true" [onItemAddClick]="onCreateNewClicked"
                          [items]="recipeBooksService.recipeBooks" nameKey="name"
                          [showCreatePopover]="showCreatePopover"
-                         [itemControls]="bookControls"></app-searchable-list>
+                         [itemControls]="bookControls" [onItemClick]="onRecipeBookClicked"></app-searchable-list>
   </div>
   <div class="col-md-2"></div>
 </div>

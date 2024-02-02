@@ -23,6 +23,7 @@ export class WhenSnapshotLoadedOps {
     this.handleExtraRelationAdjustments();
     this.setSearchMode();
     this.setPageNumber();
+    this.setRecipeBooks();
 
     const whenSearchModeChanged =
       new WhenSearchModeChangedOps(this.snapshot, this.operation$);
@@ -99,6 +100,13 @@ export class WhenSnapshotLoadedOps {
     this.operation$.next({
       type: RecipeServiceOperationType.SetPageNumber,
       payload: this.snapshot.currentPageNumber
+    })
+  }
+
+  setRecipeBooks() {
+    this.operation$.next({
+      type: RecipeServiceOperationType.SetRecipeBooks,
+      payload: this.userService.isLoggedIn ? this.snapshot.search.query.recipeBooks : undefined
     })
   }
 }
