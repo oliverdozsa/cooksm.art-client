@@ -1,5 +1,5 @@
 <div ngbAccordion>
-  <div ngbAccordionItem [collapsed]="false">
+  <div ngbAccordionItem [collapsed]="false" class="border-secondary-subtle border-2">
     <h2 ngbAccordionHeader>
       <button i18n="@@filter-by-ingredients-title" ngbAccordionButton class="py-2">
         ingredients
@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div ngbAccordionItem [collapsed]="false">
+  <div ngbAccordionItem [collapsed]="false" class="border-secondary-subtle border-2">
     <h2 ngbAccordionHeader>
       <button i18n="@@search-filter-ordering-title" ngbAccordionButton class="py-2">
         search filters / ordering
@@ -50,7 +50,7 @@
     </div>
   </div>
 
-  <div *ngIf="userService.isLoggedIn" ngbAccordionItem [collapsed]="false">
+  <div *ngIf="userService.isLoggedIn" ngbAccordionItem [collapsed]="false" class="border-secondary-subtle border-2">
     <h2 ngbAccordionHeader>
       <button i18n="@@search-params-recipe-book" ngbAccordionButton class="py-2">
         recipe books

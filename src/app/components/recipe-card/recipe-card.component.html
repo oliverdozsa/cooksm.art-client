@@ -1,7 +1,7 @@
 <div class="position-relative recipe-card-container" style="width: 18rem; height: 20rem">
   <div class="recipe-parent-card position-absolute w-100 h-100" [ngClass]="isFlipped ? 'flipped' : ''">
 
-    <div *ngIf="recipe" class="card recipe-card-front position-absolute w-100 h-100 shadow-sm rounded-4">
+    <div *ngIf="recipe" class="card recipe-card-front position-absolute w-100 h-100 shadow-sm border border-success-subtle rounded-4 border-2">
       <div class="card-body">
         <div class="d-flex align-items-center" style="height: 3.2rem;">
           <h6 class="card-title px-2">
@@ -48,6 +48,10 @@
           </div>
         </div>
 
+        <div class="source-page">
+          <small class="text-center">{{recipe.sourcePage.name}}</small>
+        </div>
+
         <a class="icon-link flip-control" (click)="isFlipped = !isFlipped">
           <i class="bi bi-chevron-left"></i>
         </a>
@@ -55,7 +59,7 @@
     </div>
 
 
-    <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100 shadow-sm rounded-4">
+    <div *ngIf="recipe" class="card recipe-card-back position-absolute w-100 h-100 shadow-sm border border-success-subtle rounded-4 border-2">
       <div class="card-body">
         <div class="d-flex">
           <h6 class="card-title px-2" style="height: 2rem">
@@ -83,6 +87,10 @@
               {{ ingredient.name }}
             </li>
           </ul>
+        </div>
+
+        <div class="source-page">
+          <small class="text-center">{{recipe.sourcePage.name}}</small>
         </div>
       </div>
 
