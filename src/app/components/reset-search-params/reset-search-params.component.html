@@ -4,17 +4,17 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="modal-basic-title">are you sure you want to start over?</h5>
+    <h5 i18n="@@reset-search-params-modal-title" class="modal-title" id="modal-basic-title">are you sure you want to start over?</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
   </div>
 
   <div class="modal-body">
-    <p>this will reset all search parameters.</p>
+    <p i18n="@@reset-search-params-modal-message">this will reset all search parameters.</p>
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger" (click)="modal.close('yes')">yes</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('close')">no</button>
+    <button i18n="@@reset-search-params-modal-btn-yes" type="button" class="btn btn-outline-danger" (click)="modal.close('yes')">yes</button>
+    <button i18n="@@reset-search-params-modal-btn-no" type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('close')">no</button>
   </div>
 
 </ng-template>

@@ -2,7 +2,7 @@
 
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="modal-basic-title">add "{{ recipe?.name }}" to recipe books</h5>
+    <h5 i18n="@@add-to-recipe-book-modal-title" class="modal-title" id="modal-basic-title">add "{{ recipe?.name }}" to recipe books</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cancel')"></button>
   </div>
 
@@ -41,7 +41,7 @@
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.close('close')">close</button>
+    <button i18n="@@add-to-recipe-book-modal-close" type="button" class="btn btn-outline-secondary" (click)="modal.close('close')">close</button>
   </div>
 </ng-template>
 

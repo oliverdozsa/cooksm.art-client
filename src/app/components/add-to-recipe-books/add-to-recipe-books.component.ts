@@ -4,7 +4,7 @@ import {Recipe} from "../../data/recipe";
 import {RecipeBooksService} from "../../services/recipe-books.service";
 import {RecipeBook, RecipeBooksOfRecipe} from "../../data/recipe-book";
 import {ToastsService} from "../../services/toasts.service";
-import {concat, concatWith} from "rxjs";
+import {concatWith} from "rxjs";
 
 @Component({
   selector: 'app-add-to-recipe-books',
@@ -86,7 +86,7 @@ export class AddToRecipeBooksComponent {
 
   private onError() {
     this.isLoadingRecipeBooksOfRecipe = false;
-    const toastText = $localize`:@@add-to-recipe-books-on-error:Could not do it! 😥`
+    const toastText = $localize`:@@add-to-recipe-books-on-error:Could not do it! 😥`;
     this.toastService.danger(toastText);
   }
 

@@ -2,7 +2,7 @@
   <div class="card-header">
     <div class="d-flex">
       <div class="input-group">
-        <input type="text" class="form-control" placeholder="search" aria-label="search" [(ngModel)]="search"
+        <input i18n-placeholder="@@searchable-list-input-placeholder" type="text" class="form-control" placeholder="search" aria-label="search" [(ngModel)]="search"
                (keyup)="filterList()">
         <span class="input-group-text">
         <i class="bi bi-search"></i>

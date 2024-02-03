@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="modal-basic-title">create new recipe book</h5>
+  <h5 i18n="@@create-recipe-book-modal-title" class="modal-title" id="modal-basic-title">create new recipe book</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body">
@@ -7,13 +7,13 @@
     <div class="input-group has-validation">
       <input [(ngModel)]="name" type="email" class="form-control" [class.is-invalid]="isInvalid"
              [class.is-valid]="!isInvalid" id="recipeBookName" placeholder="name">
-      <div class="invalid-feedback">
+      <div i18n="@@create-recipe-book-modal-invalid-name" class="invalid-feedback">
         at least 3 characters
       </div>
     </div>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" [disabled]="isInvalid" (click)="activeModal.close('save')">save</button>
-  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">cancel</button>
+  <button i18n="@@create-recipe-book-modal-btn-save" type="button" class="btn btn-outline-dark" [disabled]="isInvalid" (click)="activeModal.close('save')">save</button>
+  <button i18n="@@create-recipe-book-modal-btn-cancel" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">cancel</button>
 </div>

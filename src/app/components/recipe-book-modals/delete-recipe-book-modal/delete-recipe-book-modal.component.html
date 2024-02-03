@@ -1,13 +1,13 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="modal-basic-title">delete recipe book</h5>
+  <h5 i18n="@@delete-recipe-book-modal-title" class="modal-title" id="modal-basic-title">delete recipe book</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body">
   <div class="mb-3">
-    <p>are you sure you wish to delete: "{{name}}"?</p>
+    <p i18n="@@delete-recipe-book-modal-question">are you sure you wish to delete: "{{name}}"?</p>
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-danger" (click)="activeModal.close('delete')">yes</button>
-  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">no</button>
+  <button i18n="@@delete-recipe-book-modal-btn-yes" type="button" class="btn btn-outline-danger" (click)="activeModal.close('delete')">yes</button>
+  <button i18n="@@delete-recipe-book-modal-btn-no" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">no</button>
 </div>

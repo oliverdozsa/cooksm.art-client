@@ -61,7 +61,10 @@ export class RecipeBooksService {
     return this.httpClient.get<RecipeBooksOfRecipe>(url)
       .pipe(
         tap({
-          error: () => this.toastService.danger("nem sikerült letölteni a recepthez tartozó füzeteket!")
+          error: () => {
+            const message = $localize`:@@recipe-books-service-failed-to-get-recipe-books:could not get recipe books of recipes!`;
+            this.toastService.danger(message);
+          }
         })
       );
   }

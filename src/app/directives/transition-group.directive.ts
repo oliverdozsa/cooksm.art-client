@@ -92,7 +92,6 @@ export class TransitionGroupComponent implements AfterViewInit {
   }
 
   refreshPosition(prop: string) {
-
     this.items!.forEach((item: any) => {
       item[prop] = {
         top: item.el.offsetTop,

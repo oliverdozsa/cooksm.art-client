@@ -66,7 +66,8 @@ export class IngredientsOfRecipeBookModalComponent {
     const clipboardText = includedNames.join("\n");
     this.clipboardService.copy(clipboardText);
 
-    this.toastService.success(`a vágólapra másoltam ${includedNames.length} hozzávalót`);
+    const message = $localize`:@@ingredients-of-recipe-books-modal-copied-to-clipboard:${includedNames.length} ingredient(s) has been copied to clipboard`;
+    this.toastService.success(message);
   }
 
   isIncluded(ingredientId: number): boolean {
@@ -102,7 +103,8 @@ export class IngredientsOfRecipeBookModalComponent {
           next: p => this.onRecipePage(p),
           error: () => {
             this.isWorkLeft = false;
-            this.toastService.danger("nem sikerült! 😥 próbáld újra, hátha");
+            const message = $localize`:@@ingredients-of-recipe-books-modal-failed-to-query:couldn't do it! 😥 try again maybe...`;
+            this.toastService.danger(message);
           }
         })
     } else {

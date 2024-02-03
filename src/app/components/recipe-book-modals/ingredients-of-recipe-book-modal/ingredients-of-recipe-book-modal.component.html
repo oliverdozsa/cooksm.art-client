@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 class="modal-title" id="modal-basic-title">ingredients of "{{ recipeBook?.name }}"</h5>
+  <h5 i18n="@@ingredients-of-recipe-book-modal-title" class="modal-title" id="modal-basic-title">ingredients of "{{ recipeBook?.name }}"</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body p-0">
@@ -11,7 +11,7 @@
 
     <ngb-progressbar *ngIf="isWorkLeft && progress > 0" class="mt-1" type="success" [value]="progress" [striped]="true" [animated]="true" />
 
-    <p *ngIf="!isWorkLeft && ingredients.length == 0" class="text-center">
+    <p *ngIf="!isWorkLeft && ingredients.length == 0" i18n="@@ingredients-of-recipe-book-no-recipes" class="text-center">
       no recipes in recipe book yet
     </p>
 
@@ -33,6 +33,6 @@
   </div>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-primary" [disabled]="isWorkLeft || isNoneIncluded" (click)="onCopySelectedToClipboardClick()">kijelöltek másolása</button>
-  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('close')">bezár</button>
+  <button i18n="@@ingredients-of-recipe-book-modal-btn-copy" type="button" class="btn btn-outline-primary" [disabled]="isWorkLeft || isNoneIncluded" (click)="onCopySelectedToClipboardClick()">copy selected</button>
+  <button i18n="@@ingredients-of-recipe-book-modal-btn-close" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('close')">close</button>
 </div>

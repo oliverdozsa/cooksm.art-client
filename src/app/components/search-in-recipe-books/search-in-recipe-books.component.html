@@ -5,7 +5,7 @@
                 (closeClicked)="removeRecipeBook(recipeBook)"></app-chip>
       <div class="flex-grow-1">
         <input class="form-control form-control-sm border border-0 shadow-none" style="min-width: 160px;" type="text"
-               i18n-placeholder="@@search-ingredients-placeholder" placeholder="search recipe books"
+               i18n-placeholder="@@search-recipe-books-placeholder" placeholder="search recipe books"
                #typeahead="ngbTypeahead"
                [ngbTypeahead]="search"
                [resultTemplate]="searchResultTemplate"
