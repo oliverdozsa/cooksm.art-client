@@ -8,7 +8,7 @@
 
     <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
       <ul class="navbar-nav me-auto">
-        <li class="nav-item">
+        <li class="nav-item me-4 mb-md-2 mb-lg-0">
           <span *ngIf="!userService.isLoggedIn" i18n="@@navbar-menu-item-login" class="nav-link" style="cursor: pointer"
                 (click)="onLoginClicked(login)">
             <i class="bi bi-person-circle"></i>
