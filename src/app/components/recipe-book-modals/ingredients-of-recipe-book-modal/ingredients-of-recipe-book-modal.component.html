@@ -17,7 +17,7 @@
 
     <app-transition-group [className]="'flip-list'">
       <ul *ngIf="!isWorkLeft" class="list-group list-group-flush">
-        <li *ngFor="let ingredient of ingredients" class="list-group-item" appTransitionGroupItem>
+        <li *ngFor="let ingredient of ingredients" class="list-group-item bg-transparent" appTransitionGroupItem>
           <div class="d-flex">
             <div class="me-auto">{{ ingredient.name }}</div>
             <div>
