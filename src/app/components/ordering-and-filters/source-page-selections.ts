@@ -20,7 +20,7 @@ export class SourcePageSelections {
 
   private readonly supportedLanguages: any = {
     "hu": {name: $localize `:@@supported-language-hun:Hungarian`, code: 10000},
-    // "en": {name: "English", code: 10001}
+    "en": {name: $localize `:@@supported-language-en:English`, code: 10001}
   };
 
   private sourcePagesService: SourcePagesService;
