@@ -1,0 +1,15 @@
+<div ngbDropdown>
+  <button ngbDropdownToggle class="btn btn-outline-light dropdown-toggle" type="button">
+    <i class="bi bi-globe-europe-africa"></i>
+  </button>
+  <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-lg-end">
+    <li i18n="@@language-switch-english" ngbDropdownItem (click)="selectLanguage(Language.English)" style="cursor: pointer">
+      English
+      <i *ngIf="usedLanguage == Language.English" class="bi bi-check-lg"></i>
+    </li>
+    <li i18n="@@language-swithc-hungarian" ngbDropdownItem (click)="selectLanguage(Language.Hungarian)" style="cursor: pointer">
+      Hungarian
+      <i *ngIf="usedLanguage == Language.Hungarian" class="bi bi-check-lg"></i>
+    </li>
+  </ul>
+</div>

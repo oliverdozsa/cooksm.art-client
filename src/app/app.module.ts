@@ -32,19 +32,25 @@ import {
   SocialAuthServiceConfig,
   SocialLoginModule
 } from "@abacritt/angularx-social-login";
-import { ToastsComponent } from './components/toasts/toasts.component';
-import { FavoriteRecipeComponent } from './components/favorite-recipe/favorite-recipe.component';
+import {ToastsComponent} from './components/toasts/toasts.component';
+import {FavoriteRecipeComponent} from './components/favorite-recipe/favorite-recipe.component';
 import {JwtBearerInterceptor} from "./interceptors/jwt-bearer-interceptor";
-import {FavoriteRecipesService} from "./services/favorite-recipes.service";
-import { RecipeBooksComponent } from './pages/recipe-books/recipe-books.component';
-import { SearchableListComponent } from './components/searchable-list/searchable-list.component';
-import { CreateEditRecipeBookModalComponent } from './components/recipe-book-modals/create-edit-recipe-book-modal/create-edit-recipe-book-modal.component';
-import { DeleteRecipeBookModalComponent } from './components/recipe-book-modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
+import {RecipeBooksComponent} from './pages/recipe-books/recipe-books.component';
+import {SearchableListComponent} from './components/searchable-list/searchable-list.component';
+import {
+  CreateEditRecipeBookModalComponent
+} from './components/recipe-book-modals/create-edit-recipe-book-modal/create-edit-recipe-book-modal.component';
+import {
+  DeleteRecipeBookModalComponent
+} from './components/recipe-book-modals/delete-recipe-book-modal/delete-recipe-book-modal.component';
 import {TransitionGroupComponent, TransitionGroupItemDirective} from "./directives/transition-group.directive";
-import { IngredientsOfRecipeBookModalComponent } from './components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component';
-import { AddToRecipeBooksComponent } from './components/add-to-recipe-books/add-to-recipe-books.component';
-import { ResetSearchParamsComponent } from './components/reset-search-params/reset-search-params.component';
-import { SearchInRecipeBooksComponent } from './components/search-in-recipe-books/search-in-recipe-books.component';
+import {
+  IngredientsOfRecipeBookModalComponent
+} from './components/recipe-book-modals/ingredients-of-recipe-book-modal/ingredients-of-recipe-book-modal.component';
+import {AddToRecipeBooksComponent} from './components/add-to-recipe-books/add-to-recipe-books.component';
+import {ResetSearchParamsComponent} from './components/reset-search-params/reset-search-params.component';
+import {SearchInRecipeBooksComponent} from './components/search-in-recipe-books/search-in-recipe-books.component';
+import {LanguageSwitcherComponent} from "./components/language-switcher/language-switcher.component";
 
 @NgModule({
   declarations: [
@@ -72,7 +78,8 @@ import { SearchInRecipeBooksComponent } from './components/search-in-recipe-book
     IngredientsOfRecipeBookModalComponent,
     AddToRecipeBooksComponent,
     ResetSearchParamsComponent,
-    SearchInRecipeBooksComponent
+    SearchInRecipeBooksComponent,
+    LanguageSwitcherComponent
   ],
   imports: [
     BrowserModule,
