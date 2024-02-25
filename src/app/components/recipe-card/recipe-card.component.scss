@@ -33,8 +33,15 @@
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
   white-space: pre-wrap;
+}
+
+.clamp-title-2 {
+  -webkit-line-clamp: 2;
+}
+
+.clamp-title-3 {
+  -webkit-line-clamp: 3;
 }
 
 .source-page {

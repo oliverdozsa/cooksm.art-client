@@ -52,6 +52,8 @@
     "conflict-modal-excluded": "excluded",
     "conflict-modal-included": "included",
     "conflict-modal-something-wrong": "<something's wrong>",
+    "language-switch-english": " English {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
+    "language-switch-hungarian": " magyar (Hungarian) {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
     "order-and-filter-filter-by-name-label": "filter by name",
     "order-and-filter-enter-name-placeholder": "enter name",
     "order-and-filter-ordering-label": "ordering",

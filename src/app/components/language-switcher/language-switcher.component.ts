@@ -1,5 +1,4 @@
 import {Component, Inject, LOCALE_ID} from '@angular/core';
-import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-language-switcher',

@@ -53,6 +53,8 @@
     "conflict-modal-excluded": "\"mi NE legyen benne?\"",
     "conflict-modal-included": "\"mi legyen benne?\"",
     "conflict-modal-something-wrong": "<valami nem sikerült>",
+    "language-switch-english": " English (angol) {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
+    "language-switch-hungarian": " magyar {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
     "order-and-filter-filter-by-name-label": "szűrés név alapján",
     "order-and-filter-enter-name-placeholder": "név",
     "order-and-filter-ordering-label": "rendezés",
