@@ -34,6 +34,7 @@
     "ngb.timepicker.PM": "{$INTERPOLATION}",
     "navbar-menu-item-login": "{$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT} login ",
     "navbar-menu-item-logout": "{$TAG_IMG}{$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT} logout ",
+    "navbar-login-modal-title": "login with",
     "page-title-home": "home",
     "page-title-recipe-books": "recipe books",
     "page-title-about": "about",

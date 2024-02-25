@@ -35,6 +35,7 @@
     "ngb.timepicker.AM": "{$INTERPOLATION}",
     "navbar-menu-item-login": "{$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT} belépés ",
     "navbar-menu-item-logout": "{$TAG_IMG}{$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT} kilépés ",
+    "navbar-login-modal-title": "belépés",
     "page-title-home": "kereső",
     "page-title-recipe-books": "recept füzetek",
     "page-title-about": "rólunk",
