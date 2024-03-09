@@ -5,11 +5,19 @@
   <ul ngbDropdownMenu class="dropdown-menu dropdown-menu-lg-end">
     <li i18n="@@language-switch-english" ngbDropdownItem (click)="selectLanguage(Language.English)" style="cursor: pointer">
       English
-      <i *ngIf="usedLanguage == Language.English" class="bi bi-check-lg"></i>
+      <i *ngIf="languageService.usedLanguage == Language.English" class="bi bi-check-lg"></i>
     </li>
     <li i18n="@@language-switch-hungarian" ngbDropdownItem (click)="selectLanguage(Language.Hungarian)" style="cursor: pointer">
       magyar (Hungarian)
-      <i *ngIf="usedLanguage == Language.Hungarian" class="bi bi-check-lg"></i>
+      <i *ngIf="languageService.usedLanguage == Language.Hungarian" class="bi bi-check-lg"></i>
     </li>
   </ul>
 </div>
+
+<ngx-spinner
+  [fullScreen]="true"
+  name="languageSwitching"
+  type="ball-clip-rotate"
+  size="medium"
+>
+</ngx-spinner>

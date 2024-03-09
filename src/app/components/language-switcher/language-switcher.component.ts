@@ -1,4 +1,5 @@
-import {Component, Inject, LOCALE_ID} from '@angular/core';
+import {Component} from '@angular/core';
+import {Language, LanguageService} from "../../services/language.service";
 
 @Component({
   selector: 'app-language-switcher',
@@ -8,47 +9,10 @@ import {Component, Inject, LOCALE_ID} from '@angular/core';
 export class LanguageSwitcherComponent {
   Language = Language;
 
-  usedLanguage: Language = Language.English;
-
-  constructor(@Inject(LOCALE_ID) public activeLocale: string) {
-    const activeLanguage = LanguageSwitcherComponent.toLanguage(activeLocale);
-    this.usedLanguage = activeLanguage;
+  constructor(public languageService: LanguageService) {
   }
 
   selectLanguage(language: Language) {
-    if(this.usedLanguage == language) {
-      return;
-    }
-
-    this.usedLanguage = language;
-    const currentPath = window.location.pathname;
-    const newLocale = this.currentLanguageToLocale();
-    const newPath = `/${newLocale}/${currentPath.slice(4)}`;
-    window.location.href = newPath;
+    this.languageService.usedLanguage = language
   }
-
-  private static toLanguage(locale: string): Language {
-    if(locale === "en") {
-      return Language.English;
-    } else if(locale === "hu") {
-      return Language.Hungarian;
-    }
-
-    return Language.English;
-  }
-
-  private currentLanguageToLocale() {
-    if(this.usedLanguage === Language.English) {
-      return "en"
-    } else if(this.usedLanguage === Language.Hungarian) {
-      return "hu";
-    }
-
-    return "en";
-  }
-}
-
-enum Language {
-  English,
-  Hungarian
 }

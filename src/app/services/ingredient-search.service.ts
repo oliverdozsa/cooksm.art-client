@@ -12,6 +12,8 @@ export class IngredientSearchService {
   private readonly languageId = $localize`1`; // TODO change this to English ID
   private readonly ingredientNamesUrl = environment.apiUrl + '/' + ApiPaths.INGREDIENT_NAMES;
   private readonly ingredientCategoriesUrl = environment.apiUrl + '/' + ApiPaths.INGREDIENT_CATEGORIES;
+  private readonly byIngredientIdsUrl: string = environment.apiUrl + '/' +  ApiPaths.INGREDIENT_NAMES + '/byids';
+  private readonly byCategoryIdsUrl: string = environment.apiUrl + '/' + ApiPaths.INGREDIENT_CATEGORIES + '/byids';
 
   constructor(private httpclient: HttpClient) {
   }
@@ -34,5 +36,27 @@ export class IngredientSearchService {
       .set('limit', limit.toString());
 
     return this.httpclient.get<Page<IngredientCategory>>(this.ingredientCategoriesUrl, {params});
+  }
+
+  byIngredientIds(languageId: number, ids: number[]) {
+    let params = new HttpParams();
+
+    params = params.set("languageId", languageId);
+    ids.forEach((id, i) => {
+      params = params.append(`ingredientIds[${i}]`, id);
+    });
+
+    return this.httpclient.get<IngredientName[]>(this.byIngredientIdsUrl, {params});
+  }
+
+  byCategoryIds(languageId: number, ids: number[]) {
+    let params = new HttpParams();
+
+    params = params.set("languageId", languageId);
+    ids.forEach((id, i) => {
+      params = params.append(`tagIds[${i}]`, id);
+    });
+
+    return this.httpclient.get<IngredientCategory[]>(this.byCategoryIdsUrl, {params});
   }
 }
