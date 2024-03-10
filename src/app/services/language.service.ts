@@ -1,12 +1,13 @@
 import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {SearchSnapshotService} from "./search-snapshot.service";
-import {TranslateSnapshot} from "./translate-snapshot";
+import {SnapshotTranslator} from "./snapshot-translator";
 import {SearchSnapshot} from "../data/search-snapshot";
 import {RecipesService} from "./recipes.service";
 import {WhenSnapshotLoadedOps} from "./recipe-service-operations/when-snapshot-loaded-ops";
 import {UserService} from "./user.service";
 import {IngredientSearchService} from "./ingredient-search.service";
 import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
+import {NgxSpinner, NgxSpinnerService} from "ngx-spinner";
 
 export enum Language {
   English,
@@ -37,10 +38,15 @@ export class LanguageService {
   }
 
   private _usedLanguage;
+  private snapshotTranslator: SnapshotTranslator;
 
   constructor(@Inject(LOCALE_ID) public activeLocale: string, private searchSnapshotService: SearchSnapshotService,
-              private recipesService: RecipesService, private userService: UserService, private ingredientSearchService: IngredientSearchService) {
-    TranslateSnapshot.translatedSnapshot.subscribe({
+              private recipesService: RecipesService, private userService: UserService, private ingredientSearchService: IngredientSearchService,
+              private spinnerService: NgxSpinnerService) {
+
+    this.snapshotTranslator = new SnapshotTranslator(ingredientSearchService);
+
+    this.snapshotTranslator.translated$.subscribe({
       next: s => this.onSnapshotTranslated(s),
       error: () => this.translateSnapshotFinished()
     });
@@ -82,10 +88,9 @@ export class LanguageService {
 
   private translateSnapshot() {
     this.isSwitchingInProgress = true;
-    const translateSnapshot =
-      new TranslateSnapshot(this.usedLanguageId, this.searchSnapshotService.cloneSnapshot(), this.ingredientSearchService);
-    translateSnapshot.translate()
+    this.spinnerService.show("languageSwitching");
 
+    this.snapshotTranslator.translate(this.usedLanguageId, this.searchSnapshotService.cloneSnapshot());
   }
 
   private onSnapshotTranslated(snapshot: SearchSnapshot) {
@@ -102,5 +107,6 @@ export class LanguageService {
 
   private translateSnapshotFinished() {
     this.isSwitchingInProgress = false;
+    this.spinnerService.hide("languageSwitching");
   }
 }

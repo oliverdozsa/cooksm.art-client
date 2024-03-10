@@ -4,17 +4,23 @@ import {IngredientSearchService} from "./ingredient-search.service";
 import {TargetIngredients} from "../data/target-ingredients";
 import {IngredientCategory, IngredientName} from "../data/ingredients";
 
-export class TranslateSnapshot {
-  static translatedSnapshot: Subject<SearchSnapshot> = new Subject<SearchSnapshot>();
+export class SnapshotTranslator {
+  translated$: Subject<SearchSnapshot> = new Subject<SearchSnapshot>();
   private readonly kindOfIngredientsAndCategories = 6;
   private numOfWorkDone = 0;
   private hasErroredAlready = false;
+  private targetLanguageId: number = 0;
+  private snapshot: SearchSnapshot = new SearchSnapshot();
 
-  constructor(private targetLanguageId: number, private snapshot: SearchSnapshot,
-              private ingredientSearchService: IngredientSearchService) {
+  constructor(private ingredientSearchService: IngredientSearchService) {
   }
 
-  translate(): void {
+  translate(targetLanguageId: number, snapshot: SearchSnapshot): void {
+    this.numOfWorkDone = 0;
+    this.hasErroredAlready = false;
+    this.targetLanguageId = targetLanguageId;
+    this.snapshot = snapshot;
+
     this.translateIngredients(TargetIngredients.Included);
     this.translateIngredients(TargetIngredients.Excluded);
     this.translateIngredients(TargetIngredients.Extra);
@@ -86,7 +92,7 @@ export class TranslateSnapshot {
     this.numOfWorkDone += 1;
 
     if (this.numOfWorkDone == this.kindOfIngredientsAndCategories && !this.hasErroredAlready) {
-      TranslateSnapshot.translatedSnapshot.next(this.snapshot);
+      this.translated$.next(this.snapshot);
     }
   }
 
@@ -121,7 +127,7 @@ export class TranslateSnapshot {
   private onError() {
     if(!this.hasErroredAlready) {
       this.hasErroredAlready = true;
-      TranslateSnapshot.translatedSnapshot.error({});
+      this.translated$.error({});
     }
   }
 }
