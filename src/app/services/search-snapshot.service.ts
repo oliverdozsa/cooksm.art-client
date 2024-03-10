@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Inject, Injectable, LOCALE_ID} from '@angular/core';
 import {SearchSnapshot} from "../data/search-snapshot";
 import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
 
@@ -15,7 +15,8 @@ export class SearchSnapshotService {
 
   snapshot = new SearchSnapshot();
 
-  constructor() {
+  constructor(@Inject(LOCALE_ID) public activeLocale: string) {
+    this.snapshot.locale = activeLocale;
     this.loadValidStored();
   }
 

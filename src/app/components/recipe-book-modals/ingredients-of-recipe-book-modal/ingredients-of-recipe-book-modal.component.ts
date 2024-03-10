@@ -10,6 +10,8 @@ import {delay} from "rxjs";
 import {RecipeQueryParams} from "../../../services/recipe-query-params";
 import {Recipe} from "../../../data/recipe";
 import {Page} from "../../../data/page";
+import {SearchSnapshotService} from "../../../services/search-snapshot.service";
+import {SearchSnapshotTransform} from "../../../data/search-snapshot-ops/search-snapshot-transform";
 
 @Component({
   selector: 'app-ingredients-of-recipe-book-modal',
@@ -50,7 +52,8 @@ export class IngredientsOfRecipeBookModalComponent {
   private queryParamLimit = 25;
 
   constructor(public activeModal: NgbActiveModal, private recipeSearchService: RecipeSearchService, private toastService: ToastsService,
-              private ingredientsOfRecipeBookService: IngredientsOfRecipeBookService, private clipboardService: ClipboardService) {
+              private ingredientsOfRecipeBookService: IngredientsOfRecipeBookService, private clipboardService: ClipboardService,
+              private searchSnapshotService: SearchSnapshotService) {
   }
 
   start(): void {
@@ -94,6 +97,7 @@ export class IngredientsOfRecipeBookModalComponent {
       queryParams.offset = this.pagesProcessed * this.queryParamLimit;
       queryParams.limit = this.queryParamLimit;
       queryParams.recipeBooks = [this.recipeBook!.id];
+      queryParams.languageId = SearchSnapshotTransform.toLanguageId(this.searchSnapshotService.snapshot);
 
       this.recipeSearchService.query(queryParams)
         .pipe(

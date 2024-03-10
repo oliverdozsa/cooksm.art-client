@@ -14,6 +14,8 @@ export class SearchSnapshotTransform {
     queryParams.limit = snapshot.limit;
     queryParams.setOffsetByPage(snapshot.currentPageNumber);
 
+    queryParams.languageId = SearchSnapshotTransform.toLanguageId(snapshot);
+
     queryParams.searchMode = searchQuery.searchMode;
     queryParams.goodIngs = searchQuery.goodIngs;
     queryParams.goodIngsRel = searchQuery.goodIngsRel;
@@ -61,6 +63,16 @@ export class SearchSnapshotTransform {
     }
 
     return displayedIngredients;
+  }
+
+  static toLanguageId(snapshot: SearchSnapshot): number {
+    if(snapshot.locale == "hu") {
+      return 1;
+    } else if(snapshot.locale == "en") {
+      return 2;
+    }
+
+    return 1;
   }
 
   private static toIncludedIngredientsQueryParam(query: SavedRecipeSearchQuery): number[] {

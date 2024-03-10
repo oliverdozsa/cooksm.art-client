@@ -4,18 +4,23 @@ import {ApiPaths} from "../api-paths";
 import {environment} from "../../environments/environment";
 import {IngredientCategory, IngredientName} from "../data/ingredients";
 import {Page} from "../data/page";
+import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
+import {SearchSnapshotService} from "./search-snapshot.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class IngredientSearchService {
-  private readonly languageId = $localize`1`; // TODO change this to English ID
   private readonly ingredientNamesUrl = environment.apiUrl + '/' + ApiPaths.INGREDIENT_NAMES;
   private readonly ingredientCategoriesUrl = environment.apiUrl + '/' + ApiPaths.INGREDIENT_CATEGORIES;
   private readonly byIngredientIdsUrl: string = environment.apiUrl + '/' +  ApiPaths.INGREDIENT_NAMES + '/byids';
   private readonly byCategoryIdsUrl: string = environment.apiUrl + '/' + ApiPaths.INGREDIENT_CATEGORIES + '/byids';
 
-  constructor(private httpclient: HttpClient) {
+  get languageId(): number {
+    return SearchSnapshotTransform.toLanguageId(this.searchSnapshotService.snapshot);
+  }
+
+  constructor(private httpclient: HttpClient, private searchSnapshotService: SearchSnapshotService) {
   }
 
   getIngredientNames(nameLike: string, offset = 0, limit = 10) {

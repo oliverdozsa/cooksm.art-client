@@ -6,6 +6,7 @@ import {RecipesService} from "./recipes.service";
 import {WhenSnapshotLoadedOps} from "./recipe-service-operations/when-snapshot-loaded-ops";
 import {UserService} from "./user.service";
 import {IngredientSearchService} from "./ingredient-search.service";
+import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
 
 export enum Language {
   English,
@@ -32,23 +33,20 @@ export class LanguageService {
   }
 
   get usedLanguageId(): number {
-    if (this.usedLanguage == Language.Hungarian) {
-      return 1;
-    } else if (this.usedLanguage == Language.English) {
-      return 2;
-    }
-
-    return 1;
+    return SearchSnapshotTransform.toLanguageId(this.searchSnapshotService.snapshot)
   }
 
   private _usedLanguage;
 
   constructor(@Inject(LOCALE_ID) public activeLocale: string, private searchSnapshotService: SearchSnapshotService,
               private recipesService: RecipesService, private userService: UserService, private ingredientSearchService: IngredientSearchService) {
+    TranslateSnapshot.translatedSnapshot.subscribe({
+      next: s => this.onSnapshotTranslated(s),
+      error: () => this.translateSnapshotFinished()
+    });
+
     const activeLanguage = LanguageService.toLanguage(activeLocale);
     this._usedLanguage = activeLanguage;
-
-    console.log(`active locale: ${activeLocale}, snapshot's locale: ${searchSnapshotService.snapshot.locale}`);
 
     if (searchSnapshotService.cloneSnapshot().locale != activeLocale) {
       this.translateSnapshot();
@@ -87,15 +85,13 @@ export class LanguageService {
     const translateSnapshot =
       new TranslateSnapshot(this.usedLanguageId, this.searchSnapshotService.cloneSnapshot(), this.ingredientSearchService);
     translateSnapshot.translate()
-      .subscribe({
-        next: s => this.onSnapshotTranslated(s),
-        error: () => this.translateSnapshotFinished()
-      })
+
   }
 
   private onSnapshotTranslated(snapshot: SearchSnapshot) {
-    const recipeOperation = this.recipesService.operation$;
+    snapshot.locale = this.usedLanguageToLocale();
 
+    const recipeOperation = this.recipesService.operation$;
     const whenSnapshotLoaded = new WhenSnapshotLoadedOps(snapshot, recipeOperation, this.userService);
     whenSnapshotLoaded.doWhatNecessary();
 
