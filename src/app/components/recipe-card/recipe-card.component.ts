@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CookingTime, Recipe} from "../../data/recipe";
 import {RecipesService} from "../../services/recipes.service";
 import {IngredientCategory, IngredientName} from "../../data/ingredients";
@@ -17,15 +17,21 @@ export class RecipeCardComponent {
 
   isFlipped: boolean = false;
 
+  get shouldShowImgSpinner(): boolean {
+    return this.recipe != undefined && this.recipe.imageUrl != undefined && this.isImgLoading
+  }
+
+  private isImgLoading = true;
+
   constructor(private recipesService: RecipesService, public userService: UserService) {
   }
 
   getIngredientTextColorClass(ingredient: IngredientName): string {
-    if(this.isIngredientIn(ingredient, TargetIngredients.Included)) {
+    if (this.isIngredientIn(ingredient, TargetIngredients.Included)) {
       return "text-success fw-bold";
     }
 
-    if(this.isIngredientIn(ingredient, TargetIngredients.Extra)) {
+    if (this.isIngredientIn(ingredient, TargetIngredients.Extra)) {
       return "text-info fw-bold";
     }
 
@@ -64,5 +70,9 @@ export class RecipeCardComponent {
     }
 
     return flattenedIngredientsIds;
+  }
+
+  onImageLoaded() {
+    this.isImgLoading = false;
   }
 }

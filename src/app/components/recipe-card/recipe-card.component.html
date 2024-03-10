@@ -24,7 +24,10 @@
 
         <div class="position-relative">
           <div class="position-absolute overflow-y-hidden w-100" style="height: 12.7rem;">
-            <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" style="height: 12.7rem"
+            <div *ngIf="shouldShowImgSpinner" style="height: 12.7rem" class="w-100 d-flex justify-content-center align-items-center">
+              <div class="spinner-border" style="width: 3rem; height: 3rem;"></div>
+            </div>
+            <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" (load)="onImageLoaded()" style="height: 12.7rem"
                  class="w-100 object-fit-cover border rounded"
                  alt="recipe image"/>
           </div>
