@@ -1,0 +1,33 @@
+<div *ngIf="userService.isLoggedIn">
+  <h3 *ngIf="userService.apiUser && userService.apiUser.fullName" class="text-center">{{userService.apiUser.fullName}}</h3>
+  <h3 *ngIf="userService.apiUser && userService.apiUser.email" class="text-center">{{userService.apiUser.email}}</h3>
+
+  <div class="d-flex justify-content-center">
+    <div>
+      <button type="button" class="btn btn-danger" (click)="openModal(deleteQuestion)">delete account</button>
+    </div>
+  </div>
+</div>
+
+<h5 *ngIf="!userService.isLoggedIn" i18n="@@account-page-login-needed" class="text-dark-emphasis text-center mt-2">
+  please login to view this page
+</h5>
+
+<ngx-spinner
+  [fullScreen]="true"
+  name="deleteAccount"
+  type="ball-clip-rotate"
+  size="medium"
+>
+</ngx-spinner>
+
+<ng-template #deleteQuestion let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="modal-basic-title">are you sure you want to delete your account?</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cross click')"></button>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-danger" (click)="modal.close('yes')">yes</button>
+    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel')">no</button>
+  </div>
+</ng-template>

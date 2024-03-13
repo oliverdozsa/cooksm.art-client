@@ -10,7 +10,7 @@ import {environment} from "../../environments/environment";
 import {ApiPaths} from "../api-paths";
 import {ApiUserInfo} from "../data/api-user-info";
 import {ToastsService, ToastType} from "./toasts.service";
-import {Subject} from "rxjs";
+import {Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +39,11 @@ export class UserService {
     this.apiUser = undefined;
     localStorage.removeItem("apiUser");
     clearTimeout(this.autoLogoutTimeutID)
+  }
+
+  deleteAccount(): Observable<any> {
+    const url = environment.apiUrl + "/" + ApiPaths.DELETE_PROFILE;
+    return this.httpClient.delete(url);
   }
 
   private onAuthStateChanged(user: SocialUser) {

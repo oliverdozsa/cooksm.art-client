@@ -7,6 +7,7 @@ import {PageNotFoundComponent} from "./pages/page-not-found/page-not-found.compo
 import {RecipeBooksComponent} from "./pages/recipe-books/recipe-books.component";
 import {PrivacyPoliyComponent} from "./pages/privacy-poliy/privacy-poliy.component";
 import {CookiePolicyComponent} from "./pages/cookie-policy/cookie-policy.component";
+import {AccountComponent} from "./pages/account/account.component";
 
 const routes: Routes = [
   {path: RouteNames.HOME, component: HomeComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: RouteNames.ABOUT, component: AboutComponent},
   {path: RouteNames.PRIVACY_POLICY, component: PrivacyPoliyComponent},
   {path: RouteNames.COOKIE_POLICY, component: CookiePolicyComponent},
+  {path: RouteNames.ACCOUNT, component: AccountComponent},
   {path: '', redirectTo: '/' + RouteNames.HOME, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];
