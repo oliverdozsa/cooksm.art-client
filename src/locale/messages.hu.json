@@ -130,7 +130,7 @@
     "favorite-service-like-failed": "nem sikerült! 😥",
     "favorite-service-dislike-failed": "nem sikerült 😥",
     "4863371103643861248": "1",
-    "recipe-books-service-failed-to-get-recipe-books": "nem sikerült letöletni a recephez tartozó füzeteket",
+    "recipe-books-service-failed-to-get-recipe-books": "nem sikerült letölteni a recephez tartozó füzeteket",
     "recipe-books-service-request-error": "nem sikerült!",
     "user-service-login-succeeded": "üdv {$userName}! 👋",
     "user-service-login-failed": "nem sikerült belépni 😥."
