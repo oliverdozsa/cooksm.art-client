@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --configuration=en",
-    "build": "ng build",
+    "build": "ng build && npm run netlify",
+    "netlify": "cp src/_redirects dist/{YOUR-PROJECT-NAME}/_redirects",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
