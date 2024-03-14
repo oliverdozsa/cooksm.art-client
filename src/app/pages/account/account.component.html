@@ -4,7 +4,7 @@
 
   <div class="d-flex justify-content-center">
     <div>
-      <button type="button" class="btn btn-danger" (click)="openModal(deleteQuestion)">delete account</button>
+      <button type="button" i18n="@@account-page-delete-account" class="btn btn-danger" (click)="openModal(deleteQuestion)">delete account</button>
     </div>
   </div>
 </div>
@@ -23,11 +23,11 @@
 
 <ng-template #deleteQuestion let-modal>
   <div class="modal-header">
-    <h5 class="modal-title" id="modal-basic-title">are you sure you want to delete your account?</h5>
+    <h5 class="modal-title" i18n="@@account-page-delete-modal-title" id="modal-basic-title">are you sure you want to delete your account?</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('cross click')"></button>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-danger" (click)="modal.close('yes')">yes</button>
-    <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel')">no</button>
+    <button type="button" i18n="@@account-page-delete-modal-yes" class="btn btn-outline-danger" (click)="modal.close('yes')">yes</button>
+    <button type="button" i18n="@@account-page-delete-modal-no" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel')">no</button>
   </div>
 </ng-template>
