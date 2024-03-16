@@ -130,6 +130,12 @@ export class RecipesService {
     });
   }
 
+  resetSearchParamsThatNeedUserLogin() {
+    this.anySearchParamChanged(() => {
+      SearchSnapshotUpdate.resetSearchParamsThatNeedUserLoggedIn(this.snapshotForCurrentQuery);
+    })
+  }
+
   init() {
     this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
     if(!this.userService.isLoggedIn) {

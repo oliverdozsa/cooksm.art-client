@@ -96,4 +96,10 @@ export class SearchSnapshotUpdate {
     const query = snapshot.search.query;
     query.recipeBooks = recipeBooks;
   }
+
+  static resetSearchParamsThatNeedUserLoggedIn(snapshot: SearchSnapshot) {
+    const query = snapshot.search.query;
+    query.useFavoritesOnly = undefined;
+    query.recipeBooks = undefined;
+  }
 }
