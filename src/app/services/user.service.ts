@@ -10,7 +10,7 @@ import {environment} from "../../environments/environment";
 import {ApiPaths} from "../api-paths";
 import {ApiUserInfo} from "../data/api-user-info";
 import {ToastsService, ToastType} from "./toasts.service";
-import {Observable, Subject} from "rxjs";
+import {distinctUntilChanged, Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +23,12 @@ export class UserService {
 
   private user: SocialUser | undefined;
   private readonly CACHED_VALIDITY_MINS = 60;
-  private autoLogoutTimeutID: number | undefined;
+  private autoLogoutTimeoutID: number | undefined;
 
   constructor(private authService: SocialAuthService, private httpClient: HttpClient, private toastService: ToastsService) {
-    authService.authState.subscribe({
+    authService.authState
+      .pipe(distinctUntilChanged())
+      .subscribe({
       next: u => this.onAuthStateChanged(u)
     });
 
@@ -38,7 +40,7 @@ export class UserService {
     this.isLoggedIn = false;
     this.apiUser = undefined;
     localStorage.removeItem("apiUser");
-    clearTimeout(this.autoLogoutTimeutID)
+    clearTimeout(this.autoLogoutTimeoutID)
   }
 
   deleteAccount(): Observable<any> {
@@ -132,6 +134,6 @@ export class UserService {
     const nowMillis = Date.now().valueOf();
     const logoutDelay = logoutDateTimeMillis - nowMillis;
 
-    this.autoLogoutTimeutID = setTimeout(() => this.logout(), logoutDelay);
+    this.autoLogoutTimeoutID = setTimeout(() => this.logout(), logoutDelay);
   }
 }
