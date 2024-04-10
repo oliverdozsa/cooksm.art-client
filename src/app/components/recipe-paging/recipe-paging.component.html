@@ -6,7 +6,7 @@
     size="medium"
   >
   </ngx-spinner>
-  <div *ngIf="!isEmpty && currentPage" class="d-flex flex-wrap justify-content-center">
+  <div #recipeCardContainer *ngIf="!isEmpty && currentPage" class="d-flex flex-wrap justify-content-center" style="scroll-margin-top: 80px;">
     <div *ngFor="let recipe of currentPage.items" class="p-2">
       <app-recipe-card [recipe]="recipe"></app-recipe-card>
     </div>

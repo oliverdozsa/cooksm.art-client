@@ -1,4 +1,4 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, ViewChild} from '@angular/core';
 import {RecipesService} from "../../services/recipes.service";
 import {Recipe} from "../../data/recipe";
 import {Page} from "../../data/page";
@@ -11,6 +11,8 @@ import {RecipeServiceOperation, RecipeServiceOperationType} from "../../services
   styleUrls: ['./recipe-paging.component.scss']
 })
 export class RecipePagingComponent implements OnDestroy {
+  @ViewChild("recipeCardContainer") recipeCardContainer: any;
+
   currentPage: Page<Recipe> | undefined;
   isError: boolean = false;
 
@@ -53,6 +55,10 @@ export class RecipePagingComponent implements OnDestroy {
   private onNextPage(page: Page<Recipe>) {
     this.currentPage = page;
     this.isError = false;
+
+    if(!this.isEmpty) {
+      setTimeout(() => this.recipeCardContainer.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"}));
+    }
   }
 
   private onRecipesServiceOperation(operation: RecipeServiceOperation) {
