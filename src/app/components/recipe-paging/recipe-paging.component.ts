@@ -18,6 +18,7 @@ export class RecipePagingComponent implements OnDestroy {
 
   private _page: number = 1;
   private destroy$ = new Subject<void>();
+  private shouldScrollToTop: boolean = false;
 
   get page(): number {
     return this._page;
@@ -30,6 +31,15 @@ export class RecipePagingComponent implements OnDestroy {
 
   get isEmpty(): boolean {
     return this.currentPage != undefined && this.currentPage.items.length === 0;
+  }
+
+  set pageThroughControl(value: number) {
+    this.page = value;
+    this.shouldScrollToTop = true;
+  }
+
+  get pageThroughControl(): number {
+    return this.page;
   }
 
   constructor(private recipesService: RecipesService) {
@@ -56,7 +66,8 @@ export class RecipePagingComponent implements OnDestroy {
     this.currentPage = page;
     this.isError = false;
 
-    if(!this.isEmpty) {
+    if(!this.isEmpty && this.shouldScrollToTop) {
+      this.shouldScrollToTop = false;
       setTimeout(() => this.recipeCardContainer.nativeElement.scrollIntoView({behavior: "smooth", block: "start", inline: "nearest"}));
     }
   }
