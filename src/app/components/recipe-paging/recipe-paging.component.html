@@ -14,11 +14,11 @@
 
   <div *ngIf="!isEmpty && currentPage" class="d-flex justify-content-center mt-3">
     <div class="mx-auto d-block d-sm-block d-md-none">
-      <ngb-pagination [collectionSize]="currentPage.totalCount" [(page)]="page" [maxSize]="2" [boundaryLinks]="true"
+      <ngb-pagination [collectionSize]="currentPage.totalCount" [(page)]="pageThroughControl" [maxSize]="2" [boundaryLinks]="true"
                       size="sm"></ngb-pagination>
     </div>
     <div class="mx-auto d-none d-sm-none d-md-block">
-      <ngb-pagination [collectionSize]="currentPage.totalCount" [(page)]="page" [maxSize]="2"
+      <ngb-pagination [collectionSize]="currentPage.totalCount" [(page)]="pageThroughControl" [maxSize]="2"
                       [boundaryLinks]="true"></ngb-pagination>
     </div>
   </div>
