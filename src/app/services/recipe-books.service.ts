@@ -106,12 +106,7 @@ export class RecipeBooksService {
 
   private onAllRecipeBooksLoaded(recipeBooks: RecipeBook[]) {
     this.isLoading = false;
-    this.recipeBooks = recipeBooks.sort((a, b) => {
-      const lastAccessedA = Date.parse(a.lastAccessed);
-      const lastAccessedB = Date.parse(b.lastAccessed);
-
-      return lastAccessedA - lastAccessedB
-    });
+    this.recipeBooks = recipeBooks;
     this.available$.next();
   }
 
