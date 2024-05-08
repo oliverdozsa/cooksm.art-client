@@ -57,7 +57,7 @@
     "language-switch-english": " English {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
     "language-switch-hungarian": " magyar (Hungarian) {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
     "order-and-filter-filter-by-name-label": "filter by name",
-    "order-and-filter-enter-name-placeholder": "enter name",
+    "order-and-filter-enter-name-placeholder": "search for recipes",
     "order-and-filter-ordering-label": "ordering",
     "order-and-filter-not-set-option": "not set",
     "order-and-filter-asc-by-num-of-ingr": "ascending by number of ingredients",

@@ -7,7 +7,7 @@ export class SourcePageSelections {
   selections: number[] = [];
 
   settings: IMultiSelectSettings = {
-    buttonClasses: "btn btn-outline-primary w-100",
+    buttonClasses: "btn btn-sm btn-outline-primary w-100",
     dynamicTitleMaxItems: 1,
     containerClasses: "w-100"
   };

@@ -58,7 +58,7 @@
     "language-switch-english": " English (angol) {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
     "language-switch-hungarian": " magyar {$START_ITALIC_TEXT}{$CLOSE_ITALIC_TEXT}",
     "order-and-filter-filter-by-name-label": "szűrés név alapján",
-    "order-and-filter-enter-name-placeholder": "név",
+    "order-and-filter-enter-name-placeholder": "receptek keresése",
     "order-and-filter-ordering-label": "rendezés",
     "order-and-filter-not-set-option": "nincs megadva",
     "order-and-filter-asc-by-num-of-ingr": "hozzávalók száma szerint növekvő",
