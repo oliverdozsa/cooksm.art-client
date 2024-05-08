@@ -22,7 +22,7 @@ export class SearchParamsComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(public userService: UserService, recipeBooksService: RecipeBooksService,
-              private authService: SocialAuthService, private recipesService: RecipesService) {
+              authService: SocialAuthService, private recipesService: RecipesService) {
     recipeBooksService.available$
       .pipe(takeUntil(this.destroy$))
       .subscribe({
