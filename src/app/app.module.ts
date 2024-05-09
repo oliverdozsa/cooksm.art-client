@@ -51,6 +51,7 @@ import {AddToRecipeBooksComponent} from './components/add-to-recipe-books/add-to
 import {ResetSearchParamsComponent} from './components/reset-search-params/reset-search-params.component';
 import {SearchInRecipeBooksComponent} from './components/search-in-recipe-books/search-in-recipe-books.component';
 import {LanguageSwitcherComponent} from "./components/language-switcher/language-switcher.component";
+import {MenuComponent} from "./pages/menu/menu.component";
 
 @NgModule({
   declarations: [
@@ -79,7 +80,8 @@ import {LanguageSwitcherComponent} from "./components/language-switcher/language
     AddToRecipeBooksComponent,
     ResetSearchParamsComponent,
     SearchInRecipeBooksComponent,
-    LanguageSwitcherComponent
+    LanguageSwitcherComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

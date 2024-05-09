@@ -16,6 +16,7 @@ export class AppComponent {
   routes = [
     {name: $localize`:@@page-title-home:home`, link: RouteNames.HOME, isAuthNeeded: false},
     {name: $localize`:@@page-title-recipe-books:recipe books`, link: RouteNames.RECIPE_BOOKS, isAuthNeeded: true},
+    {name: $localize`:@@page-title-menus:menus`, link: RouteNames.MENU, isAuthNeeded: true},
     {name: $localize`:@@page-title-account:account`, link: RouteNames.ACCOUNT, isAuthNeeded: true},
     {name: $localize`:@@page-title-about:about`, link: RouteNames.ABOUT, isAuthNeeded: false},
   ]

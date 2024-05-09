@@ -8,6 +8,7 @@ import {RecipeBooksComponent} from "./pages/recipe-books/recipe-books.component"
 import {PrivacyPoliyComponent} from "./pages/privacy-poliy/privacy-poliy.component";
 import {CookiePolicyComponent} from "./pages/cookie-policy/cookie-policy.component";
 import {AccountComponent} from "./pages/account/account.component";
+import {MenuComponent} from "./pages/menu/menu.component";
 
 const routes: Routes = [
   {path: RouteNames.HOME, component: HomeComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
   {path: RouteNames.PRIVACY_POLICY, component: PrivacyPoliyComponent},
   {path: RouteNames.COOKIE_POLICY, component: CookiePolicyComponent},
   {path: RouteNames.ACCOUNT, component: AccountComponent},
+  {path: RouteNames.MENU, component: MenuComponent},
   {path: '', redirectTo: '/' + RouteNames.HOME, pathMatch: 'full'},
   {path: '**', component: PageNotFoundComponent}
 ];
