@@ -1,0 +1,10 @@
+<div>recipe name</div>
+
+<div>
+  <small><label>select randomly from recipe book</label></small>
+</div>
+<select class="form-select form-select-sm">
+  <option *ngFor="let recipeBook of recipeBooksService.recipeBooks">
+    {{recipeBook.name}}
+  </option>
+</select>

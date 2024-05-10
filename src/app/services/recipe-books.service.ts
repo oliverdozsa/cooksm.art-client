@@ -11,7 +11,7 @@ import {ToastsService, ToastType} from "./toasts.service";
 })
 export class RecipeBooksService {
   recipeBooks: RecipeBook[] = [];
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   available$: Subject<void> = new Subject<void>();
 
   private readonly baseUrl = environment.apiUrl + "/recipebooks";
@@ -19,12 +19,11 @@ export class RecipeBooksService {
   constructor(private httpClient: HttpClient, userService: UserService, private toastService: ToastsService) {
     if (userService.isLoggedIn) {
       this.load();
-    } else {
-      this.isLoading = false;
-      userService.apiUserAvailable$.subscribe({
-        next: () => this.load()
-      })
     }
+
+    userService.apiUserAvailable$.subscribe({
+      next: () => this.load()
+    })
   }
 
   create(name: string) {
@@ -94,6 +93,10 @@ export class RecipeBooksService {
   }
 
   private load() {
+    if(this.isLoading) {
+      return;
+    }
+
     this.isLoading = true;
     this.httpClient.get<RecipeBook[]>(this.baseUrl)
       .pipe(

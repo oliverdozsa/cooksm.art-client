@@ -1,0 +1,12 @@
+<div class="modal-header">
+  <h5 i18n="@@create-menu-modal-title" class="modal-title" id="modal-basic-title">create new menu</h5>
+  <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
+</div>
+<div class="modal-body">
+  <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
+  <button class="btn btn-outline-primary w-100 mt-3">add a day</button>
+</div>
+<div class="modal-footer">
+  <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark" [disabled]="isInvalid" (click)="activeModal.close('save')">save</button>
+  <button i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">cancel</button>
+</div>
