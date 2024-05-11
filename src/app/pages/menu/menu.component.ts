@@ -49,7 +49,7 @@ export class MenuComponent implements OnDestroy{
   }
 
   onCreateNewClicked = () => {
-    const modalRef = this.modalService.open(MenuCreateEditModalComponent);
+    const modalRef = this.modalService.open(MenuCreateEditModalComponent, {size: "xl"});
     // TODO
     // modalRef.result.then(() => this.createNewRecipeBook(modalRef.componentInstance.name));
   }
