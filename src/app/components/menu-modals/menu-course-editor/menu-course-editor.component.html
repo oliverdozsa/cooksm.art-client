@@ -1,10 +1,28 @@
-<div>recipe name</div>
+<div *ngIf="selectedRecipeName != undefined">{{selectedRecipeName}}</div>
 
-<div>
-  <small><label>select randomly from recipe book</label></small>
-</div>
-<select class="form-select form-select-sm">
-  <option *ngFor="let recipeBook of recipeBooksService.recipeBooks">
-    {{recipeBook.name}}
-  </option>
+<select class="form-select form-select-sm" [(ngModel)]="recipeSource">
+  <option [ngValue]="RecipeSource.RandomRecipeBook">random from recipe book</option>
+  <option [ngValue]="RecipeSource.SelectFromRecipeBook">search from recipe book</option>
+  <option [ngValue]="RecipeSource.SearchForARecipe">search for a recipe</option>
 </select>
+
+<div class="mt-1 input-group input-group-sm">
+  <select *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook || recipeSource == RecipeSource.RandomRecipeBook"
+          class="form-select overflow-x-hidden text-truncate">
+    <option *ngFor="let recipeBook of recipeBooksService.recipeBooks">
+      {{ recipeBook.name }}
+    </option>
+  </select>
+
+  <input *ngIf="recipeSource == RecipeSource.SearchForARecipe" type="text" class="form-control" placeholder="search for recipe" aria-label="recipe name">
+
+  <button *ngIf="recipeSource != RecipeSource.SelectFromRecipeBook" class="btn btn-outline-primary">
+    <i *ngIf="recipeSource == RecipeSource.RandomRecipeBook" class="bi bi-shuffle"></i>
+    <span *ngIf="recipeSource != RecipeSource.RandomRecipeBook">ok</span>
+  </button>
+</div>
+
+<div *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook" class="mt-1 input-group input-group-sm">
+  <input type="text" class="form-control" placeholder="search for recipe" aria-label="recipe name">
+  <button class="btn btn-outline-primary">ok</button>
+</div>

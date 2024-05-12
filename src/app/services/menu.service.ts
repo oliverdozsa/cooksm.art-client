@@ -10,7 +10,7 @@ import {delay, Subject} from "rxjs";
   providedIn: 'root'
 })
 export class MenuService {
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   menus: Menu[] = [];
 
   public available$: Subject<void> = new Subject();

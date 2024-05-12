@@ -1,13 +1,21 @@
 import {Recipe} from "./recipe";
 
 export interface Menu {
-  id: number;
+  id?: number;
   name: string;
-  items: MenuItem[];
+  groups: MenuGroup[];
 }
 
-export interface MenuItem {
-  recipe: Recipe;
-  group: number;
-  order: number;
+export interface MenuGroup {
+  recipes: Recipe[]
+}
+
+export interface MenuRequest {
+  id?: number;
+  name: string;
+  groups: MenuGroupRequest[];
+}
+
+export interface MenuGroupRequest {
+  recipes: number[]
 }

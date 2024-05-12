@@ -55,6 +55,9 @@ import {MenuComponent} from "./pages/menu/menu.component";
 import { MenuCreateEditModalComponent } from './components/menu-modals/menu-create-edit-modal/menu-create-edit-modal.component';
 import { MenuDayAndCoursesEditorComponent } from './components/menu-modals/menu-day-and-courses-editor/menu-day-and-courses-editor.component';
 import { MenuCourseEditorComponent } from './components/menu-modals/menu-course-editor/menu-course-editor.component';
+import {
+  MenuGenerateRandomlyComponent
+} from "./components/menu-modals/menu-generate-randomly/menu-generate-randomly.component";
 
 @NgModule({
   declarations: [
@@ -87,7 +90,8 @@ import { MenuCourseEditorComponent } from './components/menu-modals/menu-course-
     MenuComponent,
     MenuCreateEditModalComponent,
     MenuDayAndCoursesEditorComponent,
-    MenuCourseEditorComponent
+    MenuCourseEditorComponent,
+    MenuGenerateRandomlyComponent
   ],
   imports: [
     BrowserModule,

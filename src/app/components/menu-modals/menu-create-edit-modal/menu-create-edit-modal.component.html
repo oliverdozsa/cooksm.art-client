@@ -3,41 +3,34 @@
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body">
-  <div class="d-flex flex-row flex-wrap justify-content-center">
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
+  <div>
+    <input [(ngModel)]="menu.name" type="text" class="form-control" [class.is-invalid]="isNameInvalid"
+           [class.is-valid]="!isNameInvalid" placeholder="name" aria-label="name">
+    <div i18n="@@create-menu-modal-invalid-name" class="invalid-feedback">
+      at least 2 characters
     </div>
-
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
-    </div>
-
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
-    </div>
-
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
-    </div>
-
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
-    </div>
-
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
-    </div>
-
-    <div class="mt-2 ms-2">
-      <app-menu-day-and-courses-editor></app-menu-day-and-courses-editor>
-    </div>
-
-
   </div>
 
-  <button class="btn btn-outline-primary w-100 mt-3">add a day</button>
+  <div class="border rounded mt-2" [class.border-danger]="areGroupsInvalid" [class.border-success]="!areGroupsInvalid"
+       style="min-height: 3rem;">
+    <div class="d-flex flex-row flex-wrap justify-content-center mt-2">
+      <div *ngFor="let item of menu.groups; let i = index" class="my-2 ms-2">
+        <app-menu-day-and-courses-editor [day]="i+1" [group]="menu.groups[i]"></app-menu-day-and-courses-editor>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="areGroupsInvalid">
+    <small class="text-danger">{{itemsInvalidMessage}}</small>
+  </div>
+
+  <button class="btn btn-outline-primary w-100 mt-3" (click)="onAddADay()">add a day</button>
+  <button class="btn btn-outline-primary w-100 mt-3" (click)="onGenerateRandomlyClicked()">generate randomly</button>
 </div>
 <div class="modal-footer">
-  <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark" [disabled]="isInvalid" (click)="activeModal.close('save')">save</button>
-  <button i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">cancel</button>
+  <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark" [disabled]="isInvalid"
+          (click)="activeModal.close('save')">save
+  </button>
+  <button i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary"
+          (click)="activeModal.dismiss('cancel')">cancel
+  </button>
 </div>

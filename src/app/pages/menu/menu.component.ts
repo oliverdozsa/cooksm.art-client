@@ -9,6 +9,7 @@ import {
   MenuCreateEditModalComponent
 } from "../../components/menu-modals/menu-create-edit-modal/menu-create-edit-modal.component";
 import {NgxSpinnerService} from "ngx-spinner";
+import {RecipeBooksService} from "../../services/recipe-books.service";
 
 @Component({
   selector: 'app-menu',
@@ -24,11 +25,15 @@ export class MenuComponent implements OnDestroy{
     {icon: "bi-list-check", onClick: item => this.onShowIngredientsClicked(item)}
   ];
 
+  get isLoading(): boolean {
+    return this.menuService.isLoading || this.recipeBooksService.isLoading;
+  }
+
   private destroy$: Subject<void> = new Subject();
 
   constructor(public userService: UserService, public menuService: MenuService, spinnerService: NgxSpinnerService,
-              private modalService: NgbModal) {
-    if (menuService.isLoading) {
+              private modalService: NgbModal, private recipeBooksService: RecipeBooksService) {
+    if (this.isLoading) {
       spinnerService.show("menus");
     } else if (userService.isLoggedIn) {
       setTimeout(() => {
