@@ -1,6 +1,7 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {RecipeBooksService} from "../../../services/recipe-books.service";
 import {RecipeSearchService} from "../../../services/recipe-search.service";
+import {Recipe} from "../../../data/recipe";
 
 @Component({
   selector: 'app-menu-course-editor',
@@ -12,21 +13,47 @@ export class MenuCourseEditorComponent {
   order: number = 0;
 
   @Output()
-  selectedRecipe: EventEmitter<any> = new EventEmitter<any>();
+  remove: EventEmitter<void> = new EventEmitter<void>();
 
-  selectedRecipeName: string | undefined;
-  selectedRecipeId: number | undefined;
+  selectedRecipe: Recipe | undefined;
+  selectedRecipeBookId: number | undefined;
   recipeSource: RecipeSource = RecipeSource.RandomRecipeBook;
+  editStarted: boolean = false;
 
-  constructor(public recipeBooksService: RecipeBooksService, private recipesSearchService: RecipeSearchService) {
+  get selectedRecipeBookIdForSearch(): number | undefined {
+    if (this.recipeSource == RecipeSource.SelectFromRecipeBook) {
+      return this.selectedRecipeBookId;
+    }
 
+    return undefined;
   }
 
-  onRecipeSelected(recipeId: number) {
-    this.selectedRecipe.emit({recipeId: recipeId, order: this.order});
+  get areRecipeBooksUsable(): boolean {
+    return this.recipeBooksService.recipeBooks.length > 0;
+  }
+
+  get shouldShowRecipeSourceSelectors(): boolean {
+    return this.selectedRecipe == undefined || this.editStarted;
   }
 
   protected readonly RecipeSource = RecipeSource;
+
+  constructor(public recipeBooksService: RecipeBooksService) {
+    if (this.areRecipeBooksUsable) {
+      this.selectedRecipeBookId = recipeBooksService.recipeBooks[0].id;
+    } else {
+      this.recipeSource = RecipeSource.SearchForARecipe;
+    }
+  }
+
+  onRecipeSelected(recipe: Recipe) {
+    this.selectedRecipe = recipe;
+    this.editStarted = false;
+  }
+
+  onEditToggle() {
+    this.editStarted = !this.editStarted;
+  }
 }
 
 export enum RecipeSource {

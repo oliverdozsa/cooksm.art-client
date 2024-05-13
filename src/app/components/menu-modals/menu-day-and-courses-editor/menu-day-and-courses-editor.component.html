@@ -2,20 +2,8 @@
   <h6>Day #{{ day }}</h6>
   <div class="d-flex flex-column overflow-y-scroll" style="height: 20rem">
     <div *ngFor="let recipes of group?.recipes; let i = index" class="mt-2 px-1">
-      <app-menu-course-editor [order]="i"></app-menu-course-editor>
+      <app-menu-course-editor [order]="i" (remove)="onCourseRemoved(i)"></app-menu-course-editor>
     </div>
-    <!--    <div class="mt-2 px-1">-->
-    <!--      <app-menu-course-editor></app-menu-course-editor>-->
-    <!--    </div>-->
-    <!--    <div class="mt-2 px-1">-->
-    <!--      <app-menu-course-editor></app-menu-course-editor>-->
-    <!--    </div>-->
-    <!--    <div class="mt-2 px-1">-->
-    <!--      <app-menu-course-editor></app-menu-course-editor>-->
-    <!--    </div>-->
-    <!--    <div class="m-2 px-1">-->
-    <!--      <app-menu-course-editor></app-menu-course-editor>-->
-    <!--    </div>-->
   </div>
 
   <div class="row mt-2">

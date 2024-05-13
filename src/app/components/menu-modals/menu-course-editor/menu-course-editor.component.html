@@ -1,28 +1,55 @@
-<div *ngIf="selectedRecipeName != undefined">{{selectedRecipeName}}</div>
+<div *ngIf="selectedRecipe != undefined">
+  <div class="d-flex">
+    <div><h6 class="text-center">{{ selectedRecipe.name }}</h6></div>
+    <div class="ms-auto">
+        <button class="btn-close" (click)="remove.emit()"></button>
+    </div>
+  </div>
 
-<select class="form-select form-select-sm" [(ngModel)]="recipeSource">
-  <option [ngValue]="RecipeSource.RandomRecipeBook">random from recipe book</option>
-  <option [ngValue]="RecipeSource.SelectFromRecipeBook">search from recipe book</option>
-  <option [ngValue]="RecipeSource.SearchForARecipe">search for a recipe</option>
-</select>
+  <div class="d-flex justify-content-center">
+    <div>
+      <img *ngIf="selectedRecipe.imageUrl" [src]="selectedRecipe.imageUrl" style="height: 3rem; width: 14rem;"
+           class="object-fit-cover border rounded" alt="recipe image"/>
+    </div>
+  </div>
+</div>
 
-<div class="mt-1 input-group input-group-sm">
-  <select *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook || recipeSource == RecipeSource.RandomRecipeBook"
-          class="form-select overflow-x-hidden text-truncate">
-    <option *ngFor="let recipeBook of recipeBooksService.recipeBooks">
-      {{ recipeBook.name }}
-    </option>
+<div *ngIf="shouldShowRecipeSourceSelectors">
+  <select class="form-select form-select-sm mt-1" [(ngModel)]="recipeSource">
+    <option *ngIf="areRecipeBooksUsable" [ngValue]="RecipeSource.RandomRecipeBook">random from recipe book</option>
+    <option *ngIf="areRecipeBooksUsable" [ngValue]="RecipeSource.SelectFromRecipeBook">search from recipe book</option>
+    <option [ngValue]="RecipeSource.SearchForARecipe">search for a recipe</option>
   </select>
 
-  <input *ngIf="recipeSource == RecipeSource.SearchForARecipe" type="text" class="form-control" placeholder="search for recipe" aria-label="recipe name">
+  <div class="mt-1 input-group input-group-sm">
+    <select *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook || recipeSource == RecipeSource.RandomRecipeBook"
+            [(ngModel)]="selectedRecipeBookId" class="form-select overflow-x-hidden text-truncate">
+      <option *ngFor="let recipeBook of recipeBooksService.recipeBooks" [ngValue]="recipeBook.id">
+        {{ recipeBook.name }}
+      </option>
+    </select>
 
-  <button *ngIf="recipeSource != RecipeSource.SelectFromRecipeBook" class="btn btn-outline-primary">
-    <i *ngIf="recipeSource == RecipeSource.RandomRecipeBook" class="bi bi-shuffle"></i>
-    <span *ngIf="recipeSource != RecipeSource.RandomRecipeBook">ok</span>
-  </button>
+    <button *ngIf="recipeSource == RecipeSource.RandomRecipeBook" class="btn btn-outline-primary">
+      <i class="bi bi-shuffle"></i>
+    </button>
+  </div>
+
+  <!-- The two almost identical app-menu-recipe-searcher is used here to rest search term on recipe source change. -->
+  <div *ngIf="recipeSource == RecipeSource.SearchForARecipe" class="mt-1">
+    <app-menu-recipe-searcher (selectedRecipe)="onRecipeSelected($event)"></app-menu-recipe-searcher>
+  </div>
+  <div *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook" class="mt-1">
+    <app-menu-recipe-searcher [recipeBookId]="selectedRecipeBookIdForSearch"
+                              (selectedRecipe)="onRecipeSelected($event)"></app-menu-recipe-searcher>
+  </div>
 </div>
 
-<div *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook" class="mt-1 input-group input-group-sm">
-  <input type="text" class="form-control" placeholder="search for recipe" aria-label="recipe name">
-  <button class="btn btn-outline-primary">ok</button>
+<div *ngIf="selectedRecipe != undefined" class="d-flex justify-content-center">
+  <div>
+    <button class="btn btn-sm" (click)="onEditToggle()">
+      <i *ngIf="!editStarted" class="bi bi-pencil-square"></i>
+      <i *ngIf="editStarted" class="bi bi-arrow-counterclockwise"></i>
+    </button>
+  </div>
 </div>
+

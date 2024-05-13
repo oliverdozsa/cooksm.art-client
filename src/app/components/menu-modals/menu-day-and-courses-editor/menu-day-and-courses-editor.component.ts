@@ -16,4 +16,8 @@ export class MenuDayAndCoursesEditorComponent {
   onCourseAddClick() {
     this.group?.recipes.push(-1);
   }
+
+  onCourseRemoved(i: number) {
+    this.group?.recipes.splice(i, 1);
+  }
 }

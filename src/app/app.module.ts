@@ -58,6 +58,9 @@ import { MenuCourseEditorComponent } from './components/menu-modals/menu-course-
 import {
   MenuGenerateRandomlyComponent
 } from "./components/menu-modals/menu-generate-randomly/menu-generate-randomly.component";
+import {
+  MenuRecipeSearcherComponent
+} from "./components/menu-modals/menu-recipe-searcher/menu-recipe-searcher.component";
 
 @NgModule({
   declarations: [
@@ -91,7 +94,8 @@ import {
     MenuCreateEditModalComponent,
     MenuDayAndCoursesEditorComponent,
     MenuCourseEditorComponent,
-    MenuGenerateRandomlyComponent
+    MenuGenerateRandomlyComponent,
+    MenuRecipeSearcherComponent
   ],
   imports: [
     BrowserModule,
