@@ -1,6 +1,6 @@
-<div *ngIf="selectedRecipe != undefined">
+<div *ngIf="recipe != undefined">
   <div class="d-flex">
-    <div><h6 class="text-center">{{ selectedRecipe.name }}</h6></div>
+    <div><h6 class="text-center">{{ recipe.name }}</h6></div>
     <div class="ms-auto">
         <button class="btn-close" (click)="remove.emit()"></button>
     </div>
@@ -8,7 +8,7 @@
 
   <div class="d-flex justify-content-center">
     <div>
-      <img *ngIf="selectedRecipe.imageUrl" [src]="selectedRecipe.imageUrl" style="height: 3rem; width: 14rem;"
+      <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" style="height: 3rem; width: 14rem;"
            class="object-fit-cover border rounded" alt="recipe image"/>
     </div>
   </div>
@@ -44,7 +44,7 @@
   </div>
 </div>
 
-<div *ngIf="selectedRecipe != undefined" class="d-flex justify-content-center">
+<div *ngIf="recipe != undefined" class="d-flex justify-content-center">
   <div>
     <button class="btn btn-sm" (click)="onEditToggle()">
       <i *ngIf="!editStarted" class="bi bi-pencil-square"></i>

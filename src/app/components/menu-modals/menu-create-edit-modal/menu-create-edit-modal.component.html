@@ -15,7 +15,7 @@
        style="min-height: 3rem;">
     <div class="d-flex flex-row flex-wrap justify-content-center mt-2">
       <div *ngFor="let item of menu.groups; let i = index" class="my-2 ms-2">
-        <app-menu-day-and-courses-editor [day]="i+1" [group]="menu.groups[i]"></app-menu-day-and-courses-editor>
+        <app-menu-day-and-courses-editor [day]="i+1" [group]="menu.groups[i]" (remove)="onDayRemoved(i)"></app-menu-day-and-courses-editor>
       </div>
     </div>
   </div>

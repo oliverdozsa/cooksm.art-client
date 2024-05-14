@@ -7,7 +7,7 @@ export interface Menu {
 }
 
 export interface MenuGroup {
-  recipes: Recipe[]
+  recipes: (Recipe|undefined)[]
 }
 
 export interface MenuRequest {

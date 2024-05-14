@@ -1,15 +1,18 @@
-import {Component} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {MenuGenerateRandomlyComponent} from "../menu-generate-randomly/menu-generate-randomly.component";
-import {Menu, MenuRequest} from "../../../data/menu";
+import {Menu} from "../../../data/menu";
+import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
+import {Subject, takeUntil} from "rxjs";
+import {Recipe} from "../../../data/recipe";
 
 @Component({
   selector: 'app-menu-create-edit-modal',
   templateUrl: './menu-create-edit-modal.component.html',
   styleUrl: './menu-create-edit-modal.component.scss'
 })
-export class MenuCreateEditModalComponent {
-  menu: MenuRequest = {
+export class MenuCreateEditModalComponent implements OnDestroy {
+  menu: Menu = {
     name: "",
     groups: []
   }
@@ -51,9 +54,19 @@ export class MenuCreateEditModalComponent {
   }
 
   private invalidGroupsReason: InvalidGroupsReason = InvalidGroupsReason.None;
+  private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal) {
+  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal, authService: SocialAuthService) {
+    authService.authState
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: u => this.onAuthStateChange(u)
+      });
+  }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onAddADay() {
@@ -64,8 +77,18 @@ export class MenuCreateEditModalComponent {
     this.modalService.open(MenuGenerateRandomlyComponent);
   }
 
-  private areRecipesInvalid(recipes: number[]) {
-    return recipes.length == 0 || recipes.find(id => id == -1) != undefined;
+  onDayRemoved(i: number) {
+    this.menu.groups.splice(i, 1);
+  }
+
+  private areRecipesInvalid(recipes: (Recipe|undefined)[]) {
+    return recipes.length == 0 || recipes.find(r => r == undefined) != undefined;
+  }
+
+  private onAuthStateChange(user: SocialUser) {
+    if(!user) {
+      this.activeModal.dismiss();
+    }
   }
 }
 

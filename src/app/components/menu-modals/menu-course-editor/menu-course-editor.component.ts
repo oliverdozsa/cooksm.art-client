@@ -15,7 +15,12 @@ export class MenuCourseEditorComponent {
   @Output()
   remove: EventEmitter<void> = new EventEmitter<void>();
 
-  selectedRecipe: Recipe | undefined;
+  @Output()
+  recipeSelected: EventEmitter<Recipe> = new EventEmitter<Recipe>();
+
+  @Input()
+  recipe: Recipe | undefined;
+
   selectedRecipeBookId: number | undefined;
   recipeSource: RecipeSource = RecipeSource.RandomRecipeBook;
   editStarted: boolean = false;
@@ -33,7 +38,7 @@ export class MenuCourseEditorComponent {
   }
 
   get shouldShowRecipeSourceSelectors(): boolean {
-    return this.selectedRecipe == undefined || this.editStarted;
+    return this.recipe == undefined || this.editStarted;
   }
 
   protected readonly RecipeSource = RecipeSource;
@@ -47,7 +52,8 @@ export class MenuCourseEditorComponent {
   }
 
   onRecipeSelected(recipe: Recipe) {
-    this.selectedRecipe = recipe;
+    this.recipeSelected.emit(recipe);
+    this.recipe = recipe;
     this.editStarted = false;
   }
 
