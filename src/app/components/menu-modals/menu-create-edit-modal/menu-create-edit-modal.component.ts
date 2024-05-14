@@ -5,6 +5,10 @@ import {Menu} from "../../../data/menu";
 import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
 import {Subject, takeUntil} from "rxjs";
 import {Recipe} from "../../../data/recipe";
+import {RecipeBooksService} from "../../../services/recipe-books.service";
+import {
+  MenuGenerateRandomProgressComponent
+} from "../menu-generate-random-progress/menu-generate-random-progress.component";
 
 @Component({
   selector: 'app-menu-create-edit-modal',
@@ -56,7 +60,8 @@ export class MenuCreateEditModalComponent implements OnDestroy {
   private invalidGroupsReason: InvalidGroupsReason = InvalidGroupsReason.None;
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal, authService: SocialAuthService) {
+  constructor(public activeModal: NgbActiveModal, private modalService: NgbModal,
+              authService: SocialAuthService, public recipeBooksService: RecipeBooksService) {
     authService.authState
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -74,19 +79,31 @@ export class MenuCreateEditModalComponent implements OnDestroy {
   }
 
   onGenerateRandomlyClicked() {
-    this.modalService.open(MenuGenerateRandomlyComponent);
+    const modalRef = this.modalService.open(MenuGenerateRandomlyComponent);
+    modalRef.result.then(generateRandomlyWith => {
+      const days = generateRandomlyWith.days;
+      const recipeSources = generateRandomlyWith.recipeSources;
+
+      const progressModalRef = this.modalService.open(MenuGenerateRandomProgressComponent, {
+        backdrop: "static"
+      });
+      setTimeout(() => {
+        progressModalRef.close();
+      }, 3000)
+
+    })
   }
 
   onDayRemoved(i: number) {
     this.menu.groups.splice(i, 1);
   }
 
-  private areRecipesInvalid(recipes: (Recipe|undefined)[]) {
+  private areRecipesInvalid(recipes: (Recipe | undefined)[]) {
     return recipes.length == 0 || recipes.find(r => r == undefined) != undefined;
   }
 
   private onAuthStateChange(user: SocialUser) {
-    if(!user) {
+    if (!user) {
       this.activeModal.dismiss();
     }
   }

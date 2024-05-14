@@ -6,11 +6,11 @@
   <div class="input-group">
     <span class="input-group-text">generate for</span>
     <select [(ngModel)]="days" class="form-select">
-      <option *ngFor="let i of daysOptions" [ngValue]=i>{{i}}</option>
+      <option *ngFor="let i of daysOptions" [ngValue]=i>{{ i }}</option>
     </select>
     <span class="input-group-text">days</span>
     <select [(ngModel)]="coursesPerDay" class="form-select">
-      <option *ngFor="let i of coursesOptions" [ngValue]=i>{{i}}</option>
+      <option *ngFor="let i of coursesOptions" [ngValue]=i>{{ i }}</option>
     </select>
     <span class="input-group-text">courses per day</span>
   </div>
@@ -18,16 +18,22 @@
   <div class="mt-2">
     <label>source of recipes for courses</label>
     <div *ngFor="let i of maxSources" class="input-group" [class.mt-1]="i > 1">
-      <span class="input-group-text">course #{{i}}</span>
-      <select class="form-select">
-        <option *ngFor="let recipeBook of recipeBooksService.recipeBooks">{{recipeBook.name}}</option>
+      <span class="input-group-text">course #{{ i }}</span>
+      <select [(ngModel)]="recipeSources[i-1]" class="form-select">
+        <option *ngFor="let recipeBook of recipeBooksService.recipeBooks"
+                [ngValue]="recipeBook.id">{{ recipeBook.name }}
+        </option>
       </select>
     </div>
   </div>
 </div>
 
 <div class="modal-footer">
-  <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark" (click)="activeModal.close('save')">ok</button>
-  <button i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('cancel')">cancel</button>
+  <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark"
+          (click)="activeModal.close({days: days, recipeSources: recipeSources})">ok
+  </button>
+  <button i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary"
+          (click)="activeModal.dismiss('cancel')">cancel
+  </button>
 </div>
 

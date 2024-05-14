@@ -24,7 +24,7 @@
   </div>
 
   <button class="btn btn-outline-primary w-100 mt-3" (click)="onAddADay()">add a day</button>
-  <button class="btn btn-outline-primary w-100 mt-3" (click)="onGenerateRandomlyClicked()">generate randomly</button>
+  <button *ngIf="recipeBooksService.recipeBooks.length > 0" class="btn btn-outline-primary w-100 mt-3" (click)="onGenerateRandomlyClicked()">generate randomly</button>
 </div>
 <div class="modal-footer">
   <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark" [disabled]="isInvalid"

@@ -11,8 +11,28 @@ export class MenuGenerateRandomlyComponent {
   days = 1;
   daysOptions = MenuGenerateRandomlyComponent.generateOptions(MenuGenerateRandomlyComponent.maxDays);
 
-  coursesPerDay = 1;
   coursesOptions = MenuGenerateRandomlyComponent.generateOptions(MenuGenerateRandomlyComponent.maxCourses);
+
+  recipeSources: number[] = [];
+
+  get coursesPerDay(): number {
+    return this._coursesPerDay;
+  }
+
+  set coursesPerDay(value: number) {
+    if(this._coursesPerDay < value) {
+      const numOfNewSource = value - this._coursesPerDay;
+      const newSources = Array<number>(numOfNewSource).fill(this.recipeBooksService.recipeBooks[0].id)
+      this.recipeSources = this.recipeSources.concat(newSources);
+    } else if(this._coursesPerDay > value) {
+      const sourcesToDelete = this._coursesPerDay - value;
+      this.recipeSources.splice(this.recipeSources.length - sourcesToDelete, sourcesToDelete);
+    }
+
+    this._coursesPerDay = value;
+  }
+
+  private _coursesPerDay = 1;
 
   get maxSources(): number[] {
     return MenuGenerateRandomlyComponent.generateOptions(this.coursesPerDay);
@@ -22,6 +42,7 @@ export class MenuGenerateRandomlyComponent {
   private static readonly maxCourses = 5;
 
   constructor(public activeModal: NgbActiveModal, public recipeBooksService: RecipeBooksService) {
+    this.recipeSources = [recipeBooksService.recipeBooks[0].id];
   }
 
   private static generateOptions(n: number) {
