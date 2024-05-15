@@ -83,7 +83,6 @@ export class RecipeBooksComponent implements OnDestroy {
   }
 
   onRecipeBookClicked = (recipeBook: RecipeBook) => {
-    console.log(`clicked on: ${JSON.stringify(recipeBook)}`)
     const snapshot = this.searchSnapshotService.cloneSnapshot();
     snapshot.search.query.recipeBooks = [recipeBook];
     this.searchSnapshotService.set(snapshot);

@@ -9,6 +9,8 @@ import {RecipeBooksService} from "../../../services/recipe-books.service";
 import {
   MenuGenerateRandomProgressComponent
 } from "../menu-generate-random-progress/menu-generate-random-progress.component";
+import {RandomMenuGenerator} from "./random-menu-generator";
+import {RecipeSearchService} from "../../../services/recipe-search.service";
 
 @Component({
   selector: 'app-menu-create-edit-modal',
@@ -61,7 +63,7 @@ export class MenuCreateEditModalComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(public activeModal: NgbActiveModal, private modalService: NgbModal,
-              authService: SocialAuthService, public recipeBooksService: RecipeBooksService) {
+              authService: SocialAuthService, public recipeBooksService: RecipeBooksService, private recipeSearchService: RecipeSearchService) {
     authService.authState
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -87,10 +89,16 @@ export class MenuCreateEditModalComponent implements OnDestroy {
       const progressModalRef = this.modalService.open(MenuGenerateRandomProgressComponent, {
         backdrop: "static"
       });
+
+      const randomMenuGenerator = new RandomMenuGenerator(days, recipeSources, this.recipeSearchService);
+      progressModalRef.componentInstance.generator = randomMenuGenerator;
+
+      // TODO: remove this
       setTimeout(() => {
         progressModalRef.close();
-      }, 3000)
+      }, 3000);
 
+      randomMenuGenerator.generate();
     })
   }
 
