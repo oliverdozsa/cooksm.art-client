@@ -1,5 +1,5 @@
 import {Component, OnDestroy} from '@angular/core';
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {MenuGenerateRandomlyComponent} from "../menu-generate-randomly/menu-generate-randomly.component";
 import {Menu} from "../../../data/menu";
 import {SocialAuthService, SocialUser} from "@abacritt/angularx-social-login";
@@ -93,12 +93,9 @@ export class MenuCreateEditModalComponent implements OnDestroy {
       const randomMenuGenerator = new RandomMenuGenerator(days, recipeSources, this.recipeSearchService);
       progressModalRef.componentInstance.generator = randomMenuGenerator;
 
-      // TODO: remove this
-      setTimeout(() => {
-        progressModalRef.close();
-      }, 3000);
-
-      randomMenuGenerator.generate();
+      randomMenuGenerator.generate().subscribe({
+        next: m => this.onMenuGenerated(m, progressModalRef)
+      });
     })
   }
 
@@ -114,6 +111,12 @@ export class MenuCreateEditModalComponent implements OnDestroy {
     if (!user) {
       this.activeModal.dismiss();
     }
+  }
+
+  private onMenuGenerated(menu: Menu, progressModal: NgbModalRef) {
+    this.menu = menu;
+    console.log(`menu = ${JSON.stringify(menu)}`)
+    setTimeout(() => progressModal.close(), 1000);
   }
 }
 

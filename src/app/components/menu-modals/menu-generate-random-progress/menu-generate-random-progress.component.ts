@@ -1,5 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {RandomMenuGenerator} from "../menu-create-edit-modal/random-menu-generator";
+import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-menu-generate-random-progress',
@@ -24,4 +25,8 @@ export class MenuGenerateRandomProgressComponent {
 
     return this.generator.failureReason;
   }
+
+  constructor(public activeModal: NgbActiveModal) {
+  }
+
 }

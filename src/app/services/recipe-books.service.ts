@@ -33,14 +33,15 @@ export class RecipeBooksService {
 
     this.isLoading = true;
     return this.httpClient.post<any>(this.baseUrl, request).subscribe({
-      next: () => this.load(),
+      next: () => this.onRequestSuccess(),
       error: () => this.onRequestError()
     });
   }
 
   delete(id: number) {
+    this.isLoading = true;
     this.httpClient.delete(this.baseUrl + `/${id}`).subscribe({
-      next: () => this.load(),
+      next: () => this.onRequestSuccess(),
       error: () => this.onRequestError()
     });
   }
@@ -49,8 +50,10 @@ export class RecipeBooksService {
     const request = {
       name: recipeBook.name
     };
+
+    this.isLoading = true;
     this.httpClient.put(this.baseUrl + `/${recipeBook.id}`, request).subscribe({
-      next: () => this.load(),
+      next: () => this.onRequestSuccess(),
       error: () => this.onRequestError()
     });
   }
@@ -117,5 +120,10 @@ export class RecipeBooksService {
     this.isLoading = false;
     const errorMessage = $localize`:@@recipe-books-service-request-error:couldn't do it!`;
     this.toastService.danger(errorMessage);
+  }
+
+  private onRequestSuccess() {
+    this.isLoading = false;
+    this.load();
   }
 }
