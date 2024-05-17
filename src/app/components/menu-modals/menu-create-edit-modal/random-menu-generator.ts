@@ -1,42 +1,48 @@
+import {delay, forkJoin, map, Observable, of, Subject} from "rxjs";
 import {Menu, MenuGroup} from "../../../data/menu";
 import {RecipeSearchService} from "../../../services/recipe-search.service";
-import {delay, forkJoin, map, Observable, of, Subject, takeUntil} from "rxjs";
 import {RecipeQueryParams} from "../../../services/recipe-query-params";
 import {Recipe} from "../../../data/recipe";
 
 export class RandomMenuGenerator {
-  workDone = 0;
-  totalWork = 0;
+  failureReason: string | undefined;
 
-  isWorking = false;
-  isFailed: boolean = false;
-  failureReason = "";
+  private workDone: number = 0;
+  private totalWork: number = 0;
 
-  private recipeBookSizes: number[] = [];
-  private usedOffsetsByCourseAndRecipeBooks = new Map<number, Map<number, number[]>>;
-
-  private menu$ = new Subject<Menu>();
+  private menu$: Subject<Menu> = new Subject<Menu>();
   private menu: Menu = {
     name: "",
-    groups: Array(this.forDays)
+    groups: []
   }
 
+  private recipeBookSizes: number[] = [];
+  private usedOffsets: number[][] = [];
+
   get progress(): number {
-    return Math.ceil(this.workDone / this.totalWork * 100);
+    return Math.floor(this.workDone / this.totalWork * 100);
+  }
+
+  get isFailed(): boolean {
+    return this.failureReason != undefined;
   }
 
   constructor(private forDays: number, private sources: number[], private recipeSearchService: RecipeSearchService) {
     this.totalWork = (forDays + 1) * sources.length;
+    for (let i = 0; i < this.sources.length; i++) {
+      this.usedOffsets.push([]);
+    }
+
+    for (let i = 0; i < this.forDays; i++) {
+      const menuGroup: MenuGroup = {recipes: Array(this.sources.length)};
+      this.menu.groups.push(menuGroup);
+    }
   }
 
   generate(): Observable<Menu> {
-    this.isWorking = true;
-
-    this.collectRecipeBookSizes()
-      .pipe(delay(700))
-      .subscribe({
-        next: sizes => this.onRecipeBookSizesQueried(sizes)
-      });
+    this.collectRecipeBookSizes().subscribe({
+      next: s => this.onRecipeBookSizesCollected(s)
+    })
 
     return this.menu$;
   }
@@ -58,10 +64,11 @@ export class RandomMenuGenerator {
       );
   }
 
-  private onRecipeBookSizesQueried(sizes: number[]) {
-    this.recipeBookSizes = sizes;
+  private onRecipeBookSizesCollected(sizes: number[]) {
     this.workDone = this.sources.length;
+    this.recipeBookSizes = sizes;
     this.checkIfSizesAreCorrect();
+
     if (!this.isFailed) {
       this.doGenerateMenu();
     }
@@ -70,8 +77,6 @@ export class RandomMenuGenerator {
   private checkIfSizesAreCorrect() {
     this.recipeBookSizes.forEach(size => {
       if (size < this.forDays) {
-        this.isFailed = true;
-        this.isWorking = false;
         this.failureReason = "All recipe books must have at least as many recipes as the number of days requested!";
         this.workDone = this.totalWork;
       }
@@ -79,80 +84,55 @@ export class RandomMenuGenerator {
   }
 
   private doGenerateMenu() {
-    this.menu.groups = [];
     for (let i = 0; i < this.forDays; i++) {
-      this.menu.groups.push({recipes: []});
+      this.generateCoursesForGroup(i);
     }
-
-    this.menu.groups.forEach((forGroup, i) => this.generateCourses(forGroup, i))
   }
 
-  private generateCourses(forGroup: MenuGroup, i: number) {
-    forGroup.recipes = Array(this.sources.length);
-    this.sources.forEach((rb, j) => this.findARandomNotAlreadyUsedRecipeFrom(rb, forGroup, i, j));
+  private generateCoursesForGroup(group: number) {
+    for (let indexOfSource = 0; indexOfSource < this.sources.length; indexOfSource++) {
+      this.findRecipeFor(indexOfSource)
+        .subscribe({
+          next: r => this.addRecipeTo(group, indexOfSource, r)
+        });
+    }
   }
 
-  private findARandomNotAlreadyUsedRecipeFrom(recipeBook: number, forGroup: MenuGroup, groupOrder: number, courseOrder: number) {
-    const queryParams = new RecipeQueryParams();
-    queryParams.recipeBooks = [recipeBook];
+  private findRecipeFor(indexOfSource: number): Observable<Recipe> {
+    const queryParams: RecipeQueryParams = new RecipeQueryParams();
+    queryParams.offset = this.chooseANotUsedOffsetFor(indexOfSource);
     queryParams.limit = 1;
-    queryParams.offset = this.chooseNotAlreadyUsedOffsetFor(recipeBook, courseOrder, groupOrder);
+    queryParams.recipeBooks = [this.sources[indexOfSource]];
 
-    this.recipeSearchService.query(queryParams)
-      .pipe(delay(200))
-      .subscribe({
-        next: p => this.onFoundRecipe(forGroup, courseOrder, p.items[0]),
-        error: () => this.onError()
-      })
+    return this.recipeSearchService.query(queryParams)
+      .pipe(
+        delay(200),
+        map(p => p.items[0])
+      )
   }
 
-  // TODO: fix recipeBookIndex, it increases wrongly
-  private chooseNotAlreadyUsedOffsetFor(recipeBookId: number, courseOrder: number, recipeBookIndex: number): number {
-    let byCourses = this.usedOffsetsByCourseAndRecipeBooks.get(courseOrder);
-    if(byCourses == undefined) {
-      byCourses = new Map<number, number[]>;
-      this.usedOffsetsByCourseAndRecipeBooks.set(courseOrder, byCourses);
-    }
+  private chooseANotUsedOffsetFor(indexOfSource: number): number {
+    const recipeBookSize = this.recipeBookSizes[indexOfSource];
 
-    let byRecipeBook = byCourses.get(recipeBookId);
-    if(byRecipeBook == undefined) {
-      byRecipeBook = [];
-      byCourses.set(recipeBookId, byRecipeBook);
-    }
+    let chosenOffset = Math.floor(Math.random() * recipeBookSize);
+    let isUsed = this.usedOffsets[indexOfSource].find(o => o == chosenOffset) != undefined;
 
-    const alreadyUsedOffsets = byRecipeBook;
-    const recipeBookSize = this.recipeBookSizes[recipeBookIndex];
-
-    let isChosenOffsetAlreadyUsed = true;
-    let chosenOffset = -1;
-
-    while (isChosenOffsetAlreadyUsed) {
+    while (isUsed) {
       chosenOffset = Math.floor(Math.random() * recipeBookSize);
-      console.log(chosenOffset)
-      console.log(alreadyUsedOffsets)
-      isChosenOffsetAlreadyUsed = alreadyUsedOffsets!.find(o => o == chosenOffset) != undefined;
+      isUsed = this.usedOffsets[indexOfSource].find(o => o == chosenOffset) != undefined;
     }
 
-    alreadyUsedOffsets!.push(chosenOffset);
+    this.usedOffsets[indexOfSource].push(chosenOffset);
 
     return chosenOffset;
   }
 
-  private onFoundRecipe(forGroup: MenuGroup, order: number, recipe: Recipe) {
-    if (this.isFailed) {
-      return;
-    }
-
-    forGroup.recipes[order] = recipe;
+  private addRecipeTo(group: number, order: number, recipe: Recipe) {
+    this.menu.groups[group].recipes[order] = recipe;
     this.workDone += 1;
 
     if (this.workDone == this.totalWork) {
       this.menu$.next(this.menu);
     }
-  }
-
-  private onError() {
-    this.isFailed = true;
-    this.workDone = this.totalWork;
   }
 }

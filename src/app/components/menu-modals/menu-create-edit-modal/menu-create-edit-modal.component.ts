@@ -115,7 +115,6 @@ export class MenuCreateEditModalComponent implements OnDestroy {
 
   private onMenuGenerated(menu: Menu, progressModal: NgbModalRef) {
     this.menu = menu;
-    console.log(`menu = ${JSON.stringify(menu)}`)
     setTimeout(() => progressModal.close(), 1000);
   }
 }

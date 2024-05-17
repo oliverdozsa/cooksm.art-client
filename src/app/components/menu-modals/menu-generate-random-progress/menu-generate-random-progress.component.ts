@@ -18,9 +18,9 @@ export class MenuGenerateRandomProgressComponent {
     return 0;
   }
 
-  get failureReason(): string {
+  get failureReason(): string | undefined {
     if (this.generator == undefined) {
-      return "";
+      return undefined;
     }
 
     return this.generator.failureReason;
