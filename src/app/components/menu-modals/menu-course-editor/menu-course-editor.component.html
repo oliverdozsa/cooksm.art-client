@@ -23,14 +23,17 @@
 
   <div class="mt-1 input-group input-group-sm">
     <select *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook || recipeSource == RecipeSource.RandomRecipeBook"
-            [(ngModel)]="selectedRecipeBookId" class="form-select overflow-x-hidden text-truncate">
+            [(ngModel)]="selectedRecipeBookId" [disabled]="isWorking" class="form-select overflow-x-hidden text-truncate">
       <option *ngFor="let recipeBook of recipeBooksService.recipeBooks" [ngValue]="recipeBook.id">
         {{ recipeBook.name }}
       </option>
     </select>
 
-    <button *ngIf="recipeSource == RecipeSource.RandomRecipeBook" class="btn btn-outline-primary">
-      <i class="bi bi-shuffle"></i>
+    <button *ngIf="recipeSource == RecipeSource.RandomRecipeBook" [disabled]="isWorking" class="btn btn-outline-primary" (click)="onRandomClick()">
+      <i *ngIf="!isWorking" class="bi bi-shuffle"></i>
+      <div *ngIf="isWorking" class="spinner-border spinner-border-sm" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
     </button>
   </div>
 
