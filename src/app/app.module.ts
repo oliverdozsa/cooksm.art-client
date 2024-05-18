@@ -62,6 +62,7 @@ import {
   MenuRecipeSearcherComponent
 } from "./components/menu-modals/menu-recipe-searcher/menu-recipe-searcher.component";
 import { MenuGenerateRandomProgressComponent } from './components/menu-modals/menu-generate-random-progress/menu-generate-random-progress.component';
+import { MenuIngredientsComponent } from './components/menu-modals/menu-ingredients/menu-ingredients.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { MenuGenerateRandomProgressComponent } from './components/menu-modals/me
     MenuCourseEditorComponent,
     MenuGenerateRandomlyComponent,
     MenuRecipeSearcherComponent,
-    MenuGenerateRandomProgressComponent
+    MenuGenerateRandomProgressComponent,
+    MenuIngredientsComponent
   ],
   imports: [
     BrowserModule,
