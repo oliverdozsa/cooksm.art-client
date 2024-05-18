@@ -3,6 +3,7 @@ import {Menu, MenuGroup} from "../../../data/menu";
 import {RecipeSearchService} from "../../../services/recipe-search.service";
 import {RecipeQueryParams} from "../../../services/recipe-query-params";
 import {Recipe} from "../../../data/recipe";
+import {LanguageService} from "../../../services/language.service";
 
 export class RandomMenuGenerator {
   failureReason: string | undefined;
@@ -27,7 +28,8 @@ export class RandomMenuGenerator {
     return this.failureReason != undefined;
   }
 
-  constructor(private forDays: number, private sources: number[], private recipeSearchService: RecipeSearchService) {
+  constructor(private forDays: number, private sources: number[], private recipeSearchService: RecipeSearchService,
+              private languageService: LanguageService) {
     this.totalWork = (forDays + 1) * sources.length;
     for (let i = 0; i < this.sources.length; i++) {
       this.usedOffsets.push([]);
@@ -103,6 +105,7 @@ export class RandomMenuGenerator {
     queryParams.offset = this.chooseANotUsedOffsetFor(indexOfSource);
     queryParams.limit = 1;
     queryParams.recipeBooks = [this.sources[indexOfSource]];
+    queryParams.languageId = this.languageService.usedLanguageId;
 
     return this.recipeSearchService.query(queryParams)
       .pipe(

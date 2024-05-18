@@ -5,6 +5,7 @@ import {Recipe} from "../../../data/recipe";
 import {RecipeQueryParams} from "../../../services/recipe-query-params";
 import {ToastsService} from "../../../services/toasts.service";
 import {delay} from "rxjs";
+import {LanguageService} from "../../../services/language.service";
 
 @Component({
   selector: 'app-menu-course-editor',
@@ -52,7 +53,7 @@ export class MenuCourseEditorComponent {
   protected readonly RecipeSource = RecipeSource;
 
   constructor(public recipeBooksService: RecipeBooksService, private recipeSearchService: RecipeSearchService,
-              private toasts: ToastsService) {
+              private toasts: ToastsService, private languageService: LanguageService) {
     if (this.areRecipeBooksUsable) {
       this.selectedRecipeBookId = recipeBooksService.recipeBooks[0].id;
     } else {
@@ -94,6 +95,7 @@ export class MenuCourseEditorComponent {
       queryParams.recipeBooks = [this.selectedRecipeBookId!];
       queryParams.limit = 1;
       queryParams.offset = Math.floor(Math.random() * recipeBookSize);
+      queryParams.languageId = this.languageService.usedLanguageId;
 
       this.recipeSearchService.query(queryParams)
         .pipe(delay(300))

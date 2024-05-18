@@ -12,6 +12,7 @@ import {
 import {Recipe} from "../../../data/recipe";
 import {RecipeSearchService} from "../../../services/recipe-search.service";
 import {RecipeQueryParams} from "../../../services/recipe-query-params";
+import {LanguageService} from "../../../services/language.service";
 
 @Component({
   selector: 'app-menu-recipe-searcher',
@@ -28,7 +29,7 @@ export class MenuRecipeSearcherComponent {
   isSearching = false;
   inputFormatter = () => '';
 
-  constructor(private recipeSearchService: RecipeSearchService) {
+  constructor(private recipeSearchService: RecipeSearchService, private languageService: LanguageService) {
   }
 
   search: OperatorFunction<string, readonly Recipe[]> = (text$: Observable<string>) => {
@@ -53,6 +54,7 @@ export class MenuRecipeSearcherComponent {
     queryParams.nameLike = term;
     queryParams.offset = 0;
     queryParams.limit = 10;
+    queryParams.languageId = this.languageService.usedLanguageId;
 
     if (this.recipeBookId != undefined) {
       queryParams.recipeBooks = [this.recipeBookId];
