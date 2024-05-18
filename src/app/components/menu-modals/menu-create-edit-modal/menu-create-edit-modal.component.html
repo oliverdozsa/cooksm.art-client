@@ -1,36 +1,45 @@
-<div class="modal-header">
+<div *ngIf="!isReadOnly" class="modal-header">
   <h5 i18n="@@create-menu-modal-title" class="modal-title" id="modal-basic-title">create new menu</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body">
   <div>
-    <input [(ngModel)]="menu.name" type="text" class="form-control" [class.is-invalid]="isNameInvalid"
+    <input *ngIf="!isReadOnly" [(ngModel)]="menu.name" type="text" class="form-control"
+           [class.is-invalid]="isNameInvalid"
            [class.is-valid]="!isNameInvalid" placeholder="name" aria-label="name">
     <div i18n="@@create-menu-modal-invalid-name" class="invalid-feedback">
       at least 2 characters
     </div>
+    <h5 *ngIf="isReadOnly && menu.name">{{ menu.name }}</h5>
+    <h5 *ngIf="isReadOnly && !menu.name">getting your menu...</h5>
   </div>
 
-  <div class="border rounded mt-2" [class.border-danger]="areGroupsInvalid" [class.border-success]="!areGroupsInvalid"
+  <div class="border rounded mt-2" [class.border-danger]="areGroupsInvalid && !isReadOnly"
+       [class.border-success]="!areGroupsInvalid && !isReadOnly"
        style="min-height: 3rem;">
     <div class="d-flex flex-row flex-wrap justify-content-center mt-2">
       <div *ngFor="let item of menu.groups; let i = index" class="my-2 ms-2">
-        <app-menu-day-and-courses-editor [day]="i+1" [group]="menu.groups[i]" (remove)="onDayRemoved(i)"></app-menu-day-and-courses-editor>
+        <app-menu-day-and-courses-editor [day]="i+1" [group]="menu.groups[i]" [isReadOnly]="isReadOnly"
+                                         (remove)="onDayRemoved(i)"></app-menu-day-and-courses-editor>
       </div>
     </div>
   </div>
-  <div *ngIf="areGroupsInvalid">
-    <small class="text-danger">{{itemsInvalidMessage}}</small>
+  <div *ngIf="areGroupsInvalid && !isReadOnly">
+    <small class="text-danger">{{ itemsInvalidMessage }}</small>
   </div>
 
-  <button class="btn btn-outline-primary w-100 mt-3" (click)="onAddADay()">add a day</button>
-  <button *ngIf="recipeBooksService.recipeBooks.length > 0" class="btn btn-outline-primary w-100 mt-3" (click)="onGenerateRandomlyClicked()">generate randomly</button>
+  <button *ngIf="!isReadOnly" class="btn btn-outline-primary w-100 mt-3" (click)="onAddADay()">add a day</button>
+  <button *ngIf="recipeBooksService.recipeBooks.length > 0 && !isReadOnly" class="btn btn-outline-primary w-100 mt-3"
+          (click)="onGenerateRandomlyClicked()">generate randomly
+  </button>
 </div>
 <div class="modal-footer">
   <button i18n="@@create-menu-modal-btn-save" type="button" class="btn btn-outline-dark" [disabled]="isInvalid"
-          (click)="activeModal.close('save')">save
+          (click)="activeModal.close('save')">
+    <span *ngIf="!isReadOnly">save</span>
+    <span *ngIf="isReadOnly">close</span>
   </button>
-  <button i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary"
+  <button *ngIf="!isReadOnly" i18n="@@create-menu-modal-btn-cancel" type="button" class="btn btn-outline-secondary"
           (click)="activeModal.dismiss('cancel')">cancel
   </button>
 </div>

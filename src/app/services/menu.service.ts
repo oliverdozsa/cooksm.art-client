@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
-import {Menu, MenuRequest} from "../data/menu";
+import {Menu, MenuRequest, MenuTitle} from "../data/menu";
 import {UserService} from "./user.service";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {ToastsService} from "./toasts.service";
-import {delay, Subject} from "rxjs";
+import {delay, Observable, Subject, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MenuService {
   isLoading: boolean = false;
-  menus: Menu[] = [];
+  menus: MenuTitle[] = [];
 
   public available$: Subject<void> = new Subject();
 
@@ -37,13 +37,25 @@ export class MenuService {
       });
   }
 
+  getById(id: number): Observable<Menu> {
+    this.isLoading = true;
+    return this.httpClient.get<Menu>(`${this.baseUrl}/${id}`)
+      .pipe(
+        delay(700),
+        tap({
+          next: () => this.isLoading = false,
+          error: () => this.isLoading = false
+        })
+      );
+  }
+
   private load() {
     if(this.isLoading) {
       return;
     }
 
     this.isLoading = true;
-    this.httpClient.get<Menu[]>(`${this.baseUrl}/all`)
+    this.httpClient.get<MenuTitle[]>(`${this.baseUrl}/all`)
       .pipe(delay(700))
       .subscribe({
         next: menus => this.onAllMenusLoaded(menus),
@@ -51,7 +63,7 @@ export class MenuService {
       });
   }
 
-  private onAllMenusLoaded(menus: Menu[]) {
+  private onAllMenusLoaded(menus: MenuTitle[]) {
     this.isLoading = false;
     this.menus = menus;
     this.available$.next();

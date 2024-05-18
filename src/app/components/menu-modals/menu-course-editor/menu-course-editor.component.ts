@@ -24,6 +24,9 @@ export class MenuCourseEditorComponent {
   @Input()
   recipe: Recipe | undefined;
 
+  @Input()
+  isReadOnly: boolean = false;
+
   selectedRecipeBookId: number | undefined;
   recipeSource: RecipeSource = RecipeSource.RandomRecipeBook;
   editStarted: boolean = false;
@@ -43,7 +46,7 @@ export class MenuCourseEditorComponent {
   }
 
   get shouldShowRecipeSourceSelectors(): boolean {
-    return this.recipe == undefined || this.editStarted;
+    return (this.recipe == undefined || this.editStarted) && !this.isReadOnly;
   }
 
   protected readonly RecipeSource = RecipeSource;

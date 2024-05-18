@@ -14,6 +14,9 @@ export class MenuDayAndCoursesEditorComponent {
   @Input()
   group: MenuGroup | undefined;
 
+  @Input()
+  isReadOnly: boolean = false;
+
   @Output()
   remove: EventEmitter<void> = new EventEmitter<void>();
 

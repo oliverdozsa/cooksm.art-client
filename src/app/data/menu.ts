@@ -19,3 +19,8 @@ export interface MenuRequest {
 export interface MenuGroupRequest {
   recipes: number[]
 }
+
+export interface MenuTitle {
+  id: number,
+  name: string
+}

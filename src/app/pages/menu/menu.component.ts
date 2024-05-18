@@ -10,7 +10,8 @@ import {
 } from "../../components/menu-modals/menu-create-edit-modal/menu-create-edit-modal.component";
 import {NgxSpinnerService} from "ngx-spinner";
 import {RecipeBooksService} from "../../services/recipe-books.service";
-import {Menu, MenuGroup, MenuGroupRequest, MenuRequest} from "../../data/menu";
+import {Menu, MenuGroup, MenuGroupRequest, MenuRequest, MenuTitle} from "../../data/menu";
+import {ToastsService} from "../../services/toasts.service";
 
 @Component({
   selector: 'app-menu',
@@ -33,7 +34,7 @@ export class MenuComponent implements OnDestroy {
   private destroy$: Subject<void> = new Subject();
 
   constructor(public userService: UserService, public menuService: MenuService, spinnerService: NgxSpinnerService,
-              private modalService: NgbModal, private recipeBooksService: RecipeBooksService) {
+              private modalService: NgbModal, private recipeBooksService: RecipeBooksService, private toasts: ToastsService) {
     if (this.isLoading) {
       spinnerService.show("menus");
     } else if (userService.isLoggedIn) {
@@ -71,8 +72,14 @@ export class MenuComponent implements OnDestroy {
     // TODO
   }
 
-  onMenuClicked = (menu: any) => {
-    // TODO
+  onMenuClicked = (menu: MenuTitle) => {
+    const modalRef = this.modalService.open(MenuCreateEditModalComponent, {size: "xl"});
+    const componentInstance = modalRef.componentInstance;
+    componentInstance.isReadOnly = true;
+    this.menuService.getById(menu.id).subscribe({
+      next: m => this.onMenuLoaded(componentInstance, m),
+      error: () => this.onMenuLoadFailed()
+    });
   }
 
   private createNewMenu(menu: Menu) {
@@ -90,5 +97,13 @@ export class MenuComponent implements OnDestroy {
     return {
       recipes: menuGroup.recipes.map(r => r!.id)
     };
+  }
+
+  private onMenuLoaded(menuComponent: MenuCreateEditModalComponent, menu: Menu) {
+    menuComponent.menu = menu;
+  }
+
+  private onMenuLoadFailed() {
+    this.toasts.danger("Could not load menu.");
   }
 }

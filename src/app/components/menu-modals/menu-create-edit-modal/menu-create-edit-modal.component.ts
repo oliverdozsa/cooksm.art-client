@@ -23,7 +23,7 @@ export class MenuCreateEditModalComponent implements OnDestroy {
     groups: []
   }
 
-  name: string = "";
+  isReadOnly = false;
 
   get isNameInvalid(): boolean {
     return this.menu.name.length < 2

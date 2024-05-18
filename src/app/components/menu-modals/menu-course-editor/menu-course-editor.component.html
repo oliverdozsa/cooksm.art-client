@@ -4,7 +4,7 @@
       <h6 *ngIf="recipe != undefined" class="text-center">{{ recipe.name }}</h6>
       <h6 *ngIf="recipe == undefined" class="text-center text-body-secondary">choose a recipe</h6>
     </div>
-    <div class="ms-auto">
+    <div *ngIf="!isReadOnly" class="ms-auto">
         <button class="btn-close" (click)="remove.emit()"></button>
     </div>
   </div>
@@ -50,7 +50,7 @@
   </div>
 </div>
 
-<div *ngIf="recipe != undefined" class="d-flex justify-content-center">
+<div *ngIf="recipe != undefined && !isReadOnly" class="d-flex justify-content-center">
   <div>
     <button class="btn btn-sm" (click)="onEditToggle()">
       <i *ngIf="!editStarted" class="bi bi-pencil-square"></i>
