@@ -1,5 +1,8 @@
 <div *ngIf="!isReadOnly" class="modal-header">
-  <h5 i18n="@@create-menu-modal-title" class="modal-title" id="modal-basic-title">create new menu</h5>
+  <h5 i18n="@@create-menu-modal-title" class="modal-title" id="modal-basic-title">
+    <ng-container *ngIf="!isForUpdate">create new menu</ng-container>
+    <ng-container *ngIf="isForUpdate">update menu</ng-container>
+  </h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 <div class="modal-body">

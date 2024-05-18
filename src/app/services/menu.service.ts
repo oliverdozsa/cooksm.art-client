@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Menu, MenuRequest, MenuTitle} from "../data/menu";
 import {UserService} from "./user.service";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {ToastsService} from "./toasts.service";
-import {delay, Observable, Subject, tap} from "rxjs";
+import {delay, Observable, of, Subject, tap} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ export class MenuService {
 
   constructor(userService: UserService, private httpClient: HttpClient, private toastService: ToastsService,
               private toasts: ToastsService) {
-    if(userService.isLoggedIn) {
+    if (userService.isLoggedIn) {
       this.load();
     }
 
@@ -49,8 +49,25 @@ export class MenuService {
       );
   }
 
+  delete(id: number): void {
+    this.isLoading = true;
+    this.httpClient.delete(`${this.baseUrl}/${id}`)
+      .subscribe({
+        next: () => this.onRequestComplete(),
+        error: () => this.onRequestFailed()
+      })
+  }
+
+  update(menuRequest: MenuRequest, id: number): void {
+    this.isLoading = true;
+    this.httpClient.put(`${this.baseUrl}/${id}`, menuRequest).subscribe({
+      next: () => this.onRequestComplete(),
+      error: () => this.onRequestFailed()
+    });
+  }
+
   private load() {
-    if(this.isLoading) {
+    if (this.isLoading) {
       return;
     }
 

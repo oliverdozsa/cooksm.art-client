@@ -4,7 +4,7 @@ import {UserService} from "../../services/user.service";
 import {MenuService} from "../../services/menu.service";
 import {SearchableListItemControl} from "../../components/searchable-list/searchable-list.component";
 import {Subject, takeUntil} from "rxjs";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {
   MenuCreateEditModalComponent
 } from "../../components/menu-modals/menu-create-edit-modal/menu-create-edit-modal.component";
@@ -60,12 +60,13 @@ export class MenuComponent implements OnDestroy {
     modalRef.result.then(() => this.createNewMenu(modalRef.componentInstance.menu));
   }
 
-  onDeleteClicked(item: any) {
-    // TODO
+  onDeleteClicked(menu: MenuTitle) {
+    this.menuService.delete(menu.id);
   }
 
-  onEditClicked(item: any) {
-    // TODO
+  onEditClicked(menuTitle: MenuTitle) {
+    const modalRef = this.openMenuFor(OpenMenuPurpose.Update, menuTitle.id);
+    modalRef.result.then(() => this.updateMenu(modalRef.componentInstance.menu));
   }
 
   onShowIngredientsClicked(item: any) {
@@ -73,17 +74,15 @@ export class MenuComponent implements OnDestroy {
   }
 
   onMenuClicked = (menu: MenuTitle) => {
-    const modalRef = this.modalService.open(MenuCreateEditModalComponent, {size: "xl"});
-    const componentInstance = modalRef.componentInstance;
-    componentInstance.isReadOnly = true;
-    this.menuService.getById(menu.id).subscribe({
-      next: m => this.onMenuLoaded(componentInstance, m),
-      error: () => this.onMenuLoadFailed()
-    });
+    this.openMenuFor(OpenMenuPurpose.Read, menu.id);
   }
 
   private createNewMenu(menu: Menu) {
     this.menuService.create(this.toMenuRequest(menu));
+  }
+
+  private updateMenu(menu: Menu) {
+    this.menuService.update(this.toMenuRequest(menu), menu.id!);
   }
 
   private toMenuRequest(menu: Menu): MenuRequest {
@@ -99,6 +98,22 @@ export class MenuComponent implements OnDestroy {
     };
   }
 
+  private openMenuFor(purpose: OpenMenuPurpose, menuId: number): NgbModalRef {
+    const modalRef = this.modalService.open(MenuCreateEditModalComponent, {size: "xl"});
+    const componentInstance = modalRef.componentInstance;
+
+    if (purpose == OpenMenuPurpose.Read) {
+      componentInstance.isReadOnly = true;
+    }
+
+    this.menuService.getById(menuId).subscribe({
+      next: m => this.onMenuLoaded(componentInstance, m),
+      error: () => this.onMenuLoadFailed()
+    });
+
+    return modalRef;
+  }
+
   private onMenuLoaded(menuComponent: MenuCreateEditModalComponent, menu: Menu) {
     menuComponent.menu = menu;
   }
@@ -106,4 +121,9 @@ export class MenuComponent implements OnDestroy {
   private onMenuLoadFailed() {
     this.toasts.danger("Could not load menu.");
   }
+}
+
+enum OpenMenuPurpose {
+  Read,
+  Update
 }

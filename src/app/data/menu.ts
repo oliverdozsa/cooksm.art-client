@@ -11,7 +11,6 @@ export interface MenuGroup {
 }
 
 export interface MenuRequest {
-  id?: number;
   name: string;
   groups: MenuGroupRequest[];
 }

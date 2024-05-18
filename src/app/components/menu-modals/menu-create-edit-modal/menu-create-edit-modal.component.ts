@@ -24,6 +24,7 @@ export class MenuCreateEditModalComponent implements OnDestroy {
   }
 
   isReadOnly = false;
+  isForUpdate: boolean = false;
 
   get isNameInvalid(): boolean {
     return this.menu.name.length < 2
