@@ -10,13 +10,14 @@ import {
 } from "../../components/menu-modals/menu-create-edit-modal/menu-create-edit-modal.component";
 import {NgxSpinnerService} from "ngx-spinner";
 import {RecipeBooksService} from "../../services/recipe-books.service";
+import {Menu, MenuGroup, MenuGroupRequest, MenuRequest} from "../../data/menu";
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent implements OnDestroy{
+export class MenuComponent implements OnDestroy {
   showCreatePopover: boolean = false;
 
   menuControls: SearchableListItemControl[] = [
@@ -55,8 +56,7 @@ export class MenuComponent implements OnDestroy{
 
   onCreateNewClicked = () => {
     const modalRef = this.modalService.open(MenuCreateEditModalComponent, {size: "xl"});
-    // TODO
-    // modalRef.result.then(() => this.createNewRecipeBook(modalRef.componentInstance.name));
+    modalRef.result.then(() => this.createNewMenu(modalRef.componentInstance.menu));
   }
 
   onDeleteClicked(item: any) {
@@ -73,5 +73,22 @@ export class MenuComponent implements OnDestroy{
 
   onMenuClicked = (menu: any) => {
     // TODO
+  }
+
+  private createNewMenu(menu: Menu) {
+    this.menuService.create(this.toMenuRequest(menu));
+  }
+
+  private toMenuRequest(menu: Menu): MenuRequest {
+    return {
+      name: menu.name,
+      groups: menu.groups.map(g => this.toMenuGroupRequest(g))
+    }
+  }
+
+  private toMenuGroupRequest(menuGroup: MenuGroup): MenuGroupRequest {
+    return {
+      recipes: menuGroup.recipes.map(r => r!.id)
+    };
   }
 }

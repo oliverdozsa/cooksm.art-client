@@ -104,7 +104,7 @@ export class MenuCreateEditModalComponent implements OnDestroy {
   }
 
   private areRecipesInvalid(recipes: (Recipe | undefined)[]) {
-    return recipes.length == 0 || recipes.find(r => r == undefined) != undefined;
+    return recipes.length == 0 || recipes.includes(undefined);
   }
 
   private onAuthStateChange(user: SocialUser) {

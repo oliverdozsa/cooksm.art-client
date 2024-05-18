@@ -115,11 +115,11 @@ export class RandomMenuGenerator {
     const recipeBookSize = this.recipeBookSizes[indexOfSource];
 
     let chosenOffset = Math.floor(Math.random() * recipeBookSize);
-    let isUsed = this.usedOffsets[indexOfSource].find(o => o == chosenOffset) != undefined;
+    let isUsed = this.usedOffsets[indexOfSource].includes(chosenOffset);
 
     while (isUsed) {
       chosenOffset = Math.floor(Math.random() * recipeBookSize);
-      isUsed = this.usedOffsets[indexOfSource].find(o => o == chosenOffset) != undefined;
+      isUsed = this.usedOffsets[indexOfSource].includes(chosenOffset);
     }
 
     this.usedOffsets[indexOfSource].push(chosenOffset);

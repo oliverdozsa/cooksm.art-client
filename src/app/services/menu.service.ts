@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Menu} from "../data/menu";
+import {Menu, MenuRequest} from "../data/menu";
 import {UserService} from "./user.service";
 import {environment} from "../../environments/environment";
 import {HttpClient} from "@angular/common/http";
@@ -17,7 +17,8 @@ export class MenuService {
 
   private readonly baseUrl = environment.apiUrl + "/menus";
 
-  constructor(userService: UserService, private httpClient: HttpClient, private toastService: ToastsService) {
+  constructor(userService: UserService, private httpClient: HttpClient, private toastService: ToastsService,
+              private toasts: ToastsService) {
     if(userService.isLoggedIn) {
       this.load();
     }
@@ -27,7 +28,20 @@ export class MenuService {
     })
   }
 
+  create(menuRequest: MenuRequest) {
+    this.isLoading = true;
+    this.httpClient.post(this.baseUrl, menuRequest)
+      .subscribe({
+        next: () => this.onRequestComplete(),
+        error: () => this.onRequestFailed()
+      });
+  }
+
   private load() {
+    if(this.isLoading) {
+      return;
+    }
+
     this.isLoading = true;
     this.httpClient.get<Menu[]>(`${this.baseUrl}/all`)
       .pipe(delay(700))
@@ -44,6 +58,17 @@ export class MenuService {
   }
 
   private onAllMenusLoadFailed() {
+    this.isLoading = false;
+    const errorMessage = $localize`:@@menus-service-request-error:couldn't load menus!`;
+    this.toastService.danger(errorMessage);
+  }
+
+  private onRequestComplete() {
+    this.isLoading = false;
+    this.load();
+  }
+
+  private onRequestFailed() {
     this.isLoading = false;
     const errorMessage = $localize`:@@menus-service-request-error:couldn't do it!`;
     this.toastService.danger(errorMessage);
