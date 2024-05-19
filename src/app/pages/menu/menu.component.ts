@@ -12,6 +12,7 @@ import {NgxSpinnerService} from "ngx-spinner";
 import {RecipeBooksService} from "../../services/recipe-books.service";
 import {Menu, MenuGroup, MenuGroupRequest, MenuRequest, MenuTitle} from "../../data/menu";
 import {ToastsService} from "../../services/toasts.service";
+import {MenuIngredientsComponent} from "../../components/menu-modals/menu-ingredients/menu-ingredients.component";
 
 @Component({
   selector: 'app-menu',
@@ -69,8 +70,12 @@ export class MenuComponent implements OnDestroy {
     modalRef.result.then(() => this.updateMenu(modalRef.componentInstance.menu));
   }
 
-  onShowIngredientsClicked(item: any) {
-    // TODO
+  onShowIngredientsClicked(menuTitle: MenuTitle) {
+    this.menuService.getById(menuTitle.id).subscribe({
+      next: m => this.onMenuLoadedForShowIngredients(m),
+      error: () => this.onMenuLoadFailed()
+    })
+
   }
 
   onMenuClicked = (menu: MenuTitle) => {
@@ -120,6 +125,11 @@ export class MenuComponent implements OnDestroy {
 
   private onMenuLoadFailed() {
     this.toasts.danger("Could not load menu.");
+  }
+
+  private onMenuLoadedForShowIngredients(menu: Menu) {
+    const modalRef = this.modalService.open(MenuIngredientsComponent);
+    modalRef.componentInstance.menu = menu;
   }
 }
 

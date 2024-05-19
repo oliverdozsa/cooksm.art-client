@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="d-flex flex-column overflow-y-scroll" style="height: 20rem">
+  <div class="d-flex flex-column overflow-y-auto" style="height: 20rem">
     <div *ngFor="let recipe of group?.recipes; let i = index" class="mt-2 px-1">
       <app-menu-course-editor [order]="i" (remove)="onCourseRemoved(i)" (recipeSelected)="onRecipeSelected($event, i)"
                               [recipe]="recipe" [isReadOnly]="isReadOnly"></app-menu-course-editor>

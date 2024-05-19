@@ -2,3 +2,28 @@
   <h5 i18n="@@ingredient-of-menu-title" class="modal-title" id="modal-basic-title">ingredients of "{{ menu.name }}"</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
+
+<div class="modal-body p-0">
+  <div class="mb-3">
+    <app-transition-group [className]="'flip-list'">
+      <ul class="list-group list-group-flush">
+        <li *ngFor="let ingredient of ingredients" class="list-group-item bg-transparent" appTransitionGroupItem>
+          <div class="d-flex">
+            <div class="me-auto">{{ ingredient.name }}</div>
+            <div>
+              <button (click)="onIncludedToggleClick(ingredient.id)" class="btn btn-outline-primary border-0">
+                <i *ngIf="!isIncluded(ingredient.id)" class="bi bi-square"></i>
+                <i *ngIf="isIncluded(ingredient.id)" class="bi bi-check-square"></i>
+              </button>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </app-transition-group>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button i18n="@@ingredients-of-recipe-book-modal-btn-copy" type="button" class="btn btn-outline-primary" [disabled]="isNoneIncluded" (click)="onCopySelectedToClipboardClick()">copy selected</button>
+  <button i18n="@@ingredients-of-recipe-book-modal-btn-close" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('close')">close</button>
+</div>
