@@ -89,7 +89,8 @@ export class MenuCourseEditorComponent {
 
   private onRecipeBookSize(recipeBookSize: number) {
     if (recipeBookSize < 1) {
-      this.toasts.danger("Recipe book is empty.");
+      const message = $localize`:@@course-editor-recipe-book-empty:Recipe book is empty.`;
+      this.toasts.danger(message);
     } else {
       const queryParams = new RecipeQueryParams();
       queryParams.recipeBooks = [this.selectedRecipeBookId!];
@@ -113,7 +114,8 @@ export class MenuCourseEditorComponent {
 
   private onErrorDuringRandomQuery() {
     this.isWorking = false;
-    this.toasts.danger("Couldn't do it :(! Try again maybe!")
+    const message = $localize`:@@course-editor-random-query-error:Couldn't do it 😔! Try again maybe!)`;
+    this.toasts.danger(message);
   }
 }
 

@@ -31,8 +31,8 @@
     <small class="text-danger">{{ itemsInvalidMessage }}</small>
   </div>
 
-  <button *ngIf="!isReadOnly" class="btn btn-outline-primary w-100 mt-3" (click)="onAddADay()">add a day</button>
-  <button *ngIf="recipeBooksService.recipeBooks.length > 0 && !isReadOnly" class="btn btn-outline-primary w-100 mt-3"
+  <button *ngIf="!isReadOnly" i18n="@@create-menu-modal-add-a-day" class="btn btn-outline-primary w-100 mt-3" (click)="onAddADay()">add a day</button>
+  <button *ngIf="recipeBooksService.recipeBooks.length > 0 && !isReadOnly" i18n="@@create-menu-modal-generate randomly" class="btn btn-outline-primary w-100 mt-3"
           (click)="onGenerateRandomlyClicked()">generate randomly
   </button>
 </div>

@@ -28,8 +28,9 @@ export class RandomMenuGenerator {
     return this.failureReason != undefined;
   }
 
-  constructor(private forDays: number, private sources: number[], private recipeSearchService: RecipeSearchService,
+  constructor(menuName: string, private forDays: number, private sources: number[], private recipeSearchService: RecipeSearchService,
               private languageService: LanguageService) {
+    this.menu.name = menuName;
     this.totalWork = (forDays + 1) * sources.length;
     for (let i = 0; i < this.sources.length; i++) {
       this.usedOffsets.push([]);
@@ -79,7 +80,7 @@ export class RandomMenuGenerator {
   private checkIfSizesAreCorrect() {
     this.recipeBookSizes.forEach(size => {
       if (size < this.forDays) {
-        this.failureReason = "All recipe books must have at least as many recipes as the number of days requested!";
+        this.failureReason = $localize`:@@random-menu-generator-sizes-are-not-correct:All recipe books must have at least as many recipes as the number of days requested!`;
         this.workDone = this.totalWork;
       }
     });

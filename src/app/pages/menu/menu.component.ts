@@ -124,7 +124,8 @@ export class MenuComponent implements OnDestroy {
   }
 
   private onMenuLoadFailed() {
-    this.toasts.danger("Could not load menu.");
+    const message = $localize`:@@menu-page-failed-to-load-menu:could not load menu!`;
+    this.toasts.danger(message);
   }
 
   private onMenuLoadedForShowIngredients(menu: Menu) {

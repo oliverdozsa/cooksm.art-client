@@ -49,9 +49,9 @@ export class MenuCreateEditModalComponent implements OnDestroy {
 
   get itemsInvalidMessage(): string {
     if (this.invalidGroupsReason == InvalidGroupsReason.ItemsWithNoRecipe) {
-      return "all items must have a recipe";
+      return $localize`:@@create-menu-modal-item-with-no-recipe:all items must have a recipe`;
     } else if (this.invalidGroupsReason == InvalidGroupsReason.TooFewItems) {
-      return "must have at least one item";
+      return $localize`:@@create-menu-modal-too-few-recipes:must have at least one item`;
     }
 
     return "";
@@ -93,7 +93,7 @@ export class MenuCreateEditModalComponent implements OnDestroy {
         backdrop: "static"
       });
 
-      const randomMenuGenerator = new RandomMenuGenerator(days, recipeSources, this.recipeSearchService, this.languageService);
+      const randomMenuGenerator = new RandomMenuGenerator(this.menu.name, days, recipeSources, this.recipeSearchService, this.languageService);
       progressModalRef.componentInstance.generator = randomMenuGenerator;
 
       randomMenuGenerator.generate().subscribe({

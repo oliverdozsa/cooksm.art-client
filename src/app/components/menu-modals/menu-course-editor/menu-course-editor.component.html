@@ -1,7 +1,14 @@
 <div>
   <div class="d-flex">
     <div>
-      <h6 *ngIf="recipe != undefined" class="text-center">{{ recipe.name }}</h6>
+      <h6 *ngIf="recipe != undefined" class="text-center">
+        <a [href]="recipe.url"
+           class="icon-link link-underline link-underline-opacity-0 clamp-title clamp-title-3"
+           target="_blank">
+          <i class="bi bi-box-arrow-up-right"></i>
+          {{ recipe.name }}
+        </a>
+      </h6>
       <h6 *ngIf="recipe == undefined" class="text-center text-body-secondary">choose a recipe</h6>
     </div>
     <div *ngIf="!isReadOnly" class="ms-auto">
@@ -35,7 +42,7 @@
     <button *ngIf="recipeSource == RecipeSource.RandomRecipeBook" [disabled]="isWorking" class="btn btn-outline-primary" (click)="onRandomClick()">
       <i *ngIf="!isWorking" class="bi bi-shuffle"></i>
       <div *ngIf="isWorking" class="spinner-border spinner-border-sm" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span i18n="@@loading-spinner" class="visually-hidden">Loading...</span>
       </div>
     </button>
   </div>

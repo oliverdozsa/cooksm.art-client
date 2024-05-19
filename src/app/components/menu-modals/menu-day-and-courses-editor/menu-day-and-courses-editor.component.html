@@ -1,6 +1,6 @@
 <div class="p-2 rounded border" style="width: 16rem; height: 25.2rem;">
   <div class="d-flex" [class.justify-content-center]="isReadOnly">
-    <div><h6>Day #{{ day }}</h6></div>
+    <div><h6 i18n="@@menu-day-and-courses-title">Day #{{ day }}</h6></div>
     <div *ngIf="!isReadOnly" class="ms-auto">
       <button class="btn-close" (click)="remove.emit()"></button>
     </div>
@@ -17,7 +17,7 @@
   <div *ngIf="!isReadOnly" class="row mt-2">
     <div class="col-2"></div>
     <div class="col-8">
-      <button class="btn btn-outline-primary btn-sm w-100" (click)="onCourseAddClick()">add a course</button>
+      <button i18n="@@menu-day-and-courses-add-a-course" class="btn btn-outline-primary btn-sm w-100" (click)="onCourseAddClick()">add a course</button>
     </div>
     <div class="col-2"></div>
   </div>

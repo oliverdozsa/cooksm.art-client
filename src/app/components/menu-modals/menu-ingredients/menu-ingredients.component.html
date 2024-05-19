@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h5 i18n="@@ingredient-of-menu-title" class="modal-title" id="modal-basic-title">ingredients of "{{ menu.name }}"</h5>
+  <h5 i18n="@@ingredients-of-menu-title" class="modal-title" id="modal-basic-title">ingredients of "{{ menu.name }}"</h5>
   <button type="button" class="btn-close" aria-label="Close" (click)="activeModal.dismiss('cancel')"></button>
 </div>
 
@@ -24,6 +24,6 @@
 </div>
 
 <div class="modal-footer">
-  <button i18n="@@ingredients-of-recipe-book-modal-btn-copy" type="button" class="btn btn-outline-primary" [disabled]="isNoneIncluded" (click)="onCopySelectedToClipboardClick()">copy selected</button>
-  <button i18n="@@ingredients-of-recipe-book-modal-btn-close" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('close')">close</button>
+  <button i18n="@@ingredients-of-menu-btn-copy" type="button" class="btn btn-outline-primary" [disabled]="isNoneIncluded" (click)="onCopySelectedToClipboardClick()">copy selected</button>
+  <button i18n="@@ingredients-of-menu-btn-close" type="button" class="btn btn-outline-secondary" (click)="activeModal.dismiss('close')">close</button>
 </div>
