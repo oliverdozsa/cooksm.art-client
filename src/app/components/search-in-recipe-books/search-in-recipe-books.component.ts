@@ -27,7 +27,7 @@ export class SearchInRecipeBooksComponent implements OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private recipeBookService: RecipeBooksService, private recipesService: RecipesService) {
+  constructor(public recipeBookService: RecipeBooksService, private recipesService: RecipesService) {
     const recipesServiceOperationHandler = new SearchInRecipeBooksRecipeServiceOpHandler(this)
 
     this.recipesService.operation$

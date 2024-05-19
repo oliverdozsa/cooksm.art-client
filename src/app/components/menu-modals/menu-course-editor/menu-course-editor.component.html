@@ -1,0 +1,68 @@
+<div>
+  <div class="d-flex">
+    <div>
+      <h6 *ngIf="recipe != undefined" class="text-center">
+        <a [href]="recipe.url"
+           class="icon-link link-underline link-underline-opacity-0 clamp-title clamp-title-3"
+           target="_blank">
+          <i class="bi bi-box-arrow-up-right"></i>
+          {{ recipe.name }}
+        </a>
+      </h6>
+      <h6 *ngIf="recipe == undefined" class="text-center text-body-secondary">choose a recipe</h6>
+    </div>
+    <div *ngIf="!isReadOnly" class="ms-auto">
+        <button class="btn-close" (click)="remove.emit()"></button>
+    </div>
+  </div>
+
+  <div *ngIf="recipe != undefined" class="d-flex justify-content-center">
+    <div>
+      <img *ngIf="recipe.imageUrl" [src]="recipe.imageUrl" style="height: 3rem; width: 14rem;"
+           class="object-fit-cover border rounded" alt="recipe image"/>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="shouldShowRecipeSourceSelectors">
+  <select class="form-select form-select-sm mt-1" [(ngModel)]="recipeSource">
+    <option *ngIf="areRecipeBooksUsable" [ngValue]="RecipeSource.RandomRecipeBook">random from recipe book</option>
+    <option *ngIf="areRecipeBooksUsable" [ngValue]="RecipeSource.SelectFromRecipeBook">search from recipe book</option>
+    <option [ngValue]="RecipeSource.SearchForARecipe">search for a recipe</option>
+  </select>
+
+  <div class="mt-1 input-group input-group-sm">
+    <select *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook || recipeSource == RecipeSource.RandomRecipeBook"
+            [(ngModel)]="selectedRecipeBookId" [disabled]="isWorking" class="form-select overflow-x-hidden text-truncate">
+      <option *ngFor="let recipeBook of recipeBooksService.recipeBooks" [ngValue]="recipeBook.id">
+        {{ recipeBook.name }}
+      </option>
+    </select>
+
+    <button *ngIf="recipeSource == RecipeSource.RandomRecipeBook" [disabled]="isWorking" class="btn btn-outline-primary" (click)="onRandomClick()">
+      <i *ngIf="!isWorking" class="bi bi-shuffle"></i>
+      <div *ngIf="isWorking" class="spinner-border spinner-border-sm" role="status">
+        <span i18n="@@loading-spinner" class="visually-hidden">Loading...</span>
+      </div>
+    </button>
+  </div>
+
+  <!-- The two almost identical app-menu-recipe-searcher is used here to rest search term on recipe source change. -->
+  <div *ngIf="recipeSource == RecipeSource.SearchForARecipe" class="mt-1">
+    <app-menu-recipe-searcher (selectedRecipe)="onRecipeSelected($event)"></app-menu-recipe-searcher>
+  </div>
+  <div *ngIf="recipeSource == RecipeSource.SelectFromRecipeBook" class="mt-1">
+    <app-menu-recipe-searcher [recipeBookId]="selectedRecipeBookIdForSearch"
+                              (selectedRecipe)="onRecipeSelected($event)"></app-menu-recipe-searcher>
+  </div>
+</div>
+
+<div *ngIf="recipe != undefined && !isReadOnly" class="d-flex justify-content-center">
+  <div>
+    <button class="btn btn-sm" (click)="onEditToggle()">
+      <i *ngIf="!editStarted" class="bi bi-pencil-square"></i>
+      <i *ngIf="editStarted" class="bi bi-arrow-counterclockwise"></i>
+    </button>
+  </div>
+</div>
+

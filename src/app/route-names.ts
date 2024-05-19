@@ -5,4 +5,5 @@ export class RouteNames {
   static PRIVACY_POLICY = "privacy-policy";
   static COOKIE_POLICY = "cookie-policy";
   static ACCOUNT = "account";
+  static MENU = "menu";
 }

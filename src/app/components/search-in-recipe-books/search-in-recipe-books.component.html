@@ -1,4 +1,10 @@
-<div class="position-relative">
+<div *ngIf="recipeBookService.isLoading" class="d-flex justify-content-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</div>
+
+<div *ngIf="!recipeBookService.isLoading" class="position-relative">
   <div class="border rounded form-control" [class.app-focus-ring]="isInputFocused">
     <div class="d-flex flex-row flex-wrap justify-content-start">
       <app-chip *ngFor="let recipeBook of added" [name]="recipeBook.name" color="secondary"

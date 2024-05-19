@@ -19,6 +19,7 @@ import {SearchSnapshotService} from "../../services/search-snapshot.service";
 import {Router} from "@angular/router";
 import {RouteNames} from "../../route-names";
 import {RecipesService} from "../../services/recipes.service";
+import {SearchSnapshot} from "../../data/search-snapshot";
 
 @Component({
   selector: 'app-recipe-books',
@@ -83,8 +84,7 @@ export class RecipeBooksComponent implements OnDestroy {
   }
 
   onRecipeBookClicked = (recipeBook: RecipeBook) => {
-    console.log(`clicked on: ${JSON.stringify(recipeBook)}`)
-    const snapshot = this.searchSnapshotService.cloneSnapshot();
+    const snapshot = new SearchSnapshot();
     snapshot.search.query.recipeBooks = [recipeBook];
     this.searchSnapshotService.set(snapshot);
     this.recipesService.init();

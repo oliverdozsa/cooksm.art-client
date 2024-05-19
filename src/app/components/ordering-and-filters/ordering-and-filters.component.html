@@ -1,11 +1,10 @@
-<div class="row">
-  <div class="col mt-2">
+<div class="row" xmlns="http://www.w3.org/1999/html">
+  <div class="col">
     <div style="min-width: 10rem;">
-      <label i18n="@@order-and-filter-filter-by-name-label" class="form-label">filter by name</label>
       <div class="input-group">
-        <input [(ngModel)]="params.filterByName" type="text" class="form-control"
+        <input [(ngModel)]="params.filterByName" type="text" class="form-control form-control-lg"
                i18n-placeholder="@@order-and-filter-enter-name-placeholder"
-               placeholder="enter name">
+               placeholder="search for recipes" (keyup.enter)="filterByNameClicked()">
         <button *ngIf="params.filterByName" class="btn btn-outline-secondary" type="button"
                 (click)="clearFilterByName()">
           <i class="bi bi-trash"></i>
@@ -17,10 +16,13 @@
 
     </div>
   </div>
+</div>
+
+<div class="row">
   <div class="col mt-2">
     <div style="min-width: 8rem;">
-      <label i18n="@@order-and-filter-ordering-label" class="form-label">ordering</label>
-      <select [(ngModel)]="orderByAndSort" class="form-select" aria-label="select ordering">
+      <small><label i18n="@@order-and-filter-ordering-label" class="form-label mb-0">ordering</label></small>
+      <select [(ngModel)]="orderByAndSort" class="form-select form-select-sm" aria-label="select ordering">
         <option i18n="@@order-and-filter-not-set-option" [ngValue]="undefined">not set</option>
         <option i18n="@@order-and-filter-asc-by-num-of-ingr" [ngValue]="'numofings asc'">ascending by number of ingredients</option>
         <option i18n="@@order-and-filter-desc-by-num-of-ingr" [ngValue]="'numofings desc'">descending by number of ingredients</option>
@@ -33,8 +35,8 @@
   <div class="col mt-2">
     <div class="row" style="min-width: 12rem;">
       <div class="col-6">
-        <label i18n="@@order-and-filter-min-ingredients-label" class="form-label">min. ingredients</label>
-        <select [(ngModel)]="minNumberOfIngredients" class="form-select" aria-label="minimum number of ingredients">
+        <small><label i18n="@@order-and-filter-min-ingredients-label" class="form-label mb-0">min. ingredients</label></small>
+        <select [(ngModel)]="minNumberOfIngredients" class="form-select form-select-sm" aria-label="minimum number of ingredients">
           <option i18n="@@order-and-filter-min-ingredients-not-set-option" [ngValue]="0">not set</option>
           <option *ngFor="let option of minNumberOfIngredientsOptions" [ngValue]="option">
             {{option}}
@@ -43,8 +45,8 @@
       </div>
 
       <div class="col-6">
-        <label i18n="@@order-and-filter-max-ingredients-label" class="form-label">max. ingredients</label>
-        <select [(ngModel)]="maxNumberOfIngredients" class="form-select" aria-label="maximum number of ingredients">
+        <small><label i18n="@@order-and-filter-max-ingredients-label" class="form-label mb-0">max. ingredients</label></small>
+        <select [(ngModel)]="maxNumberOfIngredients" class="form-select form-select-sm" aria-label="maximum number of ingredients">
           <option i18n="@@order-and-filter-max-ingredients-not-set-option" [ngValue]="0">not set</option>
           <option *ngFor="let option of maxNumberOfIngredientsOptions" [ngValue]="option">
             {{option}}
@@ -57,7 +59,7 @@
   <div class="col mt-2">
     <div class="d-flex flex-row align-items-end">
       <div style="min-width: 6rem;">
-        <label i18n="@@order-and-filter-cooking-time-label" class="form-label">cooking time</label>
+        <small><label i18n="@@order-and-filter-cooking-time-label" class="form-label mb-0">cooking time</label></small>
         <div>
           <div class="form-check form-check-inline">
             <input [(ngModel)]="isQuickSelected" class="form-check-input" type="checkbox">
@@ -90,7 +92,7 @@
     </div>
 
     <div *ngIf="sourcePageSelections">
-      <label i18n="@@order-and-filter-recipe-source-label" class="form-label">recipe source</label>
+      <small><label i18n="@@order-and-filter-recipe-source-label" class="form-label mb-0">recipe source</label></small>
       <div class="d-grip">
         <ngx-bootstrap-multiselect [(ngModel)]="sourcePageSelections!.selections"
                                    (ngModelChange)="sourcePageSelections!.onChange()"
@@ -105,7 +107,7 @@
 <div *ngIf="userService.isLoggedIn" class="row mt-2">
   <div class="col">
     <div class="form-check form-switch">
-      <label i18n="@@order-and-filter-in-favorites-only" class="form-check-label" for="favoritesOnly">in favorites only</label>
+      <small><label i18n="@@order-and-filter-in-favorites-only" class="form-check-label" for="favoritesOnly">in favorites only</label></small>
       <input class="form-check-input" type="checkbox" role="switch" id="favoritesOnly" [(ngModel)]="useFavoritesOnly">
     </div>
   </div>

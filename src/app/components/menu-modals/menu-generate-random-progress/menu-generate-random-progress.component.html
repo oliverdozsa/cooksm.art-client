@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h5 i18n="@@menu-generate-random-progress-title" class="modal-title">creating your menu...</h5>
+  <button *ngIf="progress==100" type="button" class="btn-close" aria-label="Close"
+          (click)="activeModal.dismiss('cancel')"></button>
+</div>
+<div class="modal-body">
+  <ngb-progressbar class="mb-3" [animated]="true" type="success" [value]="progress" [striped]="true"/>
+  <div *ngIf="failureReason" class="alert alert-danger">
+    {{ failureReason }}
+  </div>
+</div>

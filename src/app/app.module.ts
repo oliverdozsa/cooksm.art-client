@@ -51,6 +51,18 @@ import {AddToRecipeBooksComponent} from './components/add-to-recipe-books/add-to
 import {ResetSearchParamsComponent} from './components/reset-search-params/reset-search-params.component';
 import {SearchInRecipeBooksComponent} from './components/search-in-recipe-books/search-in-recipe-books.component';
 import {LanguageSwitcherComponent} from "./components/language-switcher/language-switcher.component";
+import {MenuComponent} from "./pages/menu/menu.component";
+import { MenuCreateEditModalComponent } from './components/menu-modals/menu-create-edit-modal/menu-create-edit-modal.component';
+import { MenuDayAndCoursesEditorComponent } from './components/menu-modals/menu-day-and-courses-editor/menu-day-and-courses-editor.component';
+import { MenuCourseEditorComponent } from './components/menu-modals/menu-course-editor/menu-course-editor.component';
+import {
+  MenuGenerateRandomlyComponent
+} from "./components/menu-modals/menu-generate-randomly/menu-generate-randomly.component";
+import {
+  MenuRecipeSearcherComponent
+} from "./components/menu-modals/menu-recipe-searcher/menu-recipe-searcher.component";
+import { MenuGenerateRandomProgressComponent } from './components/menu-modals/menu-generate-random-progress/menu-generate-random-progress.component';
+import { MenuIngredientsComponent } from './components/menu-modals/menu-ingredients/menu-ingredients.component';
 
 @NgModule({
   declarations: [
@@ -79,7 +91,15 @@ import {LanguageSwitcherComponent} from "./components/language-switcher/language
     AddToRecipeBooksComponent,
     ResetSearchParamsComponent,
     SearchInRecipeBooksComponent,
-    LanguageSwitcherComponent
+    LanguageSwitcherComponent,
+    MenuComponent,
+    MenuCreateEditModalComponent,
+    MenuDayAndCoursesEditorComponent,
+    MenuCourseEditorComponent,
+    MenuGenerateRandomlyComponent,
+    MenuRecipeSearcherComponent,
+    MenuGenerateRandomProgressComponent,
+    MenuIngredientsComponent
   ],
   imports: [
     BrowserModule,

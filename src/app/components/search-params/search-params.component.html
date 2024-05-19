@@ -1,5 +1,14 @@
 <div ngbAccordion>
   <div ngbAccordionItem [collapsed]="false" class="border-secondary-subtle border-2">
+    <div ngbAccordionCollapse>
+      <div ngbAccordionBody class="py-2">
+        <app-ordering-and-filters></app-ordering-and-filters>
+      </div>
+    </div>
+  </div>
+
+
+  <div ngbAccordionItem [collapsed]="true" class="border-secondary-subtle border-2">
     <h2 ngbAccordionHeader>
       <button i18n="@@filter-by-ingredients-title" ngbAccordionButton class="py-2">
         ingredients
@@ -36,21 +45,7 @@
     </div>
   </div>
 
-  <div ngbAccordionItem [collapsed]="false" class="border-secondary-subtle border-2">
-    <h2 ngbAccordionHeader>
-      <button i18n="@@search-filter-ordering-title" ngbAccordionButton class="py-2">
-        search filters / ordering
-      </button>
-    </h2>
-
-    <div ngbAccordionCollapse>
-      <div ngbAccordionBody class="py-2">
-        <app-ordering-and-filters></app-ordering-and-filters>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="userService.isLoggedIn" ngbAccordionItem [collapsed]="false" class="border-secondary-subtle border-2">
+  <div *ngIf="userService.isLoggedIn" ngbAccordionItem [collapsed]="true" class="border-secondary-subtle border-2">
     <h2 ngbAccordionHeader>
       <button i18n="@@search-params-recipe-books" ngbAccordionButton class="py-2">
         recipe books
@@ -59,7 +54,7 @@
 
     <div ngbAccordionCollapse>
       <div ngbAccordionBody class="py-2">
-        <app-search-in-recipe-books></app-search-in-recipe-books>
+          <app-search-in-recipe-books></app-search-in-recipe-books>
       </div>
     </div>
   </div>

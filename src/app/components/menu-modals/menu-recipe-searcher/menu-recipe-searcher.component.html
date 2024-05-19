@@ -1,0 +1,34 @@
+<div class="position-relative">
+  <div *ngIf="isSearching"
+       class="border rounded position-absolute w-100 h-100 d-flex justify-content-center align-items-center">
+    <div class="bg-body-tertiary w-100 h-100 opacity-75 position-absolute"></div>
+    <div class="spinner-border spinner-border-sm mt-2 position-absolute" role="status">
+      <span i18n="@@loading-spinner" class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <input class="form-control form-control-sm " type="text"
+         i18n-placeholder="@@menu-recipe-searches-placeholder" placeholder="search recipes"
+         #typeahead="ngbTypeahead"
+         [ngbTypeahead]="search"
+         [resultTemplate]="searchResultTemplate"
+         [editable]="false"
+         [inputFormatter]="inputFormatter"
+         (selectItem)="onRecipeSelected($event.item)">
+</div>
+
+<ng-template #searchResultTemplate let-r="result">
+  <div style="max-width: 11.5rem;">
+    <div class="text-truncate overflow-x-hidden fw-bold"><small>{{ r.name }}</small></div>
+    <div class="d-flex justify-content-center">
+      <div>
+        <img *ngIf="r.imageUrl" [src]="r.imageUrl" style="height: 3rem; width: 11rem;"
+             class="object-fit-cover border rounded" alt="recipe image"/>
+        <div *ngIf="r.imageUrl == undefined" style="height: 3rem; width: 11rem;"
+             class="d-flex justify-content-center align-items-center border rounded">
+          <div class="text-black-50">no image</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>

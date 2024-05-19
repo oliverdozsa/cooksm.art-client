@@ -11,7 +11,7 @@ import {ToastsService, ToastType} from "./toasts.service";
 })
 export class RecipeBooksService {
   recipeBooks: RecipeBook[] = [];
-  isLoading: boolean = true;
+  isLoading: boolean = false;
   available$: Subject<void> = new Subject<void>();
 
   private readonly baseUrl = environment.apiUrl + "/recipebooks";
@@ -19,12 +19,11 @@ export class RecipeBooksService {
   constructor(private httpClient: HttpClient, userService: UserService, private toastService: ToastsService) {
     if (userService.isLoggedIn) {
       this.load();
-    } else {
-      this.isLoading = false;
-      userService.apiUserAvailable$.subscribe({
-        next: () => this.load()
-      })
     }
+
+    userService.apiUserAvailable$.subscribe({
+      next: () => this.load()
+    })
   }
 
   create(name: string) {
@@ -34,14 +33,15 @@ export class RecipeBooksService {
 
     this.isLoading = true;
     return this.httpClient.post<any>(this.baseUrl, request).subscribe({
-      next: () => this.load(),
+      next: () => this.onRequestSuccess(),
       error: () => this.onRequestError()
     });
   }
 
   delete(id: number) {
+    this.isLoading = true;
     this.httpClient.delete(this.baseUrl + `/${id}`).subscribe({
-      next: () => this.load(),
+      next: () => this.onRequestSuccess(),
       error: () => this.onRequestError()
     });
   }
@@ -50,8 +50,10 @@ export class RecipeBooksService {
     const request = {
       name: recipeBook.name
     };
+
+    this.isLoading = true;
     this.httpClient.put(this.baseUrl + `/${recipeBook.id}`, request).subscribe({
-      next: () => this.load(),
+      next: () => this.onRequestSuccess(),
       error: () => this.onRequestError()
     });
   }
@@ -94,6 +96,10 @@ export class RecipeBooksService {
   }
 
   private load() {
+    if(this.isLoading) {
+      return;
+    }
+
     this.isLoading = true;
     this.httpClient.get<RecipeBook[]>(this.baseUrl)
       .pipe(
@@ -114,5 +120,10 @@ export class RecipeBooksService {
     this.isLoading = false;
     const errorMessage = $localize`:@@recipe-books-service-request-error:couldn't do it!`;
     this.toastService.danger(errorMessage);
+  }
+
+  private onRequestSuccess() {
+    this.isLoading = false;
+    this.load();
   }
 }
