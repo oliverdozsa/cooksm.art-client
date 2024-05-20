@@ -9,7 +9,7 @@
   <div>
     <input *ngIf="!isReadOnly" [(ngModel)]="menu.name" type="text" class="form-control"
            [class.is-invalid]="isNameInvalid"
-           [class.is-valid]="!isNameInvalid" placeholder="name" aria-label="name">
+           [class.is-valid]="!isNameInvalid" i18n-placeholder="@@create-menu-modal-name-placeholder" placeholder="name" aria-label="name">
     <div i18n="@@create-menu-modal-invalid-name" class="invalid-feedback">
       at least 2 characters
     </div>

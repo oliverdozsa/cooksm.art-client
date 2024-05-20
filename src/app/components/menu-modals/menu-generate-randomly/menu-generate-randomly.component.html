@@ -18,7 +18,7 @@
   <div class="mt-2">
     <label i18n="@@menu-generate-randomly-sources-label">source of recipes for courses</label>
     <div *ngFor="let i of maxSources" class="input-group" [class.mt-1]="i > 1">
-      <span class="input-group-text">course #{{ i }}</span>
+      <span i18n="@@menu-generate-randomly-course" class="input-group-text">course #{{ i }}</span>
       <select [(ngModel)]="recipeSources[i-1]" class="form-select">
         <option *ngFor="let recipeBook of recipeBooksService.recipeBooks"
                 [ngValue]="recipeBook.id">{{ recipeBook.name }}

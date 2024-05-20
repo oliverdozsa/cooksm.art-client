@@ -9,7 +9,7 @@
           {{ recipe.name }}
         </a>
       </h6>
-      <h6 *ngIf="recipe == undefined" class="text-center text-body-secondary">choose a recipe</h6>
+      <h6 *ngIf="recipe == undefined" i18n="@@menu-course-editor-choose-a-recipe" class="text-center text-body-secondary">choose a recipe</h6>
     </div>
     <div *ngIf="!isReadOnly" class="ms-auto">
         <button class="btn-close" (click)="remove.emit()"></button>
@@ -26,9 +26,9 @@
 
 <div *ngIf="shouldShowRecipeSourceSelectors">
   <select class="form-select form-select-sm mt-1" [(ngModel)]="recipeSource">
-    <option *ngIf="areRecipeBooksUsable" [ngValue]="RecipeSource.RandomRecipeBook">random from recipe book</option>
-    <option *ngIf="areRecipeBooksUsable" [ngValue]="RecipeSource.SelectFromRecipeBook">search from recipe book</option>
-    <option [ngValue]="RecipeSource.SearchForARecipe">search for a recipe</option>
+    <option *ngIf="areRecipeBooksUsable" i18n="@@menu-course-editor-random-recipe" [ngValue]="RecipeSource.RandomRecipeBook">random from recipe book</option>
+    <option *ngIf="areRecipeBooksUsable" i18n="@@menu-course-editor-search-from-recipe-book" [ngValue]="RecipeSource.SelectFromRecipeBook">search from recipe book</option>
+    <option i18n="@@menu-course-editor-search-for-recipe-book" [ngValue]="RecipeSource.SearchForARecipe">search for a recipe</option>
   </select>
 
   <div class="mt-1 input-group input-group-sm">
