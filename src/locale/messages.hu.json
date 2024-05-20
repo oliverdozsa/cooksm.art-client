@@ -67,6 +67,7 @@
     "create-menu-modal-title": "{$START_TAG_NG_CONTAINER} új menü {$CLOSE_TAG_NG_CONTAINER}{$START_TAG_NG_CONTAINER_1} menü módosítása {$CLOSE_TAG_NG_CONTAINER}",
     "create-menu-modal-name-placeholder": "név",
     "create-menu-modal-invalid-name": " legalább 2 karakter ",
+    "create-menu-modal-getting-menu": "menü betöltése...",
     "create-menu-modal-add-a-day": "új nap",
     "create-menu-modal-generate randomly": "véletlenszerű menü ",
     "create-menu-modal-btn-save": "{$START_TAG_SPAN}mentés{$CLOSE_TAG_SPAN}{$START_TAG_SPAN_1}bezárás{$CLOSE_TAG_SPAN}",

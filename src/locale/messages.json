@@ -66,6 +66,7 @@
     "create-menu-modal-title": "{$START_TAG_NG_CONTAINER}create new menu{$CLOSE_TAG_NG_CONTAINER}{$START_TAG_NG_CONTAINER_1}update menu{$CLOSE_TAG_NG_CONTAINER}",
     "create-menu-modal-name-placeholder": "name",
     "create-menu-modal-invalid-name": " at least 2 characters ",
+    "create-menu-modal-getting-menu": "getting your menu...",
     "create-menu-modal-add-a-day": "add a day",
     "create-menu-modal-generate randomly": "generate randomly ",
     "create-menu-modal-btn-save": "{$START_TAG_SPAN}save{$CLOSE_TAG_SPAN}{$START_TAG_SPAN_1}close{$CLOSE_TAG_SPAN}",

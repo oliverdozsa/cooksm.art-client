@@ -14,7 +14,7 @@
       at least 2 characters
     </div>
     <h5 *ngIf="isReadOnly && menu.name">{{ menu.name }}</h5>
-    <h5 *ngIf="isReadOnly && !menu.name">getting your menu...</h5>
+    <h5 *ngIf="isReadOnly && !menu.name" i18n="@@create-menu-modal-getting-menu">getting your menu...</h5>
   </div>
 
   <div class="border rounded mt-2" [class.border-danger]="areGroupsInvalid && !isReadOnly"
