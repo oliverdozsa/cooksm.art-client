@@ -88,12 +88,13 @@ export class MenuCreateEditModalComponent implements OnDestroy {
     modalRef.result.then(generateRandomlyWith => {
       const days = generateRandomlyWith.days;
       const recipeSources = generateRandomlyWith.recipeSources;
+      const tryUsingSameIngredientsForDifferentRecipes = generateRandomlyWith.tryUsingSameIngredientsForRecipes;
 
       const progressModalRef = this.modalService.open(MenuGenerateRandomProgressComponent, {
         backdrop: "static"
       });
 
-      const randomMenuGenerator = new RandomMenuGenerator(this.menu.name, days, recipeSources, this.recipeSearchService, this.languageService);
+      const randomMenuGenerator = new RandomMenuGenerator(this.menu.name, days, recipeSources, tryUsingSameIngredientsForDifferentRecipes, this.recipeSearchService, this.languageService);
       progressModalRef.componentInstance.generator = randomMenuGenerator;
 
       randomMenuGenerator.generate().subscribe({
