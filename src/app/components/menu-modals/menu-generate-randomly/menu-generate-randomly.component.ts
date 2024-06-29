@@ -15,6 +15,8 @@ export class MenuGenerateRandomlyComponent {
 
   recipeSources: number[] = [];
 
+  tryUsingSameIngredientsForRecipes: boolean = false;
+
   get coursesPerDay(): number {
     return this._coursesPerDay;
   }

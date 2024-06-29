@@ -4,11 +4,14 @@ import {RecipeSearchService} from "../../../services/recipe-search.service";
 import {RecipeQueryParams} from "../../../services/recipe-query-params";
 import {Recipe} from "../../../data/recipe";
 import {LanguageService} from "../../../services/language.service";
+import {compareMenusByCommonIngredients} from "./menu-comparator";
 
 export class RandomMenuGenerator {
   failureReason: string | undefined;
 
   private workDone: number = 0;
+  private totalWorkForOneMenu: number = 0;
+  private extraWorkForSource: number = 0;
   private totalWork: number = 0;
 
   private menu$: Subject<Menu> = new Subject<Menu>();
@@ -17,8 +20,15 @@ export class RandomMenuGenerator {
     groups: []
   }
 
+  private bestMenu: Menu = {
+    name: "",
+    groups: []
+  }
+
   private recipeBookSizes: number[] = [];
   private usedOffsets: number[][] = [];
+
+  private static RoundsForSameIngredientsGeneration: number = 50;
 
   get progress(): number {
     return Math.floor(this.workDone / this.totalWork * 100);
@@ -28,13 +38,21 @@ export class RandomMenuGenerator {
     return this.failureReason != undefined;
   }
 
-  constructor(menuName: string, private forDays: number, private sources: number[], private recipeSearchService: RecipeSearchService,
+  constructor(menuName: string, private forDays: number, private sources: number[], private tryUsingSameIngredientsForDifferentRecipes: boolean, private recipeSearchService: RecipeSearchService,
               private languageService: LanguageService) {
     this.menu.name = menuName;
-    this.totalWork = (forDays + 1) * sources.length;
-    for (let i = 0; i < this.sources.length; i++) {
-      this.usedOffsets.push([]);
+    this.totalWorkForOneMenu = (forDays) * sources.length;
+    this.extraWorkForSource = sources.length;
+
+    if (this.tryUsingSameIngredientsForDifferentRecipes) {
+      this.totalWork = this.totalWorkForOneMenu * RandomMenuGenerator.RoundsForSameIngredientsGeneration;
+    } else {
+      this.totalWork = this.totalWorkForOneMenu;
     }
+
+    this.totalWork += this.extraWorkForSource;
+
+    this.initUsedOffsets();
 
     for (let i = 0; i < this.forDays; i++) {
       const menuGroup: MenuGroup = {recipes: Array(this.sources.length)};
@@ -81,7 +99,7 @@ export class RandomMenuGenerator {
     this.recipeBookSizes.forEach(size => {
       if (size < this.forDays) {
         this.failureReason = $localize`:@@random-menu-generator-sizes-are-not-correct:All recipe books must have at least as many recipes as the number of days requested!`;
-        this.workDone = this.totalWork;
+        this.workDone = this.totalWorkForOneMenu;
       }
     });
   }
@@ -135,8 +153,31 @@ export class RandomMenuGenerator {
     this.menu.groups[group].recipes[order] = recipe;
     this.workDone += 1;
 
+    const workDoneOnMenusOnly = this.workDone - this.extraWorkForSource;
+
+    if(workDoneOnMenusOnly % this.totalWorkForOneMenu == 0) {
+      if(compareMenusByCommonIngredients(this.bestMenu, this.menu) < 0) {
+        this.bestMenu = JSON.parse(JSON.stringify(this.menu));
+        const bestMenuRecipes = this.bestMenu.groups.map(g => g.recipes)
+          .flat()
+          .map(r => r!.name);
+      }
+
+      if(this.workDone < this.totalWork) {
+        this.initUsedOffsets();
+        this.doGenerateMenu();
+      }
+    }
+
     if (this.workDone == this.totalWork) {
-      this.menu$.next(this.menu);
+      this.menu$.next(this.bestMenu);
+    }
+  }
+
+  private initUsedOffsets() {
+    this.usedOffsets = [];
+    for (let i = 0; i < this.sources.length; i++) {
+      this.usedOffsets.push([]);
     }
   }
 }

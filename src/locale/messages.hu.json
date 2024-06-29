@@ -83,6 +83,7 @@
     "menu-generate-randomly-day": "napra, és:",
     "menu-generate-randomly-courses-per-day": "fogás per nap",
     "menu-generate-randomly-sources-label": "fogások forrása",
+    "menu-generate-randomly-try-same-ingredients": "minél kevesebb hozzávalóból",
     "menu-generate-randomly-course": "{$INTERPOLATION}. fogás",
     "menu-generate-randomly-btn-save": "ok ",
     "menu-generate-randomly-btn-cancel": "mégse ",

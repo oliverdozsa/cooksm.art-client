@@ -13,6 +13,9 @@ import {ToastsService} from "../../../services/toasts.service";
 })
 export class MenuIngredientsComponent {
   ingredients: IngredientName[] = [];
+
+  total = 0;
+
   private uniqueIngredients: Map<number, IngredientName> = new Map();
   private includedIngredients: Set<number> = new Set<number>();
 
@@ -27,6 +30,10 @@ export class MenuIngredientsComponent {
   set menu(value: Menu) {
     this._menu = value;
     this.determineUniqueIngredients();
+  }
+
+  get lengthOfUnique() {
+    return this.uniqueIngredients.size;
   }
 
   private _menu: Menu = {
@@ -73,6 +80,7 @@ export class MenuIngredientsComponent {
   }
 
   private addIngredientsFromRecipe(recipe: Recipe) {
+    this.total += recipe.ingredients.length;
     recipe.ingredients.forEach(i => this.uniqueIngredients.set(i.id, i));
   }
 

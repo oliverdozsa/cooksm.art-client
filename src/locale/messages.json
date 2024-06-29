@@ -83,6 +83,7 @@
     "menu-generate-randomly-courses-per-day": "courses per day",
     "menu-generate-randomly-sources-label": "source of recipes for courses",
     "menu-generate-randomly-course": "course #{$INTERPOLATION}",
+    "menu-generate-randomly-try-same-ingredients": "try using same ingredients for different recipes",
     "menu-generate-randomly-btn-save": "ok ",
     "menu-generate-randomly-btn-cancel": "cancel ",
     "ingredients-of-menu-title": "ingredients of \"{$INTERPOLATION}\"",
