@@ -8,6 +8,9 @@ import {UserService} from "./user.service";
 import {IngredientSearchService} from "./ingredient-search.service";
 import {SearchSnapshotTransform} from "../data/search-snapshot-ops/search-snapshot-transform";
 import {NgxSpinner, NgxSpinnerService} from "ngx-spinner";
+import {InitialSourcePagesService} from "./initial-source-pages.service";
+import {SourcePagesService} from "./source-pages.service";
+import {Subscription} from "rxjs";
 
 export enum Language {
   English,
@@ -46,10 +49,12 @@ export class LanguageService {
 
   private _usedLanguage;
   private snapshotTranslator: SnapshotTranslator;
+  private sourcePagesSubscription: Subscription | undefined;
 
   constructor(@Inject(LOCALE_ID) public activeLocale: string, private searchSnapshotService: SearchSnapshotService,
-              private recipesService: RecipesService, private userService: UserService, private ingredientSearchService: IngredientSearchService,
-              private spinnerService: NgxSpinnerService) {
+              private recipesService: RecipesService, private userService: UserService, ingredientSearchService: IngredientSearchService,
+              private spinnerService: NgxSpinnerService, private initialSourcePagesService: InitialSourcePagesService,
+              private sourcePagesService: SourcePagesService) {
 
     const savedUsedLocale = localStorage.getItem("usedLocale");
     const localeToUse = savedUsedLocale == null ? activeLocale : savedUsedLocale;
@@ -70,6 +75,10 @@ export class LanguageService {
     if(localeToUse != activeLocale) {
       this.changePath();
     }
+
+    this.initialSourcePagesService.request.subscribe({
+      next: () => this.onRequestInitialSourcePages()
+    });
   }
 
   private changePath() {
@@ -109,6 +118,10 @@ export class LanguageService {
   private onSnapshotTranslated(snapshot: SearchSnapshot) {
     snapshot.locale = this.usedLanguageToLocale();
 
+    if(!snapshot.hasUserModifiedAnySourcePage) {
+      snapshot.search.query.sourcePages = this.sourcePagesService.findByLanguageIso(this.usedLanguageToLocale());
+    }
+
     const recipeOperation = this.recipesService.operation$;
     const whenSnapshotLoaded = new WhenSnapshotLoadedOps(snapshot, recipeOperation, this.userService);
     whenSnapshotLoaded.doWhatNecessary();
@@ -121,5 +134,23 @@ export class LanguageService {
   private translateSnapshotFinished() {
     this.isSwitchingInProgress = false;
     this.spinnerService.hide("languageSwitching");
+  }
+
+  private onRequestInitialSourcePages() {
+    if(this.sourcePagesSubscription) {
+      this.sourcePagesSubscription.unsubscribe();
+    }
+
+    if(this.sourcePagesService.allSourcePages.length > 0) {
+      const snapshot = this.recipesService.currentSearchSnapshot;
+      snapshot.search.query.sourcePages =
+        this.sourcePagesService.findByLanguageIso(this.usedLanguageToLocale());
+      snapshot.shouldChangeSourcePagesInInitialQuery = false;
+      this.recipesService.queryInitialSnapshot();
+      this.searchSnapshotService.set(snapshot);
+    } else {
+      this.sourcePagesSubscription = this.sourcePagesService.allSourcePageAvailable$
+        .subscribe({next: () => this.onRequestInitialSourcePages()});
+    }
   }
 }

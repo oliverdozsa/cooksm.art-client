@@ -25,6 +25,9 @@ import {
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "./user.service";
 import {RecipeBook} from "../data/recipe-book";
+import {SourcePagesService} from "./source-pages.service";
+import {LanguageService} from "./language.service";
+import {InitialSourcePagesService} from "./initial-source-pages.service";
 
 @Injectable({
   providedIn: 'root'
@@ -43,21 +46,26 @@ export class RecipesService {
   }
 
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
-              private modalService: NgbModal, private userService: UserService) {
+              private modalService: NgbModal, private userService: UserService, private initialSourcePagesService: InitialSourcePagesService) {
     this.init();
   }
 
   queryInitialSnapshot() {
-    const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
-    this.previousQueryParams = queryParams;
+    if(this.snapshotForCurrentQuery.shouldChangeSourcePagesInInitialQuery &&
+      !this.snapshotForCurrentQuery.hasUserModifiedAnySourcePage) {
+      this.initialSourcePagesService.request.next();
+    } else {
+      const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
+      this.previousQueryParams = queryParams;
 
-    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$, this.userService);
-    whenSnapshotIsLoaded.doWhatNecessary();
+      const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$, this.userService);
+      whenSnapshotIsLoaded.doWhatNecessary();
 
-    this.recipeQueryService.query(queryParams).subscribe({
-      next: p => this.results$.next(p),
-      error: e => this.results$.error(e)
-    });
+      this.recipeQueryService.query(queryParams).subscribe({
+        next: p => this.results$.next(p),
+        error: e => this.results$.error(e)
+      });
+    }
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
