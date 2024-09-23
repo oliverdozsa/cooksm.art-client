@@ -25,8 +25,6 @@ import {
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "./user.service";
 import {RecipeBook} from "../data/recipe-book";
-import {SourcePagesService} from "./source-pages.service";
-import {LanguageService} from "./language.service";
 import {InitialSourcePagesService} from "./initial-source-pages.service";
 
 @Injectable({
@@ -45,13 +43,17 @@ export class RecipesService {
     return this.snapshotForCurrentQuery;
   }
 
+  set currentSearchSnapshot(value: SearchSnapshot) {
+    this.snapshotForCurrentQuery = value;
+  }
+
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
               private modalService: NgbModal, private userService: UserService, private initialSourcePagesService: InitialSourcePagesService) {
     this.init();
   }
 
   queryInitialSnapshot() {
-    if(this.snapshotForCurrentQuery.shouldChangeSourcePagesInInitialQuery &&
+    if (this.snapshotForCurrentQuery.shouldChangeSourcePagesInInitialQuery &&
       !this.snapshotForCurrentQuery.hasUserModifiedAnySourcePage) {
       this.initialSourcePagesService.request.next();
     } else {
@@ -132,7 +134,7 @@ export class RecipesService {
     this.queryInitialSnapshot();
   }
 
-  recipeBooksChanged(recipeBooks: RecipeBook[]){
+  recipeBooksChanged(recipeBooks: RecipeBook[]) {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withRecipeBooks(recipeBooks, this.snapshotForCurrentQuery);
     });
@@ -146,7 +148,7 @@ export class RecipesService {
 
   init() {
     this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
-    if(!this.userService.isLoggedIn) {
+    if (!this.userService.isLoggedIn) {
       this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
       this.snapshotForCurrentQuery.search.query.recipeBooks = undefined;
     }

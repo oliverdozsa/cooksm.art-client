@@ -117,16 +117,18 @@ export class LanguageService {
 
   private onSnapshotTranslated(snapshot: SearchSnapshot) {
     snapshot.locale = this.usedLanguageToLocale();
-
-    if(!snapshot.hasUserModifiedAnySourcePage) {
-      snapshot.search.query.sourcePages = this.sourcePagesService.findByLanguageIso(this.usedLanguageToLocale());
-    }
-
-    const recipeOperation = this.recipesService.operation$;
-    const whenSnapshotLoaded = new WhenSnapshotLoadedOps(snapshot, recipeOperation, this.userService);
-    whenSnapshotLoaded.doWhatNecessary();
-
+    this.recipesService.currentSearchSnapshot.locale = snapshot.locale;
     this.searchSnapshotService.set(snapshot);
+
+    if(!snapshot.hasUserModifiedAnySourcePage && !snapshot.shouldChangeSourcePagesInInitialQuery) {
+      snapshot.shouldChangeSourcePagesInInitialQuery = true;
+      this.onRequestInitialSourcePages();
+    } else {
+      const recipeOperation = this.recipesService.operation$;
+      const whenSnapshotLoaded = new WhenSnapshotLoadedOps(snapshot, recipeOperation, this.userService);
+      whenSnapshotLoaded.doWhatNecessary();
+      this.searchSnapshotService.set(snapshot);
+    }
 
     this.translateSnapshotFinished();
   }
@@ -142,10 +144,11 @@ export class LanguageService {
     }
 
     if(this.sourcePagesService.allSourcePages.length > 0) {
-      const snapshot = this.recipesService.currentSearchSnapshot;
+      const snapshot = this.searchSnapshotService.cloneSnapshot();
       snapshot.search.query.sourcePages =
         this.sourcePagesService.findByLanguageIso(this.usedLanguageToLocale());
       snapshot.shouldChangeSourcePagesInInitialQuery = false;
+      this.recipesService.currentSearchSnapshot = snapshot;
       this.recipesService.queryInitialSnapshot();
       this.searchSnapshotService.set(snapshot);
     } else {
