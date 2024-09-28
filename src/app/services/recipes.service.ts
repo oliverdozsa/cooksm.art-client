@@ -25,6 +25,7 @@ import {
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {UserService} from "./user.service";
 import {RecipeBook} from "../data/recipe-book";
+import {InitialSourcePagesService} from "./initial-source-pages.service";
 
 @Injectable({
   providedIn: 'root'
@@ -42,22 +43,31 @@ export class RecipesService {
     return this.snapshotForCurrentQuery;
   }
 
+  set currentSearchSnapshot(value: SearchSnapshot) {
+    this.snapshotForCurrentQuery = value;
+  }
+
   constructor(private searchSnapshotService: SearchSnapshotService, private recipeQueryService: RecipeSearchService,
-              private modalService: NgbModal, private userService: UserService) {
+              private modalService: NgbModal, private userService: UserService, private initialSourcePagesService: InitialSourcePagesService) {
     this.init();
   }
 
   queryInitialSnapshot() {
-    const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
-    this.previousQueryParams = queryParams;
+    if (this.snapshotForCurrentQuery.shouldChangeSourcePagesInInitialQuery &&
+      !this.snapshotForCurrentQuery.hasUserModifiedAnySourcePage) {
+      this.initialSourcePagesService.request.next();
+    } else {
+      const queryParams = SearchSnapshotTransform.toQueryParams(this.snapshotForCurrentQuery);
+      this.previousQueryParams = queryParams;
 
-    const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$, this.userService);
-    whenSnapshotIsLoaded.doWhatNecessary();
+      const whenSnapshotIsLoaded = new WhenSnapshotLoadedOps(this.snapshotForCurrentQuery, this.operation$, this.userService);
+      whenSnapshotIsLoaded.doWhatNecessary();
 
-    this.recipeQueryService.query(queryParams).subscribe({
-      next: p => this.results$.next(p),
-      error: e => this.results$.error(e)
-    });
+      this.recipeQueryService.query(queryParams).subscribe({
+        next: p => this.results$.next(p),
+        error: e => this.results$.error(e)
+      });
+    }
   }
 
   ingredientsChangedIn(target: TargetIngredients, items: DisplayedIngredient[]) {
@@ -124,7 +134,7 @@ export class RecipesService {
     this.queryInitialSnapshot();
   }
 
-  recipeBooksChanged(recipeBooks: RecipeBook[]){
+  recipeBooksChanged(recipeBooks: RecipeBook[]) {
     this.anySearchParamChanged(() => {
       SearchSnapshotUpdate.withRecipeBooks(recipeBooks, this.snapshotForCurrentQuery);
     });
@@ -138,7 +148,7 @@ export class RecipesService {
 
   init() {
     this.snapshotForCurrentQuery = this.searchSnapshotService.cloneSnapshot();
-    if(!this.userService.isLoggedIn) {
+    if (!this.userService.isLoggedIn) {
       this.snapshotForCurrentQuery.search.query.useFavoritesOnly = undefined;
       this.snapshotForCurrentQuery.search.query.recipeBooks = undefined;
     }

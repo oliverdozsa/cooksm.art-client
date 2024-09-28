@@ -64,6 +64,11 @@ export class SearchSnapshotUpdate {
 
   static withOrderingAndFiltersParams(params: OrderingAndFiltersParams, snapshot: SearchSnapshot) {
     const query = snapshot.search.query;
+
+    if(query.sourcePages?.length != params.sourcePages?.length) {
+      snapshot.hasUserModifiedAnySourcePage = true;
+    }
+
     query.nameLike = params.filterByName;
     query.orderBy = params.orderBy;
     query.orderBySort = params.orderBySort;

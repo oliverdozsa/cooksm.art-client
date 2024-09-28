@@ -32,15 +32,17 @@ export class SourcePageSelections {
   }
 
   onChange() {
-    const selectedSourcePages = this.sourcePagesService.findWhereIdsIn(this.selections);
+    setTimeout(() => {
+      const selectedSourcePages = this.sourcePagesService.findWhereIdsIn(this.selections);
 
-    if (selectedSourcePages) {
-      this.component.params.sourcePages = selectedSourcePages;
-    } else {
-      this.component.params.sourcePages = undefined;
-    }
+      if (selectedSourcePages) {
+        this.component.params.sourcePages = selectedSourcePages;
+      } else {
+        this.component.params.sourcePages = undefined;
+      }
 
-    this.component.paramsEvent();
+      this.component.paramsEvent();
+    })
   }
 
   select(sourcePages: SourcePage[] | undefined) {
@@ -48,11 +50,13 @@ export class SourcePageSelections {
       return;
     }
 
-    this.selections = sourcePages.map(s => s.id);
-    Object.keys(this.supportedLanguages).forEach(l => {
-      if(this.isAllSourcePageSelectedForLanguage(l)) {
-        this.selections = this.selections.concat(this.supportedLanguages[l].code);
-      }
+    setTimeout(() => {
+      this.selections = sourcePages.map(s => s.id);
+      Object.keys(this.supportedLanguages).forEach(l => {
+        if(this.isAllSourcePageSelectedForLanguage(l)) {
+          this.selections = this.selections.concat(this.supportedLanguages[l].code);
+        }
+      });
     });
   }
 

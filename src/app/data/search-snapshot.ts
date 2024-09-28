@@ -5,4 +5,6 @@ export class SearchSnapshot {
   currentPageNumber = 1;
   limit = 10;
   locale: string = "";
+  shouldChangeSourcePagesInInitialQuery = true;
+  hasUserModifiedAnySourcePage = false;
 }
