@@ -3,6 +3,7 @@ import {RecipesService} from "../../services/recipes.service";
 import {SearchSnapshotService} from "../../services/search-snapshot.service";
 import {determineAppSearchMode, SavedRecipeSearchQuery} from "../../data/saved-recipe-search";
 import {AppSearchMode} from "../../data/app-search-mode";
+import {LanguageService} from "../../services/language.service";
 
 @Component({
   selector: 'app-home',
@@ -17,11 +18,13 @@ export class HomeComponent implements OnInit {
     return this.isAnyFilterSet(query) || appSearchMode != AppSearchMode.None;
   }
 
-  constructor(private recipesService: RecipesService) {
+  constructor(private recipesService: RecipesService, private languageService: LanguageService) {
   }
 
   public ngOnInit() {
-    setTimeout(() => this.recipesService.queryInitialSnapshot());
+    if(!this.languageService.isSwitchingInProgress) {
+      setTimeout(() => this.recipesService.queryInitialSnapshot());
+    }
   }
 
   private isAnyFilterSet(query: SavedRecipeSearchQuery) {
